@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:background="#d8e5f0">
+
+    <LinearLayout
+        android:id="@+id/layout_persone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#d8e5f0"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="65dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="65dp"
+            android:text="Gruppo AQ/Riesame"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/testoGruppoAQ"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:text="Il Gruppo AQ/Riesame coincide con la componente docente della Giunta. Partecipa alla Politica per l’assicurazione di qualità del Dipartimento secondo le modalità indicate nel quadro B2 della SUA-RD e al Riesame periodico della ricerca dipartimentale (quadro B3). In particolare, il Gruppo AQ/Riesame, è direttamente impegnato nelle seguenti attività:  Compilazione della SUA-RD; Rapporto di Riesame annuale; Rapporto di Riesame triennale. Pertanto promuove periodicamente (annualmente e alla fine del triennio) la “riflessione autovalutativa” del Dipartimento che tiene conto:  degli obiettivi/azioni/indicatori fissati nella Dichiarazione degli obiettivi di ricerca del Dipartimento; dei risultati ottenuti nel corso del periodo preso in esame (un anno, il triennio); degli interventi di miglioramento proposti e realizzati. "
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:text="Componenti del gruppo AQ/Riesame:"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/immagineGruppo1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/textView5"
+                        android:layout_toRightOf="@+id/textView5"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/gruppo1"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/immagineGruppo1"
+                        android:layout_alignStart="@+id/immagineGruppo1"
+                        android:layout_below="@+id/immagineGruppo1"
+                        android:layout_weight="1"
+                        android:text="Flavia ANTONACCI"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/immagineGruppo2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/gruppo2"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/immagineGruppo2"
+                        android:layout_alignStart="@+id/immagineGruppo2"
+                        android:layout_below="@+id/immagineGruppo2"
+                        android:layout_weight="1"
+                        android:text="Filippo BELLOC"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/immagineGruppo3"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/gruppo3"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/immagineGruppo3"
+                        android:layout_alignStart="@+id/immagineGruppo3"
+                        android:layout_below="@+id/immagineGruppo3"
+                        android:layout_weight="1"
+                        android:text="Laura BERARDI"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineGruppo4"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo4"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo4"
+                    android:layout_alignStart="@+id/immagineGruppo4"
+                    android:layout_below="@+id/immagineGruppo4"
+                    android:layout_weight="1"
+                    android:text="Marina FUSCHI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGruppo5"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo5"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo5"
+                    android:layout_alignStart="@+id/immagineGruppo5"
+                    android:layout_below="@+id/immagineGruppo5"
+                    android:layout_weight="1"
+                    android:text="Luigi IPPOLITI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGruppo6"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo6"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo6"
+                    android:layout_alignStart="@+id/immagineGruppo6"
+                    android:layout_below="@+id/immagineGruppo6"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineGruppo7"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo7"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo7"
+                    android:layout_alignStart="@+id/immagineGruppo7"
+                    android:layout_below="@+id/immagineGruppo7"
+                    android:layout_weight="1"
+                    android:text="Alessandro SARRA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGruppo8"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo8"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo8"
+                    android:layout_alignStart="@+id/immagineGruppo8"
+                    android:layout_below="@+id/immagineGruppo8"
+                    android:layout_weight="1"
+                    android:text="Andrea RAGGI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGruppo9"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo9"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo9"
+                    android:layout_alignStart="@+id/immagineGruppo9"
+                    android:layout_below="@+id/immagineGruppo9"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineGruppo10"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo10"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo10"
+                    android:layout_alignStart="@+id/immagineGruppo10"
+                    android:layout_below="@+id/immagineGruppo10"
+                    android:layout_weight="1"
+                    android:text="Alessandro SARRA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGruppo11"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo11"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo11"
+                    android:layout_alignStart="@+id/immagineGruppo11"
+                    android:layout_below="@+id/immagineGruppo11"
+                    android:layout_weight="1"
+                    android:text="Andrea RAGGI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGruppo12"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo12"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo12"
+                    android:layout_alignStart="@+id/immagineGruppo12"
+                    android:layout_below="@+id/immagineGruppo12"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineGruppo13"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo13"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo13"
+                    android:layout_alignStart="@+id/immagineGruppo13"
+                    android:layout_below="@+id/immagineGruppo13"
+                    android:layout_weight="1"
+                    android:text="Alessandro SARRA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGruppo14"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo14"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo14"
+                    android:layout_alignStart="@+id/immagineGruppo14"
+                    android:layout_below="@+id/immagineGruppo14"
+                    android:layout_weight="1"
+                    android:text="Andrea RAGGI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGruppo15"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo15"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo15"
+                    android:layout_alignStart="@+id/immagineGruppo15"
+                    android:layout_below="@+id/immagineGruppo15"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineGruppo16"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo16"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo16"
+                    android:layout_alignStart="@+id/immagineGruppo16"
+                    android:layout_below="@+id/immagineGruppo16"
+                    android:layout_weight="1"
+                    android:text="Alessandro SARRA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGruppo17"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo17"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo17"
+                    android:layout_alignStart="@+id/immagineGruppo17"
+                    android:layout_below="@+id/immagineGruppo17"
+                    android:layout_weight="1"
+                    android:text="Andrea RAGGI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGruppo18"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gruppo18"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGruppo18"
+                    android:layout_alignStart="@+id/immagineGruppo18"
+                    android:layout_below="@+id/immagineGruppo18"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

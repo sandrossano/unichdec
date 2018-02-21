@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/nav_dip"
+            android:icon="@drawable/dipico"
+            android:title="Dipartimento">
+
+        </item>
+        <item
+            android:id="@+id/nav_dida"
+            android:icon="@drawable/didattica"
+            android:title="Didattica" />
+        <item
+            android:id="@+id/nav_serv"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Servizi" />
+        <item
+            android:id="@+id/nav_serch"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="Ricerca" />
+    </group>
+    <item android:title="UdA">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/new_window"
+                android:title="App UdA" />
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">DEC</string>
+
+    <string-array name="corsi">
+        <item>Seleziona il Corso</item>
+        <item>CLEA</item>
+        <item>CLEC</item>
+        <item>CLEII</item>
+        <item>CLEA/M</item>
+        <item>CLEC/M</item>
+
+    </string-array>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>

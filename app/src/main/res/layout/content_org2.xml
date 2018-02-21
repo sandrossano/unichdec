@@ -1,0 +1,1975 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:background="#d8e5f0">
+
+    <LinearLayout
+        android:id="@+id/layout_persone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#d8e5f0"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="65dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="65dp"
+            android:text="Consiglio di Dipartimento"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/immagineConsiglio1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/textView5"
+                        android:layout_toRightOf="@+id/textView5"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/consiglio1"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/immagineConsiglio1"
+                        android:layout_alignStart="@+id/immagineConsiglio1"
+                        android:layout_below="@+id/immagineConsiglio1"
+                        android:layout_weight="1"
+                        android:text="Vincenzo ACCIARO"
+                        android:visibility="gone"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <ImageView
+                        android:id="@+id/immagineConsiglio2"
+                        android:visibility="gone"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" />
+
+                    <TextView
+                        android:id="@+id/consiglio2"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_alignLeft="@+id/immagineConsiglio2"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignStart="@+id/immagineConsiglio2"
+                        android:layout_weight="1"
+                        android:text="Simona ALBERICI"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <ImageView
+                        android:id="@+id/immagineConsiglio3"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:visibility="gone"
+                        android:layout_marginRight="10dp" />
+
+                    <TextView
+                        android:id="@+id/consiglio3"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_alignLeft="@+id/immagineConsiglio3"
+                        android:layout_alignStart="@+id/immagineConsiglio3"
+                        android:layout_below="@+id/immagineConsiglio3"
+                        android:layout_weight="1"
+                        android:text="Flavia ANTONACCI"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio4"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio4"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio4"
+                    android:visibility="gone"
+                    android:layout_alignStart="@+id/immagineConsiglio4"
+                    android:layout_below="@+id/immagineConsiglio4"
+                    android:layout_weight="1"
+                    android:text="Alberto BAGNAI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio5"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio5"
+                    android:visibility="gone"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio5"
+                    android:layout_alignStart="@+id/immagineConsiglio5"
+                    android:layout_below="@+id/immagineConsiglio5"
+                    android:layout_weight="1"
+                    android:text="Giulia BELLANTE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio6"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio6"
+                    android:visibility="gone"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio6"
+                    android:layout_alignStart="@+id/immagineConsiglio6"
+                    android:layout_below="@+id/immagineConsiglio6"
+                    android:layout_weight="1"
+                    android:text="Filippo BELLOC"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio7"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:visibility="gone"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio7"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_alignLeft="@+id/immagineConsiglio7"
+                    android:layout_alignStart="@+id/immagineConsiglio7"
+                    android:layout_below="@+id/immagineConsiglio7"
+                    android:layout_weight="1"
+                    android:text="Roberto BENEDETTI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio8"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/consiglio8"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio8"
+                    android:layout_alignStart="@+id/immagineConsiglio8"
+                    android:layout_below="@+id/immagineConsiglio8"
+                    android:layout_weight="1"
+                    android:text="Laura BERARDI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio9"
+                    android:visibility="gone"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio9"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_alignLeft="@+id/immagineConsiglio9"
+                    android:layout_alignStart="@+id/immagineConsiglio9"
+                    android:layout_below="@+id/immagineConsiglio9"
+                    android:layout_weight="1"
+                    android:text="Cristina CAROLI COSTANTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio10"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio10"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio10"
+                    android:layout_alignStart="@+id/immagineConsiglio10"
+                    android:layout_below="@+id/immagineConsiglio10"
+                    android:layout_weight="1"
+                    android:text="Sebastiano CARPI"
+                    android:textAlignment="center"
+                    android:visibility="gone"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio11"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio11"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_alignLeft="@+id/immagineConsiglio11"
+                    android:layout_alignStart="@+id/immagineConsiglio11"
+                    android:layout_below="@+id/immagineConsiglio11"
+                    android:layout_weight="1"
+                    android:text="Giacomo CAVUTA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio12"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio12"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio12"
+                    android:layout_alignStart="@+id/immagineConsiglio12"
+                    android:visibility="gone"
+                    android:layout_below="@+id/immagineConsiglio12"
+                    android:layout_weight="1"
+                    android:text="Claudia CECI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio13"
+                    android:visibility="gone"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio13"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio13"
+                    android:visibility="gone"
+                    android:layout_alignStart="@+id/immagineConsiglio13"
+                    android:layout_below="@+id/immagineConsiglio13"
+                    android:layout_weight="1"
+                    android:text="Angelo CICHELLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio14"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio14"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_alignLeft="@+id/immagineConsiglio14"
+                    android:layout_alignStart="@+id/immagineConsiglio14"
+                    android:layout_below="@+id/immagineConsiglio14"
+                    android:layout_weight="1"
+                    android:text="Francesco D'ESPOSITO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio15"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio15"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio15"
+                    android:layout_alignStart="@+id/immagineConsiglio15"
+                    android:layout_below="@+id/immagineConsiglio15"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:text="Massimo DEL GATTO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio16"
+                    android:layout_width="100dp"
+                    android:visibility="gone"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio16"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio16"
+                    android:visibility="gone"
+                    android:layout_alignStart="@+id/immagineConsiglio16"
+                    android:layout_below="@+id/immagineConsiglio16"
+                    android:layout_weight="1"
+                    android:text="Fausto DI BIASE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio17"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio17"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio17"
+                    android:layout_alignStart="@+id/immagineConsiglio17"
+                    android:layout_below="@+id/immagineConsiglio17"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:text="Fabio FIORAVANTI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio18"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio18"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio18"
+                    android:visibility="gone"
+                    android:layout_alignStart="@+id/immagineConsiglio18"
+                    android:layout_below="@+id/immagineConsiglio18"
+                    android:layout_weight="1"
+                    android:text="Marina FUSCHI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio19"
+                    android:layout_width="100dp"
+                    android:visibility="gone"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio19"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio19"
+                    android:layout_alignStart="@+id/immagineConsiglio19"
+                    android:layout_below="@+id/immagineConsiglio19"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:text="Luigi IPPOLITI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio20"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio20"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio20"
+                    android:layout_alignStart="@+id/immagineConsiglio20"
+                    android:visibility="gone"
+                    android:layout_below="@+id/immagineConsiglio20"
+                    android:layout_weight="1"
+                    android:text="Lorita LIBERATORE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio21"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio21"
+                    android:layout_width="100dp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio21"
+                    android:layout_alignStart="@+id/immagineConsiglio21"
+                    android:layout_below="@+id/immagineConsiglio21"
+                    android:layout_weight="1"
+                    android:text="Carlo MARI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio22"
+                    android:layout_width="100dp"
+                    android:visibility="gone"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio22"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio22"
+                    android:layout_alignStart="@+id/immagineConsiglio22"
+                    android:visibility="gone"
+                    android:layout_below="@+id/immagineConsiglio22"
+                    android:layout_weight="1"
+                    android:text="Alessandro MARRA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio23"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio23"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio23"
+                    android:visibility="gone"
+                    android:layout_alignStart="@+id/immagineConsiglio23"
+                    android:layout_below="@+id/immagineConsiglio23"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio24"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio24"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio24"
+                    android:visibility="gone"
+                    android:layout_alignStart="@+id/immagineConsiglio24"
+                    android:layout_below="@+id/immagineConsiglio24"
+                    android:layout_weight="1"
+                    android:text="Anna MORGANTE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio25"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio25"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio25"
+                    android:layout_alignStart="@+id/immagineConsiglio25"
+                    android:visibility="gone"
+                    android:layout_below="@+id/immagineConsiglio25"
+                    android:layout_weight="1"
+                    android:text="Raffaele MOSCA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio26"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio26"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio26"
+                    android:layout_alignStart="@+id/immagineConsiglio26"
+                    android:layout_below="@+id/immagineConsiglio26"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:text="Luca MOSCARDELLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio27"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio27"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio27"
+                    android:layout_alignStart="@+id/immagineConsiglio27"
+                    android:layout_below="@+id/immagineConsiglio27"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:text="Eugenia NISSI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio28"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio28"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio28"
+                    android:layout_alignStart="@+id/immagineConsiglio28"
+                    android:layout_below="@+id/immagineConsiglio28"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:text="Alessandro PANDIMIGLIO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio29"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio29"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio29"
+                    android:layout_alignStart="@+id/immagineConsiglio29"
+                    android:visibility="gone"
+                    android:layout_below="@+id/immagineConsiglio29"
+                    android:layout_weight="1"
+                    android:text="Maurizio PARTON"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio30"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio30"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_alignLeft="@+id/immagineConsiglio30"
+                    android:layout_alignStart="@+id/immagineConsiglio30"
+                    android:layout_below="@+id/immagineConsiglio30"
+                    android:layout_weight="1"
+                    android:text="Luigia PETTI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio31"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:visibility="gone"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio31"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio31"
+                    android:layout_alignStart="@+id/immagineConsiglio31"
+                    android:layout_below="@+id/immagineConsiglio31"
+                    android:layout_weight="1"
+                    android:text="Paolo POSTIGLIONE"
+                    android:textAlignment="center"
+                    android:visibility="gone"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio32"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio32"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio32"
+                    android:layout_alignStart="@+id/immagineConsiglio32"
+                    android:layout_below="@+id/immagineConsiglio32"
+                    android:layout_weight="1"
+                    android:text="Daniele QUAGLIONE"
+                    android:visibility="gone"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio33"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:visibility="gone"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio33"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio33"
+                    android:layout_alignStart="@+id/immagineConsiglio33"
+                    android:layout_below="@+id/immagineConsiglio33"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:text="Antonio RAGGI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio34"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:visibility="gone"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio34"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio34"
+                    android:layout_alignStart="@+id/immagineConsiglio34"
+                    android:layout_below="@+id/immagineConsiglio34"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:text="Domenico RAUCCI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio35"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio35"
+                    android:layout_width="100dp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio35"
+                    android:layout_alignStart="@+id/immagineConsiglio35"
+                    android:layout_below="@+id/immagineConsiglio35"
+                    android:layout_weight="1"
+                    android:text="Michele Antonio REA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio36"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio36"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio36"
+                    android:layout_alignStart="@+id/immagineConsiglio36"
+                    android:visibility="gone"
+                    android:layout_below="@+id/immagineConsiglio36"
+                    android:layout_weight="1"
+                    android:text="Cristina SALVIONI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio37"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio37"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_alignLeft="@+id/immagineConsiglio37"
+                    android:layout_alignStart="@+id/immagineConsiglio37"
+                    android:layout_below="@+id/immagineConsiglio37"
+                    android:layout_weight="1"
+                    android:text="Alessandro SARRA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio38"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio38"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_alignLeft="@+id/immagineConsiglio38"
+                    android:layout_alignStart="@+id/immagineConsiglio38"
+                    android:layout_below="@+id/immagineConsiglio38"
+                    android:layout_weight="1"
+                    android:text="Ernesto SAVAGLIO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio39"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio39"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio39"
+                    android:layout_alignStart="@+id/immagineConsiglio39"
+                    android:layout_below="@+id/immagineConsiglio39"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:text="Dario SCIULLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio40"
+                    android:layout_width="100dp"
+                    android:visibility="gone"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio40"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_alignLeft="@+id/immagineConsiglio40"
+                    android:layout_alignStart="@+id/immagineConsiglio40"
+                    android:layout_below="@+id/immagineConsiglio40"
+                    android:layout_weight="1"
+                    android:text="Francesca SCOZZARI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio41"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio41"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio41"
+                    android:layout_alignStart="@+id/immagineConsiglio41"
+                    android:visibility="gone"
+                    android:layout_below="@+id/immagineConsiglio41"
+                    android:layout_weight="1"
+                    android:text="Alberto SIMBOLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio42"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio42"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio42"
+                    android:layout_alignStart="@+id/immagineConsiglio42"
+                    android:layout_below="@+id/immagineConsiglio42"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:text="Marco SPALLONE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio43"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio43"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio43"
+                    android:layout_alignStart="@+id/immagineConsiglio43"
+                    android:visibility="gone"
+                    android:layout_below="@+id/immagineConsiglio43"
+                    android:layout_weight="1"
+                    android:text="Lara TARQUINIO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio44"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio44"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio44"
+                    android:layout_alignStart="@+id/immagineConsiglio44"
+                    android:layout_below="@+id/immagineConsiglio44"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:text="Diego VALENTINETTI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio45"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:visibility="gone"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio45"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio45"
+                    android:layout_alignStart="@+id/immagineConsiglio45"
+                    android:layout_below="@+id/immagineConsiglio45"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:text="Edilio VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio46"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/consiglio46"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio46"
+                    android:layout_alignStart="@+id/immagineConsiglio46"
+                    android:layout_below="@+id/immagineConsiglio46"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:text="Pasquale VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio47"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/consiglio47"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio47"
+                    android:layout_alignStart="@+id/immagineConsiglio47"
+                    android:layout_below="@+id/immagineConsiglio47"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:visibility="gone"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio48"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/consiglio48"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio48"
+                    android:layout_alignStart="@+id/immagineConsiglio48"
+                    android:layout_below="@+id/immagineConsiglio48"
+                    android:layout_weight="1"
+                    android:text="Luca ZARRILLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio49"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio49"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio49"
+                    android:layout_alignStart="@+id/immagineConsiglio49"
+                    android:layout_below="@+id/immagineConsiglio49"
+                    android:layout_weight="1"
+                    android:text="Pasquale VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio50"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio50"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio50"
+                    android:layout_alignStart="@+id/immagineConsiglio50"
+                    android:layout_below="@+id/immagineConsiglio50"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio51"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio51"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio51"
+                    android:layout_alignStart="@+id/immagineConsiglio51"
+                    android:layout_below="@+id/immagineConsiglio51"
+                    android:layout_weight="1"
+                    android:text="Luca ZARRILLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio52"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio52"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio52"
+                    android:layout_alignStart="@+id/immagineConsiglio52"
+                    android:layout_below="@+id/immagineConsiglio52"
+                    android:layout_weight="1"
+                    android:text="Pasquale VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio53"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio53"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio53"
+                    android:layout_alignStart="@+id/immagineConsiglio53"
+                    android:layout_below="@+id/immagineConsiglio53"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio54"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio54"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio54"
+                    android:layout_alignStart="@+id/immagineConsiglio54"
+                    android:layout_below="@+id/immagineConsiglio54"
+                    android:layout_weight="1"
+                    android:text="Luca ZARRILLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio55"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio55"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio55"
+                    android:layout_alignStart="@+id/immagineConsiglio55"
+                    android:layout_below="@+id/immagineConsiglio55"
+                    android:layout_weight="1"
+                    android:text="Pasquale VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio56"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio56"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio56"
+                    android:layout_alignStart="@+id/immagineConsiglio56"
+                    android:layout_below="@+id/immagineConsiglio56"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio57"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio57"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio57"
+                    android:layout_alignStart="@+id/immagineConsiglio57"
+                    android:layout_below="@+id/immagineConsiglio57"
+                    android:layout_weight="1"
+                    android:text="Luca ZARRILLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio58"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio58"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio58"
+                    android:layout_alignStart="@+id/immagineConsiglio58"
+                    android:layout_below="@+id/immagineConsiglio58"
+                    android:layout_weight="1"
+                    android:text="Pasquale VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio59"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio59"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio59"
+                    android:layout_alignStart="@+id/immagineConsiglio59"
+                    android:layout_below="@+id/immagineConsiglio60"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio60"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio60"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio60"
+                    android:layout_alignStart="@+id/immagineConsiglio60"
+                    android:layout_below="@+id/immagineConsiglio60"
+                    android:layout_weight="1"
+                    android:text="Luca ZARRILLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio61"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio61"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio61"
+                    android:layout_alignStart="@+id/immagineConsiglio61"
+                    android:layout_below="@+id/immagineConsiglio61"
+                    android:layout_weight="1"
+                    android:text="Pasquale VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio62"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio62"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio62"
+                    android:layout_alignStart="@+id/immagineConsiglio62"
+                    android:layout_below="@+id/immagineConsiglio62"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio63"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio63"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio63"
+                    android:layout_alignStart="@+id/immagineConsiglio63"
+                    android:layout_below="@+id/immagineConsiglio63"
+                    android:layout_weight="1"
+                    android:text="Luca ZARRILLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio64"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio64"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio64"
+                    android:layout_alignStart="@+id/immagineConsiglio64"
+                    android:layout_below="@+id/immagineConsiglio64"
+                    android:layout_weight="1"
+                    android:text="Pasquale VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio65"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio65"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio65"
+                    android:layout_alignStart="@+id/immagineConsiglio65"
+                    android:layout_below="@+id/immagineConsiglio65"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio66"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio66"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio66"
+                    android:layout_alignStart="@+id/immagineConsiglio66"
+                    android:layout_below="@+id/immagineConsiglio66"
+                    android:layout_weight="1"
+                    android:text="Luca ZARRILLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio67"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio67"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio67"
+                    android:layout_alignStart="@+id/immagineConsiglio67"
+                    android:layout_below="@+id/immagineConsiglio67"
+                    android:layout_weight="1"
+                    android:text="Pasquale VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio68"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio68"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio68"
+                    android:layout_alignStart="@+id/immagineConsiglio68"
+                    android:layout_below="@+id/immagineConsiglio68"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio69"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio69"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio69"
+                    android:layout_alignStart="@+id/immagineConsiglio69"
+                    android:layout_below="@+id/immagineConsiglio69"
+                    android:layout_weight="1"
+                    android:text="Luca ZARRILLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio70"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio70"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio70"
+                    android:layout_alignStart="@+id/immagineConsiglio70"
+                    android:layout_below="@+id/immagineConsiglio70"
+                    android:layout_weight="1"
+                    android:text="Pasquale VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio71"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio71"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio71"
+                    android:layout_alignStart="@+id/immagineConsiglio71"
+                    android:layout_below="@+id/immagineConsiglio71"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio72"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio72"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio72"
+                    android:layout_alignStart="@+id/immagineConsiglio72"
+                    android:layout_below="@+id/immagineConsiglio72"
+                    android:layout_weight="1"
+                    android:text="Luca ZARRILLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio73"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio73"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio73"
+                    android:layout_alignStart="@+id/immagineConsiglio73"
+                    android:layout_below="@+id/immagineConsiglio73"
+                    android:layout_weight="1"
+                    android:text="Pasquale VALENTINI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio74"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio74"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio74"
+                    android:layout_alignStart="@+id/immagineConsiglio74"
+                    android:layout_below="@+id/immagineConsiglio74"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineConsiglio75"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/consiglio75"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineConsiglio75"
+                    android:layout_alignStart="@+id/immagineConsiglio75"
+                    android:layout_below="@+id/immagineConsiglio75"
+                    android:layout_weight="1"
+                    android:text="Luca ZARRILLI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

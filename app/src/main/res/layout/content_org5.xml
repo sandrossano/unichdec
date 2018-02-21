@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:background="#d8e5f0">
+
+    <LinearLayout
+        android:id="@+id/layout_persone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#d8e5f0"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="65dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="65dp"
+            android:text="Comitato Ricerca"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/testoRicerca"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:text="Il Comitato Ricerca è incaricato di fornire, a supporto dell’attività di direzione del Dipartimento, un contributo di idee e di iniziative relative alle attività di ricerca promosse e realizzate dalla struttura. Il Comitato, pertanto, partecipa alla Politica per l’assicurazione di qualità del Dipartimento secondo le modalità indicate nel quadro B2 della SUA-RD. In particolare, coadiuva il Direttore e il Gruppo AQ/Riesame nella definizione del quadro degli obiettivi di ricerca del Dipartimento (quadro A1 della SUA-RD). "
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:text=" Componenti del Comitato Ricerca:"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/immagineRicerca1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/textView5"
+                        android:layout_toRightOf="@+id/textView5"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/ricerca1"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/immagineRicerca1"
+                        android:layout_alignStart="@+id/immagineRicerca1"
+                        android:layout_below="@+id/immagineRicerca1"
+                        android:layout_weight="1"
+                        android:text="Eliana ANGELINI"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/immagineRicerca2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/ricerca2"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/immagineRicerca2"
+                        android:layout_alignStart="@+id/immagineRicerca2"
+                        android:layout_below="@+id/immagineRicerca2"
+                        android:layout_weight="1"
+                        android:text="Roberto BENEDETTI"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/immagineRicerca3"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/ricerca3"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/immagineRicerca3"
+                        android:layout_alignStart="@+id/immagineRicerca3"
+                        android:layout_below="@+id/immagineRicerca3"
+                        android:layout_weight="1"
+                        android:text="Sebastiano CARPI"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineRicerca4"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca4"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca4"
+                    android:layout_alignStart="@+id/immagineRicerca4"
+                    android:layout_below="@+id/immagineRicerca4"
+                    android:layout_weight="1"
+                    android:text="Francesco D'ESPOSITO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca5"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca5"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca5"
+                    android:layout_alignStart="@+id/immagineRicerca5"
+                    android:layout_below="@+id/immagineRicerca5"
+                    android:layout_weight="1"
+                    android:text="Marina FUSCHI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca6"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca6"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca6"
+                    android:layout_alignStart="@+id/immagineRicerca6"
+                    android:layout_below="@+id/immagineRicerca6"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineRicerca7"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca7"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca7"
+                    android:layout_alignStart="@+id/immagineRicerca7"
+                    android:layout_below="@+id/immagineRicerca7"
+                    android:layout_weight="1"
+                    android:text="Anna MORGANTE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca8"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca8"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca8"
+                    android:layout_alignStart="@+id/immagineRicerca8"
+                    android:layout_below="@+id/immagineRicerca8"
+                    android:layout_weight="1"
+                    android:text="Cristina SALVIONI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca9"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca9"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca9"
+                    android:layout_alignStart="@+id/immagineRicerca9"
+                    android:layout_below="@+id/immagineRicerca9"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineRicerca10"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca10"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca10"
+                    android:layout_alignStart="@+id/immagineRicerca10"
+                    android:layout_below="@+id/immagineRicerca10"
+                    android:layout_weight="1"
+                    android:text="Anna MORGANTE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca11"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca11"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca11"
+                    android:layout_alignStart="@+id/immagineRicerca11"
+                    android:layout_below="@+id/immagineRicerca11"
+                    android:layout_weight="1"
+                    android:text="Cristina SALVIONI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca12"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca12"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca12"
+                    android:layout_alignStart="@+id/immagineRicerca12"
+                    android:layout_below="@+id/immagineRicerca12"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineRicerca13"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca13"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca13"
+                    android:layout_alignStart="@+id/immagineRicerca13"
+                    android:layout_below="@+id/immagineRicerca13"
+                    android:layout_weight="1"
+                    android:text="Anna MORGANTE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca14"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca14"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca14"
+                    android:layout_alignStart="@+id/immagineRicerca14"
+                    android:layout_below="@+id/immagineRicerca14"
+                    android:layout_weight="1"
+                    android:text="Cristina SALVIONI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca15"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca15"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca15"
+                    android:layout_alignStart="@+id/immagineRicerca15"
+                    android:layout_below="@+id/immagineRicerca15"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineRicerca16"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca16"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca16"
+                    android:layout_alignStart="@+id/immagineRicerca16"
+                    android:layout_below="@+id/immagineRicerca16"
+                    android:layout_weight="1"
+                    android:text="Anna MORGANTE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca17"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca17"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca17"
+                    android:layout_alignStart="@+id/immagineRicerca17"
+                    android:layout_below="@+id/immagineRicerca17"
+                    android:layout_weight="1"
+                    android:text="Cristina SALVIONI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca18"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca18"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca18"
+                    android:layout_alignStart="@+id/immagineRicerca18"
+                    android:layout_below="@+id/immagineRicerca18"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineRicerca19"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca19"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca19"
+                    android:layout_alignStart="@+id/immagineRicerca19"
+                    android:layout_below="@+id/immagineRicerca19"
+                    android:layout_weight="1"
+                    android:text="Anna MORGANTE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca20"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca20"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca20"
+                    android:layout_alignStart="@+id/immagineRicerca20"
+                    android:layout_below="@+id/immagineRicerca20"
+                    android:layout_weight="1"
+                    android:text="Cristina SALVIONI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineRicerca21"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ricerca21"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineRicerca21"
+                    android:layout_alignStart="@+id/immagineRicerca21"
+                    android:layout_below="@+id/immagineRicerca21"
+                    android:layout_weight="1"
+                    android:text="Paolo VITALE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:background="#d8e5f0">
+
+    <LinearLayout
+        android:id="@+id/layout_persone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#d8e5f0"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="65dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginStart="35dp"
+                    android:text="Direttore"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/immagineDirettore"
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="55dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/id_direttore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineDirettore"
+                    android:layout_below="@+id/immagineDirettore"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_weight="1"
+                    android:text="Michele Antonio REA"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginStart="35dp"
+                    android:text="Segretario"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/immagineSegretario"
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="55dp"
+                    android:layout_marginRight="55dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/id_segretario"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineSegretario"
+                    android:layout_below="@+id/immagineSegretario"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_weight="1"
+                    android:text="Angela DI FABIO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="21dp"
+            android:text="Giunta di Dipartimento"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/immagineGiunta1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta1"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta1"
+                    android:layout_alignStart="@+id/immagineGiunta1"
+                    android:layout_below="@+id/immagineGiunta1"
+                    android:layout_weight="1"
+                    android:text="Flavia ANTONACCI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGiunta2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta2"
+                    android:layout_alignStart="@+id/immagineGiunta2"
+                    android:layout_below="@+id/immagineGiunta2"
+                    android:layout_weight="1"
+                    android:text="Filippo BELLOC"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGiunta3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta3"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta3"
+                    android:layout_alignStart="@+id/immagineGiunta3"
+                    android:layout_below="@+id/immagineGiunta3"
+                    android:layout_weight="1"
+                    android:text="Marina FUSCHI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineGiunta4"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta4"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta4"
+                    android:layout_alignStart="@+id/immagineGiunta4"
+                    android:layout_below="@+id/immagineGiunta4"
+                    android:layout_weight="1"
+                    android:text="Luigi IPPOLITI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGiunta5"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta5"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta5"
+                    android:layout_alignStart="@+id/immagineGiunta5"
+                    android:layout_below="@+id/immagineGiunta5"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGiunta6"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta6"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta6"
+                    android:layout_alignStart="@+id/immagineGiunta6"
+                    android:layout_below="@+id/immagineGiunta6"
+                    android:layout_weight="1"
+                    android:text="Andrea RAGGI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineGiunta7"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta7"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta7"
+                    android:layout_alignStart="@+id/immagineGiunta7"
+                    android:layout_below="@+id/immagineGiunta7"
+                    android:layout_weight="1"
+                    android:text="Alessandro SARRA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGiunta8"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta8"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta8"
+                    android:layout_alignStart="@+id/immagineGiunta8"
+                    android:layout_below="@+id/immagineGiunta8"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGiunta9"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta9"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta9"
+                    android:layout_alignStart="@+id/immagineGiunta9"
+                    android:layout_below="@+id/immagineGiunta9"
+                    android:layout_weight="1"
+                    android:text="Andrea RAGGI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineGiunta10"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta10"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta10"
+                    android:layout_alignStart="@+id/immagineGiunta10"
+                    android:layout_below="@+id/immagineGiunta10"
+                    android:layout_weight="1"
+                    android:text="Alessandro SARRA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGiunta11"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta11"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta11"
+                    android:layout_alignStart="@+id/immagineGiunta11"
+                    android:layout_below="@+id/immagineGiunta11"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGiunta12"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta12"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta12"
+                    android:layout_alignStart="@+id/immagineGiunta12"
+                    android:layout_below="@+id/immagineGiunta12"
+                    android:layout_weight="1"
+                    android:text="Andrea RAGGI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/immagineGiunta13"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView5"
+                    android:layout_toRightOf="@+id/textView5"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta13"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta13"
+                    android:layout_alignStart="@+id/immagineGiunta13"
+                    android:layout_below="@+id/immagineGiunta13"
+                    android:layout_weight="1"
+                    android:text="Alessandro SARRA"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGiunta14"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta14"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta14"
+                    android:layout_alignStart="@+id/immagineGiunta14"
+                    android:layout_below="@+id/immagineGiunta14"
+                    android:layout_weight="1"
+                    android:text="Maria Chiara MEO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/immagineGiunta15"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/giunta15"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/immagineGiunta15"
+                    android:layout_alignStart="@+id/immagineGiunta15"
+                    android:layout_below="@+id/immagineGiunta15"
+                    android:layout_weight="1"
+                    android:text="Andrea RAGGI"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>
