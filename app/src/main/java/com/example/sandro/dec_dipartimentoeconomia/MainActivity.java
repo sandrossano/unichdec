@@ -50,17 +50,19 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.corsi;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static ArrayList<Categoria> categorie=new ArrayList<>();
-    public static JSONArray listaPersone=new JSONArray();
-    public static JSONArray listaDocumenti=new JSONArray();
-    public static ArrayList<Ruoli> ruoli=new ArrayList<>();
-    public static ArrayList<String> corsi=new ArrayList<>();
+    public static ArrayList<Categoria> categorie = SplashActivity.categorie;
+    public static JSONArray listaPersone = SplashActivity.listaPersone;
+    public static JSONArray listaDocumenti = SplashActivity.listaDocumenti;
+    public static ArrayList<Ruoli> ruoli = SplashActivity.ruoli;
+    public static ArrayList<String> corsi = SplashActivity.corsi;
 
-    public static int count=0;
+
 
     private DrawerLayout mDrawerLayout;
     ExpandableListAdapter mMenuAdapter;
@@ -68,230 +70,12 @@ public class MainActivity extends AppCompatActivity
     List<ExpandedMenuModel> listDataHeader;
     HashMap<ExpandedMenuModel, List<String>> listDataChild;
 
-    public  boolean haveStoragePermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.e("Permission error","You have permission");
-                return true;
-            } else {
-
-                Log.e("Permission error","You have asked for permission");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
-        }
-        else { //you dont need to worry about these stuff below api level 23
-            Log.e("Permission error","You already have the permission");
-            return true;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ProgressBar progressBar=(ProgressBar) findViewById(R.id.progressBar4);
-        DrawableCompat.setTint(progressBar.getIndeterminateDrawable(), Color.DKGRAY);
-
-        if(count==0) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    RelativeLayout i = (RelativeLayout) findViewById(R.id.inizio_visible);
-                    i.setVisibility(View.GONE);
-                    DrawerLayout l = (DrawerLayout) findViewById(R.id.drawer_layout);
-                    l.setVisibility(View.VISIBLE);
-                }
-            }, 3000);
-        }else{RelativeLayout i = (RelativeLayout) findViewById(R.id.inizio_visible);
-            i.setVisibility(View.GONE);
-            DrawerLayout l = (DrawerLayout) findViewById(R.id.drawer_layout);
-            l.setVisibility(View.VISIBLE);}
-
-        haveStoragePermission();
-
-        if(count==0) {
-//Ruoli
-            // Instantiate the RequestQueue.
-            RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "http://10.0.2.2/organigramma/read.php";
-
-// Request a string response from the provided URL.
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            try {
-
-                                JSONObject c = new JSONObject(response);
-                                JSONArray cacca = c.getJSONArray("records");
-
-                                for (int i = 0; i < cacca.length(); i++) {
-                                    JSONObject expl = cacca.getJSONObject(i);
-                                    ruoli.add(new Ruoli(expl.getInt("id"), expl.getString("nome"), expl.getInt("id_persona"), expl.getString("nome_pers"), expl.getString("cognome"), expl.getString("foto")));
-
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
-                            }
-
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-
-// Add the request to the RequestQueue.
-            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            queue.add(stringRequest);
-
-
-//Corsi
-            // Instantiate the RequestQueue.
-            RequestQueue queuecors = Volley.newRequestQueue(this);
-            String urlcors = "http://10.0.2.2/corsi/read.php";
-
-// Request a string response from the provided URL.
-            StringRequest stringRequestcors = new StringRequest(Request.Method.GET, urlcors,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            try {
-
-                                JSONObject c = new JSONObject(response);
-                                JSONArray cacca = c.getJSONArray("records");
-
-                                for (int i = 0; i < cacca.length(); i++) {
-                                    JSONObject expl = cacca.getJSONObject(i);
-                                    corsi.add(expl.getString("sigla"));
-
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
-                            }
-
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-
-// Add the request to the RequestQueue.
-            stringRequestcors.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            queuecors.add(stringRequestcors);
-
-// Categorie... IMPORTANTE!!!!!
-
-            // Instantiate the RequestQueue.
-            RequestQueue queue4 = Volley.newRequestQueue(this);
-            String url4 = "http://10.0.2.2/category/read.php";
-
-// Request a string response from the provided URL.
-            StringRequest stringRequest4 = new StringRequest(Request.Method.GET, url4,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            try {
-
-                                JSONObject c = new JSONObject(response);
-                                JSONArray cacca2  = c.getJSONArray("records");
-
-
-
-                                for (int i = 0; i < cacca2.length(); i++) {
-                                    JSONObject expl = cacca2.getJSONObject(i);
-                                    categorie.add(new Categoria(expl.getInt("id"), expl.getString("nome"), expl.getInt("id_gruppo"), expl.getString("nome_cat"), expl.getInt("id_persona"), expl.getInt("corso")));
-
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
-                            }
-
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-
-// Add the request to the RequestQueue.
-            stringRequest4.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            queue4.add(stringRequest4);
-
-
-
-
-//Persone
-            // Instantiate the RequestQueue.
-            RequestQueue queue5 = Volley.newRequestQueue(this);
-            String url5 = "http://10.0.2.2/person/read.php";
-
-// Request a string response from the provided URL.
-            StringRequest stringRequest5 = new StringRequest(Request.Method.GET, url5,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            try {
-
-                                JSONObject c = new JSONObject(response);
-                                listaPersone = c.getJSONArray("records");
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
-                            }
-
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-
-// Add the request to the RequestQueue.
-            stringRequest5.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            queue5.add(stringRequest5);
-
-            count++;
-        }
-
-        /*final ActionBar ab = getSupportActionBar();
-
-        ab.setHomeAsUpIndicator(android.R.drawable.ic_menu_add);
-        ab.setDisplayHomeAsUpEnabled(true);*/
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         expandableList = (ExpandableListView) findViewById(R.id.navigationmenu);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -372,15 +156,10 @@ public class MainActivity extends AppCompatActivity
 
         // Adding child data
         List<String> heading1 = new ArrayList<String>();
-        heading1.add("Submenu of item 1");
-
-        List<String> heading2 = new ArrayList<String>();
-        heading2.add("Submenu of item 2");
-        heading2.add("Submenu of item 2");
-        heading2.add("Submenu of item 2");
+        heading1.add(""+corsi.size());
 
         listDataChild.put(listDataHeader.get(0), heading1);// Header, Child data
-        listDataChild.put(listDataHeader.get(1), heading2);
+
 
     }
 

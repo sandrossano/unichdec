@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
+
 public class Avviso extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,6 +53,9 @@ public class Avviso extends AppCompatActivity
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
+
+            TextView avviso= (TextView) findViewById(R.id.avviso);
+            avviso.setText(corsi.toString());
         }
 
         @Override

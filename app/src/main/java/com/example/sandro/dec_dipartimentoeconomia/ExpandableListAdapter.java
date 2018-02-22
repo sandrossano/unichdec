@@ -18,6 +18,8 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
+
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<ExpandedMenuModel> mListDataHeader; // header titles
