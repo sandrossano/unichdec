@@ -9,6 +9,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +88,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         ExpandedMenuModel headerTitle = (ExpandedMenuModel) getGroup(groupPosition);
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -98,6 +100,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle.getIconName());
         headerIcon.setImageResource(headerTitle.getIconImg());
+
+        ImageView identi = (ImageView)convertView.findViewById(R.id.ident);
+        if (isExpanded) {
+            identi.setImageResource(R.drawable.arrow_left_white);
+        } else {
+            identi.setImageResource(R.drawable.icon_down_arrow_white);
+        }
         return convertView;
     }
 
