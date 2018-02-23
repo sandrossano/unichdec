@@ -15,6 +15,7 @@
             android:id="@+id/iconimage"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_centerVertical="true"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:paddingTop="10dp" />
@@ -23,6 +24,7 @@
             android:id="@+id/submenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iconimage"
             android:padding="10dp"
             android:textColor="@android:color/background_light"
@@ -30,12 +32,11 @@
 
         <ImageView
             android:id="@+id/ident"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="false" />
-
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
 </LinearLayout>

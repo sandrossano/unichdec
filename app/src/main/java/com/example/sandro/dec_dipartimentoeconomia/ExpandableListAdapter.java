@@ -46,11 +46,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
         int childCount = 0;
-        if (groupPosition != 2) {
+
             childCount = this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
                     .size();
 
-        }
+
         //Log.d("childcount", String.valueOf(childCount));
         return childCount;
     }
@@ -125,6 +125,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         txtListChild.setText(childText);
 
+        if(groupPosition>0) {
+            ImageView identichild = (ImageView) convertView.findViewById(R.id.identchild);
+            identichild.setVisibility(View.VISIBLE);
+            identichild.setImageResource(R.drawable.child_arrow_right);
+        }else{ImageView identichild = (ImageView) convertView.findViewById(R.id.identchild);
+            identichild.setVisibility(View.INVISIBLE);}
         return convertView;
     }
 

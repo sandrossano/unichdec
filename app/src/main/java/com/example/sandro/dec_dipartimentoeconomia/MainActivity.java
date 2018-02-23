@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
     public static JSONArray listaDocumenti = SplashActivity.listaDocumenti;
     public static ArrayList<Ruoli> ruoli = SplashActivity.ruoli;
     public static ArrayList<String> corsi = SplashActivity.corsi;
-
+    public static ArrayList<String> livello1dec = SplashActivity.livello1dec;
 
 
     private DrawerLayout mDrawerLayout;
@@ -147,9 +147,11 @@ public class MainActivity extends AppCompatActivity
         // Adding data header
         listDataHeader.add(item1);
 
-        // Adding child data DEC
         List<String> heading1 = new ArrayList<String>();
-        heading1.add(""+corsi.size());
+        for(int i=0;i<livello1dec.size();i++) {
+            // Adding child data DEC
+            heading1.add(livello1dec.get(i));
+        }
 
         listDataChild.put(listDataHeader.get(0), heading1);// Header, Child data
 
@@ -158,12 +160,12 @@ public class MainActivity extends AppCompatActivity
             item2.setIconName(corsi.get(i));
             item2.setIconImg(android.R.drawable.ic_delete);
             listDataHeader.add(item2);
+
             List<String> heading2 = new ArrayList<String>();
             heading2.add("Accedi alla sezione "+corsi.get(i).toUpperCase());
 
             listDataChild.put(listDataHeader.get(i+1), heading2);
         }
-
 
     }
 

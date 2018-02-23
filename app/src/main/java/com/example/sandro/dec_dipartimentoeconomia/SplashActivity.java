@@ -44,6 +44,7 @@ public class SplashActivity extends AppCompatActivity{
     public static JSONArray listaDocumenti = new JSONArray();
     public static ArrayList<Ruoli> ruoli = new ArrayList<>();
     public static ArrayList<String> corsi = new ArrayList<>();
+    public static ArrayList<String> livello1dec = new ArrayList<>();
 
     public static int count = 0;
 
@@ -163,6 +164,50 @@ public class SplashActivity extends AppCompatActivity{
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queuecors.add(stringRequestcors);
+
+
+//Livello1Dec
+            // Instantiate the RequestQueue.
+            RequestQueue queueliv1 = Volley.newRequestQueue(this);
+            String urlliv1 = "http://" + localhost + "/menu/read.php";
+
+// Request a string response from the provided URL.
+            StringRequest stringRequestliv1 = new StringRequest(Request.Method.GET, urlliv1,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Display the first 500 characters of the response string.
+                            try {
+
+                                JSONObject c = new JSONObject(response);
+                                JSONArray cacca = c.getJSONArray("records");
+
+                                for (int i = 0; i < cacca.length(); i++) {
+                                    JSONObject expl = cacca.getJSONObject(i);
+                                    livello1dec.add(expl.getString("titolo"));
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+
+// Add the request to the RequestQueue.
+            stringRequestliv1.setRetryPolicy(new DefaultRetryPolicy(
+                    30000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queueliv1.add(stringRequestliv1);
+
 
 // Categorie... IMPORTANTE!!!!!
 
