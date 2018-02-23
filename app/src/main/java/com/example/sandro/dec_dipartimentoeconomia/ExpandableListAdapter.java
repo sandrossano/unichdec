@@ -6,6 +6,7 @@ package com.example.sandro.dec_dipartimentoeconomia;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -62,8 +63,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        //Log.d("CHILD", mListDataChild.get(this.mListDataHeader.get(groupPosition))
-          //      .get(childPosition).toString());
+
         return this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
                 .get(childPosition);
     }
@@ -112,6 +112,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
         final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
