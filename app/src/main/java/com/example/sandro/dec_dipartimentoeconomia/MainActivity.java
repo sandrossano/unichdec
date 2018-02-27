@@ -53,6 +53,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.corsi;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 
 
 public class MainActivity extends AppCompatActivity
@@ -155,9 +156,16 @@ public class MainActivity extends AppCompatActivity
                 ArrayList<String[]> des = new ArrayList<String[]>() {
                 };
                 for (int j = 0; j < a.length; j++) {
-
-                    des.add(new String[]{"ciao", "cacca", j + ""});
+                    ArrayList<String> lista=new ArrayList<>();
+                    for(int k=0; k<livello2dec.size();k++){
+                        if(j==0){if(livello2dec.get(k).getI()<=35){lista.add(livello2dec.get(k).getTitolo());}}
+                        if(j==1){if(livello2dec.get(k).getI()<=45 && livello2dec.get(k).getI()>35){lista.add(livello2dec.get(k).getTitolo());}}
+                        if(j==2){if(livello2dec.get(k).getI()<=70 && livello2dec.get(k).getI()>45){lista.add(livello2dec.get(k).getTitolo());}}
+                        if(j==3){if(livello2dec.get(k).getI()<=85 && livello2dec.get(k).getI()>70){lista.add(livello2dec.get(k).getTitolo());}}
+                    }
+                    des.add(lista.toArray(new String[0]));
                     thirdLevelq1.put(a[j], des.get(j));
+                    lista.clear();
                 }
                 secondLevel.add(a);
                 data.add(thirdLevelq1);

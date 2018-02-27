@@ -36,8 +36,23 @@ import java.util.ArrayList;
 /**
  * Created by Sandro on 21/02/2018.
  */
-
 public class SplashActivity extends AppCompatActivity{
+    public class SottoLivelli{
+        private int i;
+        private String titolo;
+        public SottoLivelli(int i, String a){
+            this.i=i;
+            titolo=a;
+        }
+
+        public int getI() {
+            return i;
+        }
+
+        public String getTitolo() {
+            return titolo;
+        }
+    }
     public String localhost = "proxybar.altervista.org";
     public static ArrayList<Categoria> categorie = new ArrayList<>();
     public static JSONArray listaPersone = new JSONArray();
@@ -45,6 +60,7 @@ public class SplashActivity extends AppCompatActivity{
     public static ArrayList<Ruoli> ruoli = new ArrayList<>();
     public static ArrayList<String> corsi = new ArrayList<>();
     public static ArrayList<String> livello1dec = new ArrayList<>();
+    public static ArrayList<SottoLivelli> livello2dec = new ArrayList<>();
 
     public static int count = 0;
 
@@ -80,6 +96,48 @@ public class SplashActivity extends AppCompatActivity{
         haveStoragePermission();
 
         if (count == 0) {
+            //decLv2e3
+            // Instantiate the RequestQueue.
+            RequestQueue queue23 = Volley.newRequestQueue(this);
+            String url23 = "http://" + localhost + "/menu/readlv2.php";
+
+// Request a string response from the provided URL.
+            StringRequest stringRequest23 = new StringRequest(Request.Method.GET, url23,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Display the first 500 characters of the response string.
+                            try {
+
+                                JSONObject c = new JSONObject(response);
+                                JSONArray cacca = c.getJSONArray("records");
+
+                                for (int i = 0; i < cacca.length(); i++) {
+                                    JSONObject expl = cacca.getJSONObject(i);
+                                    livello2dec.add(new SottoLivelli(expl.getInt("ordine"), expl.getString("titolo")));
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+
+// Add the request to the RequestQueue.
+            stringRequest23.setRetryPolicy(new DefaultRetryPolicy(
+                    30000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue23.add(stringRequest23);
+
 //Ruoli
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);

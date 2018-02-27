@@ -13,7 +13,8 @@
         android:layout_marginLeft="20dp"
         android:padding="10dp"
         android:textColor="#ffffffff"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/identchild"
