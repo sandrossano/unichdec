@@ -47,6 +47,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -65,11 +66,13 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<String> livello1dec = SplashActivity.livello1dec;
 
     private DrawerLayout mDrawerLayout;
-    ExpandableListAdapter mMenuAdapter;
-    ExpandableListView expandableList;
-    List<ExpandedMenuModel> listDataHeader;
-    HashMap<ExpandedMenuModel, List<String>> listDataChild;
+    private ExpandableListView expandableListView;
 
+    //
+
+
+
+    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,34 +80,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        expandableList = (ExpandableListView) findViewById(R.id.navigationmenu);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
-        }
-
-        prepareListData();
-        mMenuAdapter = new ExpandableListAdapter(getApplicationContext(), listDataHeader, listDataChild, expandableList);
-
-        // setting list adapter
-        expandableList.setAdapter(mMenuAdapter);
-
-        expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                //Log.d("DEBUG", "submenu item clicked");
-                return false;
-            }
-        });
-        expandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                //Log.d("DEBUG", "heading clicked");
-                return false;
-            }
-        });
-
+        setUpAdapter();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -124,19 +101,62 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
-        //revision: this don't works, use setOnChildClickListener() and setOnGroupClickListener() above instead
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    }
-                });
+
+    private void setUpAdapter() {
+
+        LinkedHashMap<String, String[]> thirdLevelq1 = new LinkedHashMap<>();
+        /**
+         * Second level array list
+         */
+        List<String[]> secondLevel = new ArrayList<>();
+        /**
+         * Inner level data
+         */
+        List<LinkedHashMap<String, String[]>> data = new ArrayList<>();
+
+        ArrayList<String> parent=new ArrayList<>();
+        parent.add("DEC");
+        for(int i=0;i<corsi.size();i++) {
+            parent.add(corsi.get(i));
+        }
+            String[] a = new String[livello1dec.size()];
+            for (int i = 0; i < livello1dec.size(); i++) {
+
+
+                a[i] = livello1dec.get(i);
+
+            }
+
+
+            ArrayList<String[]> des = new ArrayList<String[]>() {
+            };
+            for (int i = 0; i < a.length; i++) {
+
+                des.add(new String[]{"ciao", "cacca", i + ""});
+                thirdLevelq1.put(a[i], des.get(i));
+            }
+            secondLevel.add(a);
+            data.add(thirdLevelq1);
+
+        expandableListView = (ExpandableListView) findViewById(R.id.navigationmenu);
+        //passing three level of information to constructor
+        ThreeLevelListAdapter threeLevelListAdapterAdapter = new ThreeLevelListAdapter(this, parent, secondLevel, data);
+        expandableListView.setAdapter(threeLevelListAdapterAdapter);
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousGroup = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != previousGroup)
+                    expandableListView.collapseGroup(previousGroup);
+                previousGroup = groupPosition;
+            }
+        });
+
+
     }
 
+/*
     private void prepareListData() {
         listDataHeader = new ArrayList<ExpandedMenuModel>();
         listDataChild = new HashMap<ExpandedMenuModel, List<String>>();
@@ -168,7 +188,7 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
+*/
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

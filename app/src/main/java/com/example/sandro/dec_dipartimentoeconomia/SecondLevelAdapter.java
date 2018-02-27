@@ -1,132 +1,108 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
-import java.util.HashMap;
-import java.util.List;
-
+/**
+ * Created by sandro on 27/02/18.
+ */
 import android.content.Context;
-import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
+
 public class SecondLevelAdapter extends BaseExpandableListAdapter {
-    private Context mContext;
-    private List<ExpandedMenuModel> mListDataHeader; // header titles
-
-    // child data in format of header title, child title
-    private HashMap<ExpandedMenuModel, List<String>> mListDataChild;
-    ExpandableListView expandList;
-
-    public SecondLevelAdapter(Context context, List<ExpandedMenuModel> listDataHeader, HashMap<ExpandedMenuModel, List<String>> listChildData, ExpandableListView mView) {
-        this.mContext = context;
-        this.mListDataHeader = listDataHeader;
-        this.mListDataChild = listChildData;
-        this.expandList = mView;
-    }
-
-    @Override
-    public int getGroupCount() {
-        int i = mListDataHeader.size();
-        //Log.d("GROUPCOUNT", String.valueOf(i));
-        return this.mListDataHeader.size();
-    }
-
-    @Override
-    public int getChildrenCount(int groupPosition) {
-        int childCount = 0;
-
-        childCount = this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
-                .size();
+    private Context context;
 
 
-        //Log.d("childcount", String.valueOf(childCount));
-        return childCount;
+    List<String[]> data;
+
+    String[] headers;
+
+    ImageView ivGroupIndicator;
+
+
+    public SecondLevelAdapter(Context context, String[] headers, List<String[]> data) {
+        this.context = context;
+        this.data = data;
+        this.headers = headers;
+
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this.mListDataHeader.get(groupPosition);
+
+        return headers[groupPosition];
+    }
+
+    @Override
+    public int getGroupCount() {
+
+        return headers.length;
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.list_item, null);
+        TextView text = (TextView) convertView.findViewById(R.id.submenu2);
+        String groupText = getGroup(groupPosition).toString();
+        text.setText(groupText);
+        return convertView;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
 
-        return this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
-                .get(childPosition);
-    }
+        String[] childData;
 
-    @Override
-    public long getGroupId(int groupPosition) {
-        Log.d("groupId:", String.valueOf(groupPosition));
-        return groupPosition;
+        childData = data.get(groupPosition);
+
+
+        return childData[childPosition];
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        Log.d("childId", String.valueOf(childPosition));
         return childPosition;
     }
 
     @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        ExpandedMenuModel headerTitle = (ExpandedMenuModel) getGroup(groupPosition);
-
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item, null);
-        }
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.submenu);
-
-        lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle.getIconName());
-
-
-        ImageView identi = (ImageView)convertView.findViewById(R.id.identchild);
-        if (isExpanded) {
-            identi.setImageResource(R.drawable.arrow_left_white);
-        } else {
-            identi.setImageResource(R.drawable.icon_down_arrow_white);
-        }
-        return convertView;
-    }
-
-    @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText = (String) getChild(groupPosition, childPosition);
 
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_subitem, null);
-        }
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.list_subitem, null);
 
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.submenu);
+        TextView textView = (TextView) convertView.findViewById(R.id.submenu3);
 
-        txtListChild.setText(childText);
+        String[] childArray = data.get(groupPosition);
 
-        if (groupPosition > 0) {
-            ImageView identichild = (ImageView) convertView.findViewById(R.id.identchild);
-            identichild.setVisibility(View.VISIBLE);
-            identichild.setImageResource(R.drawable.child_arrow_right);
-        } else {
-            ImageView identichild = (ImageView) convertView.findViewById(R.id.identchild);
-            identichild.setVisibility(View.INVISIBLE);
-        }
+        String text = childArray[childPosition];
+
+        textView.setText(text);
+
         return convertView;
+    }
 
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        String[] children = data.get(groupPosition);
+
+
+        return children.length;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
     }
 
     @Override
