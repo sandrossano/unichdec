@@ -115,29 +115,54 @@ public class MainActivity extends AppCompatActivity
         List<LinkedHashMap<String, String[]>> data = new ArrayList<>();
 
         ArrayList<String> parent=new ArrayList<>();
-        parent.add("DEC");
-        for(int i=0;i<corsi.size();i++) {
-            parent.add(corsi.get(i));
+
+        for(int i=0;i<=corsi.size();i++) {
+            if (i==0){
+                parent.add("DEC");
+            }
+            if(i==0) {
+                String[] a = new String[livello1dec.size()];
+                for (int j = 0; j < livello1dec.size(); j++) {
+
+
+                    a[j] = livello1dec.get(j);
+
+                }
+
+
+                ArrayList<String[]> des = new ArrayList<String[]>() {
+                };
+                for (int j = 0; j < a.length; j++) {
+
+                    des.add(new String[]{"ciao", "cacca", j + ""});
+                    thirdLevelq1.put(a[j], des.get(j));
+                }
+                secondLevel.add(a);
+                data.add(thirdLevelq1);
+            }else {
+                parent.add(corsi.get(i-1));
+                /*String[] a ={"Accedi alla sezione "+corsi.get(i-1).toUpperCase()};
+                secondLevel.add(a);*/
+                String[] a = new String[livello1dec.size()];
+                for (int j = 0; j < livello1dec.size(); j++) {
+
+
+                    a[j] = livello1dec.get(j);
+
+                }
+
+
+                ArrayList<String[]> des = new ArrayList<String[]>() {
+                };
+                for (int j = 0; j < a.length; j++) {
+
+                    des.add(new String[]{"ciao", "cacca", j + ""});
+                    thirdLevelq1.put(a[j], des.get(j));
+                }
+                secondLevel.add(a);
+                data.add(thirdLevelq1);
+            }
         }
-            String[] a = new String[livello1dec.size()];
-            for (int i = 0; i < livello1dec.size(); i++) {
-
-
-                a[i] = livello1dec.get(i);
-
-            }
-
-
-            ArrayList<String[]> des = new ArrayList<String[]>() {
-            };
-            for (int i = 0; i < a.length; i++) {
-
-                des.add(new String[]{"ciao", "cacca", i + ""});
-                thirdLevelq1.put(a[i], des.get(i));
-            }
-            secondLevel.add(a);
-            data.add(thirdLevelq1);
-
         expandableListView = (ExpandableListView) findViewById(R.id.navigationmenu);
         //passing three level of information to constructor
         ThreeLevelListAdapter threeLevelListAdapterAdapter = new ThreeLevelListAdapter(this, parent, secondLevel, data);
