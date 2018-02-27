@@ -1,7 +1,9 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -94,7 +96,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         final SecondLevelExpandableListView secondLevelELV = new SecondLevelExpandableListView(context);
 
@@ -116,6 +118,15 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
         secondLevelELV.setGroupIndicator(null);
 
+        secondLevelELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                Log.d("primolivello",groupPosition+"");
+                Log.d("secondolivello",""+i);
+                Log.d("terzolivello",""+i1);
+                return false;
+            }
+        });
 
         secondLevelELV.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;

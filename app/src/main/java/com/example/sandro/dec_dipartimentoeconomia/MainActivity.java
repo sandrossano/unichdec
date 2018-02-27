@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity
         //passing three level of information to constructor
         ThreeLevelListAdapter threeLevelListAdapterAdapter = new ThreeLevelListAdapter(this, parent, secondLevel, data);
         expandableListView.setAdapter(threeLevelListAdapterAdapter);
+
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;
 
