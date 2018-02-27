@@ -1,6 +1,7 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<String> corsi = SplashActivity.corsi;
     public static ArrayList<String> livello1dec = SplashActivity.livello1dec;
 
-
     private DrawerLayout mDrawerLayout;
     ExpandableListAdapter mMenuAdapter;
     ExpandableListView expandableList;
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         prepareListData();
-        mMenuAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, expandableList);
+        mMenuAdapter = new ExpandableListAdapter(getApplicationContext(), listDataHeader, listDataChild, expandableList);
 
         // setting list adapter
         expandableList.setAdapter(mMenuAdapter);
