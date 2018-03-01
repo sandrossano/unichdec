@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -149,6 +150,8 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                         }
                 }
                 Log.d("terzolivello","Hai premuto: "+terzo.get(i1).getTitolo());;
+
+                Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n"+"primolivello: "+ prova+"\n\n secondolivello: "+ second.get(i).getTitolo()+"\n\n terzolivello: "+ terzo.get(i1).getTitolo(), Toast.LENGTH_LONG).show();
                 return false;
             }
         });

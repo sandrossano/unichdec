@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<Ruoli> ruoli = SplashActivity.ruoli;
     public static ArrayList<SplashActivity.Corso> corsi = SplashActivity.corsi;
     public static ArrayList<SplashActivity.Corso> parent=new ArrayList<>();
+    public static Context mContext;
 
     private DrawerLayout mDrawerLayout;
     private ExpandableListView expandableListView;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity
 
         Log.d("array", livello2dec.toString());
 
+        mContext=getApplicationContext();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         setUpAdapter();
