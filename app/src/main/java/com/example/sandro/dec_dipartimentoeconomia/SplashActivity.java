@@ -181,7 +181,7 @@ public class SplashActivity extends AppCompatActivity{
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue23.add(stringRequest23);
-
+/*
 //Ruoli
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
@@ -225,7 +225,7 @@ public class SplashActivity extends AppCompatActivity{
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(stringRequest);
 
-
+*/
 //Corsi
             // Instantiate the RequestQueue.
             RequestQueue queuecors = Volley.newRequestQueue(this);
@@ -269,51 +269,7 @@ public class SplashActivity extends AppCompatActivity{
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queuecors.add(stringRequestcors);
 
-
-//Livello1Dec
-            // Instantiate the RequestQueue.
-            RequestQueue queueliv1 = Volley.newRequestQueue(this);
-            String urlliv1 = "http://" + localhost + "/menu/read.php";
-
-// Request a string response from the provided URL.
-            StringRequest stringRequestliv1 = new StringRequest(Request.Method.GET, urlliv1,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            try {
-
-                                JSONObject c = new JSONObject(response);
-                                JSONArray cacca = c.getJSONArray("records");
-
-                                for (int i = 0; i < cacca.length(); i++) {
-                                    JSONObject expl = cacca.getJSONObject(i);
-                                    livello1dec.add(expl.getString("titolo"));
-
-                                }
-                                finish4 = true;
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
-                            }
-
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-
-// Add the request to the RequestQueue.
-            stringRequestliv1.setRetryPolicy(new DefaultRetryPolicy(
-                    300000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            queueliv1.add(stringRequestliv1);
-
-
+/*
 // Categorie... IMPORTANTE!!!!!
 
             // Instantiate the RequestQueue.
@@ -359,6 +315,7 @@ public class SplashActivity extends AppCompatActivity{
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue4.add(stringRequest4);
 
+*/
 
 //Persone
             // Instantiate the RequestQueue.
@@ -407,7 +364,7 @@ public class SplashActivity extends AppCompatActivity{
 
 
     public void fine() {
-        if(finish1 && finish2 && finish3 && finish4 && finish5 && finish6) {
+        if(finish1 && finish3 && finish6) {
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(i);
         }
