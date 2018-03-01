@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     public static JSONArray listaPersone = SplashActivity.listaPersone;
     public static JSONArray listaDocumenti = SplashActivity.listaDocumenti;
     public static ArrayList<Ruoli> ruoli = SplashActivity.ruoli;
-    public static ArrayList<String> corsi = SplashActivity.corsi;
+    public static ArrayList<SplashActivity.Corso> corsi = SplashActivity.corsi;
     public static ArrayList<String> livello1dec = SplashActivity.livello1dec;
 
     private DrawerLayout mDrawerLayout;
@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("array", livello2dec.toString());
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity
 
     private void setUpAdapter() {
 
-        LinkedHashMap<String, String[]> thirdLevelq1 = new LinkedHashMap<>();
+        LinkedHashMap<String, String[]> thirdLevelq1;
         /**
          * Second level array list
          */
@@ -117,60 +119,108 @@ public class MainActivity extends AppCompatActivity
 
         ArrayList<String> parent=new ArrayList<>();
 
+        ArrayList<String> a = new ArrayList<String>();
+        ArrayList<Integer> ordinidia = new ArrayList<Integer>() {};
         for(int i=0;i<=corsi.size();i++) {
-            if (i==0){
+            if (i == 0) {
                 parent.add("DEC");
             }
-            if(i==0) {
-                String[] a = new String[livello1dec.size()];
-                for (int j = 0; j < livello1dec.size(); j++) {
+
+            if(i!=0) parent.add(corsi.get(i-1).getNome());
 
 
-                    a[j] = livello1dec.get(j);
-
-                }
-
-
-                ArrayList<String[]> des = new ArrayList<String[]>() {
-                };
-                for (int j = 0; j < a.length; j++) {
-
-                    des.add(new String[]{"ciao", "cacca", j + ""});
-                    thirdLevelq1.put(a[j], des.get(j));
-                }
-                secondLevel.add(a);
-                data.add(thirdLevelq1);
-            }else {
-                parent.add(corsi.get(i-1));
-                /*String[] a ={"Accedi alla sezione "+corsi.get(i-1).toUpperCase()};
-                secondLevel.add(a);*/
-                String[] a = new String[livello1dec.size()];
-                for (int j = 0; j < livello1dec.size(); j++) {
-
-
-                    a[j] = livello1dec.get(j);
-
-                }
-
-
-                ArrayList<String[]> des = new ArrayList<String[]>() {
-                };
-                for (int j = 0; j < a.length; j++) {
-                    ArrayList<String> lista=new ArrayList<>();
-                    for(int k=0; k<livello2dec.size();k++){
-                        if(j==0){if(livello2dec.get(k).getI()<=35){lista.add(livello2dec.get(k).getTitolo());}}
-                        if(j==1){if(livello2dec.get(k).getI()<=45 && livello2dec.get(k).getI()>35){lista.add(livello2dec.get(k).getTitolo());}}
-                        if(j==2){if(livello2dec.get(k).getI()<=70 && livello2dec.get(k).getI()>45){lista.add(livello2dec.get(k).getTitolo());}}
-                        if(j==3){if(livello2dec.get(k).getI()<=85 && livello2dec.get(k).getI()>70){lista.add(livello2dec.get(k).getTitolo());}}
+            for (int j = 0; j < livello2dec.size(); j++) {
+                if(i==0){
+                    if(livello2dec.get(j).getLivello()==1 && livello2dec.get(j).getId_pagina()==0 && livello2dec.get(j).getId_gruppo()==1){
+                        a.add(livello2dec.get(j).getTitolo());
+                        ordinidia.add(new Integer(livello2dec.get(j).getI()));
                     }
-                    des.add(lista.toArray(new String[0]));
-                    thirdLevelq1.put(a[j], des.get(j));
-                    lista.clear();
                 }
-                secondLevel.add(a);
-                data.add(thirdLevelq1);
+                else{
+                    if(livello2dec.get(j).getLivello()==1 && livello2dec.get(j).getId_pagina()<=0 && livello2dec.get(j).getId_gruppo()==corsi.get(i-1).getId()){
+                        a.add(livello2dec.get(j).getTitolo());
+                        ordinidia.add(new Integer(livello2dec.get(j).getI()));
+                    }
+                }
             }
+
+            ArrayList<String[]> des = new ArrayList<String[]>() {};
+            thirdLevelq1 = new LinkedHashMap<>();
+            for (int j = 0; j < a.size(); j++) {
+                ArrayList<String> lista=new ArrayList<>();
+                for(int k=0; k<livello2dec.size();k++){
+                    if(i==0){
+                        if(j==0){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        if(j==1){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        if(j==2){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        if(j==3){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<100 && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                    }
+                    else{
+                        if(j==0){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<=ordinidia.get(j+1).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+
+                        if(j+1<a.size()){
+                            if(j==1){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==1){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+                        if(j+1<a.size()){
+                            if(j==2){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==2){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+
+                        if(j+1<a.size()){
+                            if(j==3){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==3){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+
+                        if(j+1<a.size()){
+                            if(j==4){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==4){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+
+                        if(j+1<a.size()){
+                            if(j==5){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==5){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+
+                        if(j+1<a.size()){
+                            if(j==6){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==6){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+
+                        if(j+1<a.size()){
+                            if(j==7){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==7){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+                        if(j+1<a.size()){
+                            if(j==8){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==8){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+                        if(j+1<a.size()){
+                            if(j==9){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==9){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+                    }
+                }
+                des.add(lista.toArray(new String[0]));
+                thirdLevelq1.put(a.get(j), des.get(j));
+                lista.removeAll(lista);
+            }
+            secondLevel.add(a.toArray(new String[0]));
+            data.add(thirdLevelq1);
+            a.removeAll(a);
+            ordinidia.removeAll(ordinidia);
+            thirdLevelq1 = null;
         }
+
         expandableListView = (ExpandableListView) findViewById(R.id.navigationmenu);
         //passing three level of information to constructor
         ThreeLevelListAdapter threeLevelListAdapterAdapter = new ThreeLevelListAdapter(this, parent, secondLevel, data);

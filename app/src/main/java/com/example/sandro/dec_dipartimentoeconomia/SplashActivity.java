@@ -40,9 +40,15 @@ public class SplashActivity extends AppCompatActivity{
     public class SottoLivelli{
         private int i;
         private String titolo;
-        public SottoLivelli(int i, String a){
+        private int id_gruppo;
+        private int id_pagina;
+        private int livello;
+        public SottoLivelli(int i, String a,int g, int p,int l){
             this.i=i;
             titolo=a;
+            id_gruppo=g;
+            id_pagina=p;
+            livello=l;
         }
 
         public int getI() {
@@ -52,13 +58,43 @@ public class SplashActivity extends AppCompatActivity{
         public String getTitolo() {
             return titolo;
         }
+        public int getId_gruppo() {
+            return id_gruppo;
+        }
+
+        public int getId_pagina() {
+            return id_pagina;
+        }
+
+        public int getLivello() {
+            return livello;
+        }
     }
+    public class Corso{
+        private int id;
+        private String nome;
+        public Corso(int i, String a){
+            this.id=i;
+            nome=a;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getNome() {
+            return nome;
+        }
+
+
+    }
+
     public String localhost = "proxybar.altervista.org";
     public static ArrayList<Categoria> categorie = new ArrayList<>();
     public static JSONArray listaPersone = new JSONArray();
     public static JSONArray listaDocumenti = new JSONArray();
     public static ArrayList<Ruoli> ruoli = new ArrayList<>();
-    public static ArrayList<String> corsi = new ArrayList<>();
+    public static ArrayList<Corso> corsi = new ArrayList<>();
     public static ArrayList<String> livello1dec = new ArrayList<>();
     public static ArrayList<SottoLivelli> livello2dec = new ArrayList<>();
 
@@ -82,7 +118,12 @@ public class SplashActivity extends AppCompatActivity{
         }
     }
 
-
+    boolean finish1 = false;
+    boolean finish2=false;
+    boolean finish3=false;
+    boolean finish4=false;
+    boolean finish5=false;
+    boolean finish6=false;
 
 
 
@@ -95,7 +136,9 @@ public class SplashActivity extends AppCompatActivity{
         DrawableCompat.setTint(progressBar.getIndeterminateDrawable(), Color.DKGRAY);
         haveStoragePermission();
 
+
         if (count == 0) {
+
             //decLv2e3
             // Instantiate the RequestQueue.
             RequestQueue queue23 = Volley.newRequestQueue(this);
@@ -114,9 +157,10 @@ public class SplashActivity extends AppCompatActivity{
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    livello2dec.add(new SottoLivelli(expl.getInt("ordine"), expl.getString("titolo")));
+                                    livello2dec.add(new SottoLivelli(expl.getInt("ordine"), expl.getString("titolo"), expl.getInt("id_gruppo"), expl.getInt("id_pagina"),expl.getInt("livello")));
 
                                 }
+                                finish1 = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
 
@@ -133,7 +177,7 @@ public class SplashActivity extends AppCompatActivity{
 
 // Add the request to the RequestQueue.
             stringRequest23.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
+                    300000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue23.add(stringRequest23);
@@ -159,6 +203,7 @@ public class SplashActivity extends AppCompatActivity{
                                     ruoli.add(new Ruoli(expl.getInt("id"), expl.getString("nome"), expl.getInt("id_persona"), expl.getString("nome_pers"), expl.getString("cognome"), expl.getString("foto")));
 
                                 }
+                                finish2 = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
 
@@ -175,7 +220,7 @@ public class SplashActivity extends AppCompatActivity{
 
 // Add the request to the RequestQueue.
             stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
+                    300000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(stringRequest);
@@ -199,9 +244,10 @@ public class SplashActivity extends AppCompatActivity{
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    corsi.add(expl.getString("sigla"));
+                                    corsi.add(new Corso(expl.getInt("id"), expl.getString("sigla")));
 
                                 }
+                                finish3 = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
 
@@ -218,7 +264,7 @@ public class SplashActivity extends AppCompatActivity{
 
 // Add the request to the RequestQueue.
             stringRequestcors.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
+                    300000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queuecors.add(stringRequestcors);
@@ -245,6 +291,7 @@ public class SplashActivity extends AppCompatActivity{
                                     livello1dec.add(expl.getString("titolo"));
 
                                 }
+                                finish4 = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
 
@@ -261,7 +308,7 @@ public class SplashActivity extends AppCompatActivity{
 
 // Add the request to the RequestQueue.
             stringRequestliv1.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
+                    300000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queueliv1.add(stringRequestliv1);
@@ -290,7 +337,7 @@ public class SplashActivity extends AppCompatActivity{
                                     categorie.add(new Categoria(expl.getInt("id"), expl.getString("nome"), expl.getInt("id_gruppo"), expl.getString("nome_cat"), expl.getInt("id_persona"), expl.getInt("corso")));
 
                                 }
-
+                                finish5 = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
 
@@ -307,7 +354,7 @@ public class SplashActivity extends AppCompatActivity{
 
 // Add the request to the RequestQueue.
             stringRequest4.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
+                    300000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue4.add(stringRequest4);
@@ -329,7 +376,7 @@ public class SplashActivity extends AppCompatActivity{
                                 JSONObject c = new JSONObject(response);
                                 listaPersone = c.getJSONArray("records");
 
-
+                                finish6 = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
 
@@ -346,24 +393,34 @@ public class SplashActivity extends AppCompatActivity{
 
 // Add the request to the RequestQueue.
             stringRequest5.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
+                    300000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue5.add(stringRequest5);
 
             count++;
         }
+        fine();
+    }
 
 
-            new Handler().postDelayed(new Runnable() {
+
+
+    public void fine() {
+        if(finish1 && finish2 && finish3 && finish4 && finish5 && finish6) {
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(i);
+        }
+        else{
+            Handler handler=new Handler();
+            handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
-                    Intent i=new Intent (getApplicationContext(),MainActivity.class);
-                    startActivity(i);
+                   fine();
                 }
-            },8000);
-
+            },100);
+            }
 
     }
+
 }
