@@ -121,7 +121,9 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         secondLevelELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                Log.d("primolivello",groupPosition+"");
+                String prova="";
+                prova="Hai premuto: "+MainActivity.parent.get(groupPosition).getNome() +", id: "+MainActivity.parent.get(groupPosition).getId();
+                Log.d("primolivello",prova);
                 Log.d("secondolivello",""+i);
                 Log.d("terzolivello",""+i1);
                 return false;

@@ -70,7 +70,7 @@ public class SplashActivity extends AppCompatActivity{
             return livello;
         }
     }
-    public class Corso{
+    public static class Corso{
         private int id;
         private String nome;
         public Corso(int i, String a){
@@ -95,7 +95,6 @@ public class SplashActivity extends AppCompatActivity{
     public static JSONArray listaDocumenti = new JSONArray();
     public static ArrayList<Ruoli> ruoli = new ArrayList<>();
     public static ArrayList<Corso> corsi = new ArrayList<>();
-    public static ArrayList<String> livello1dec = new ArrayList<>();
     public static ArrayList<SottoLivelli> livello2dec = new ArrayList<>();
 
     public static int count = 0;

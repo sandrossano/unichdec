@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     public static JSONArray listaDocumenti = SplashActivity.listaDocumenti;
     public static ArrayList<Ruoli> ruoli = SplashActivity.ruoli;
     public static ArrayList<SplashActivity.Corso> corsi = SplashActivity.corsi;
-    public static ArrayList<String> livello1dec = SplashActivity.livello1dec;
+    public static ArrayList<SplashActivity.Corso> parent=new ArrayList<>();
 
     private DrawerLayout mDrawerLayout;
     private ExpandableListView expandableListView;
@@ -117,16 +117,20 @@ public class MainActivity extends AppCompatActivity
          */
         List<LinkedHashMap<String, String[]>> data = new ArrayList<>();
 
-        ArrayList<String> parent=new ArrayList<>();
 
+        ArrayList<String> ParentString= new ArrayList<String>();
         ArrayList<String> a = new ArrayList<String>();
         ArrayList<Integer> ordinidia = new ArrayList<Integer>() {};
         for(int i=0;i<=corsi.size();i++) {
             if (i == 0) {
-                parent.add("DEC");
+                parent.add(new SplashActivity.Corso(1,"DEC"));
+                ParentString.add("DEC");
             }
 
-            if(i!=0) parent.add(corsi.get(i-1).getNome());
+            if(i!=0) {
+                parent.add(new SplashActivity.Corso(corsi.get(i-1).getId(),corsi.get(i-1).getNome()));
+                ParentString.add(corsi.get(i-1).getNome());
+            }
 
 
             for (int j = 0; j < livello2dec.size(); j++) {
@@ -255,7 +259,7 @@ public class MainActivity extends AppCompatActivity
 
         expandableListView = (ExpandableListView) findViewById(R.id.navigationmenu);
         //passing three level of information to constructor
-        ThreeLevelListAdapter threeLevelListAdapterAdapter = new ThreeLevelListAdapter(this, parent, secondLevel, data);
+        ThreeLevelListAdapter threeLevelListAdapterAdapter = new ThreeLevelListAdapter(this, ParentString, secondLevel, data);
         expandableListView.setAdapter(threeLevelListAdapterAdapter);
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
