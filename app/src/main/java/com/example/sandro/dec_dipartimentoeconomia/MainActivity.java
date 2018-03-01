@@ -151,9 +151,41 @@ public class MainActivity extends AppCompatActivity
                 for(int k=0; k<livello2dec.size();k++){
                     if(i==0){
                         if(j==0){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        if(j==1){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        if(j==2){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        if(j==3){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<100 && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        if(j+1<a.size()){
+                            if(j==1){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==1){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+                        if(j+1<a.size()){
+                            if(j==2){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==2){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+                        if(j+1<a.size()){
+                            if(j==3){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==3){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+                        if(j+1<a.size()){
+                            if(j==4){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==4){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+                        if(j+1<a.size()){
+                            if(j==5){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==5){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+                        if(j+1<a.size()){
+                            if(j==6){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==6){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
+                        if(j+1<a.size()){
+                            if(j==7){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }else {
+                            if(j==7){if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==1 && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
+                        }
                     }
                     else{
                         if(j==0){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<=ordinidia.get(j+1).intValue()){lista.add(livello2dec.get(k).getTitolo());}}

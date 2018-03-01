@@ -292,9 +292,9 @@ class CaccAdapter extends ArrayAdapter<String>{
         a.setText(persone.get(position));
         a.setTextColor(Color.BLACK);
         if(singoli.get(position).getFoto()!="null")
-        Picasso.with(getContext()).load("https://economia.unich.it/dec/fototessera/"+singoli.get(position).getFoto()).into(myImage);
+        Picasso.with(getContext()).load("https://economia.unich.it/fototessera/"+singoli.get(position).getFoto()).into(myImage);
         else{
-            Picasso.with(getContext()).load("https://economia.unich.it/dec/fototessera/persona_generica.jpg").into(myImage);
+            Picasso.with(getContext()).load("https://economia.unich.it/fototessera/persona_generica.jpg").into(myImage);
         }
         return row;
     }

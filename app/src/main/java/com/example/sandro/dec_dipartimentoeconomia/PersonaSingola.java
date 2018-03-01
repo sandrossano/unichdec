@@ -44,9 +44,9 @@ public class PersonaSingola extends AppCompatActivity
         String nomesing = getIntent().getStringExtra("nomesing");
         String fotosing = getIntent().getStringExtra("fotosing");
         if(fotosing.endsWith("jpg"))
-            Picasso.with(getApplicationContext()).load("https://economia.unich.it/dec/fototessera/"+fotosing).into(imm);
+            Picasso.with(getApplicationContext()).load("https://economia.unich.it/fototessera/"+fotosing).into(imm);
         else{
-            Picasso.with(getApplicationContext()).load("https://economia.unich.it/dec/fototessera/persona_generica.jpg").into(imm);
+            Picasso.with(getApplicationContext()).load("https://economia.unich.it/fototessera/persona_generica.jpg").into(imm);
         }
         setTitle(nomesing);
 
