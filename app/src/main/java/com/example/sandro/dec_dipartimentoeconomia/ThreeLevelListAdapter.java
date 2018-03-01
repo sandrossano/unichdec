@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+
 public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
     ArrayList<String> parentHeaders;
@@ -124,8 +126,29 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                 String prova="";
                 prova="Hai premuto: "+MainActivity.parent.get(groupPosition).getNome() +", id: "+MainActivity.parent.get(groupPosition).getId();
                 Log.d("primolivello",prova);
-                Log.d("secondolivello",""+i);
-                Log.d("terzolivello",""+i1);
+
+                ArrayList<SplashActivity.SottoLivelli>second=new ArrayList<SplashActivity.SottoLivelli>();
+                for (int j=0;j<livello2dec.size();j++) {
+                    if(MainActivity.parent.get(groupPosition).getId()==1) {
+                        if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_pagina() == 0 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId()) {
+                            second.add(livello2dec.get(j));
+                        }
+                    }
+                        else{
+                            if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_pagina() <= 0 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId()) {
+                                second.add(livello2dec.get(j));
+                            }
+                        }
+                }
+                Log.d("secondolivello","Hai premuto: "+second.get(i).getTitolo());
+
+                ArrayList<SplashActivity.SottoLivelli>terzo=new ArrayList<SplashActivity.SottoLivelli>();
+                for (int j=0;j<livello2dec.size();j++) {
+                        if(livello2dec.get(j).getLivello()==2 && livello2dec.get(j).getId_pagina()>-2 && livello2dec.get(j).getId_gruppo()==MainActivity.parent.get(groupPosition).getId() && livello2dec.get(j).getI()>=second.get(i).getI()){
+                            terzo.add(livello2dec.get(j));
+                        }
+                }
+                Log.d("terzolivello","Hai premuto: "+terzo.get(i1).getTitolo());;
                 return false;
             }
         });
