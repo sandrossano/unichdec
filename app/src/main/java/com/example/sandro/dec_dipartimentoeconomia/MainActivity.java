@@ -277,40 +277,6 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-
-/*
-    private void prepareListData() {
-        listDataHeader = new ArrayList<ExpandedMenuModel>();
-        listDataChild = new HashMap<ExpandedMenuModel, List<String>>();
-
-        ExpandedMenuModel item1 = new ExpandedMenuModel();
-        item1.setIconName("DEC");
-        item1.setIconImg(android.R.drawable.ic_delete);
-        // Adding data header
-        listDataHeader.add(item1);
-
-        List<String> heading1 = new ArrayList<String>();
-        for(int i=0;i<livello1dec.size();i++) {
-            // Adding child data DEC
-            heading1.add(livello1dec.get(i));
-        }
-
-        listDataChild.put(listDataHeader.get(0), heading1);// Header, Child data
-
-        for(int i=0;i<corsi.size();i++){
-            ExpandedMenuModel item2 = new ExpandedMenuModel();
-            item2.setIconName(corsi.get(i));
-            item2.setIconImg(android.R.drawable.ic_delete);
-            listDataHeader.add(item2);
-
-            List<String> heading2 = new ArrayList<String>();
-            heading2.add("Accedi alla sezione "+corsi.get(i).toUpperCase());
-
-            listDataChild.put(listDataHeader.get(i+1), heading2);
-        }
-
-    }
-*/
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

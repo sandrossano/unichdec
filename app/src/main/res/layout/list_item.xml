@@ -10,7 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@+id/identchild"
+        android:layout_toRightOf="@+id/identchild"
         android:padding="10dp"
         android:textColor="#ffffffff"
         android:textSize="15sp"
@@ -18,10 +20,20 @@
 
     <ImageView
         android:id="@+id/identchild"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="25dp"
+        android:src="@android:drawable/radiobutton_off_background" />
+
+    <ImageView
+        android:id="@+id/identchild2"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" />
+        android:layout_alignTop="@+id/identchild" />
 
 </RelativeLayout>

@@ -1,6 +1,13 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -8,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,9 +100,11 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.list_group, null);
+        ImageView immagine=(ImageView) convertView.findViewById(R.id.ident);
         TextView text = (TextView) convertView.findViewById(R.id.submenu1);
         text.setText(this.parentHeaders.get(groupPosition));
-
+        if(groupPosition!=0) immagine.setBackgroundResource(R.drawable.didattica_white);
+        else{immagine.setBackgroundResource(R.drawable.dipico_white);}
         return convertView;
     }
 
