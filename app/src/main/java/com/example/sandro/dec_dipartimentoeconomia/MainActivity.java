@@ -125,12 +125,12 @@ public class MainActivity extends AppCompatActivity
         ArrayList<Integer> ordinidia = new ArrayList<Integer>() {};
         for(int i=0;i<=corsi.size();i++) {
             if (i == 0) {
-                parent.add(new SplashActivity.Corso(1,"DEC"));
+                parent.add(new SplashActivity.Corso(1,"DEC",-1));
                 ParentString.add("DEC");
             }
 
             if(i!=0) {
-                parent.add(new SplashActivity.Corso(corsi.get(i-1).getId(),corsi.get(i-1).getNome()));
+                parent.add(new SplashActivity.Corso(corsi.get(i-1).getId(),corsi.get(i-1).getNome(),corsi.get(i-1).getColor()));
                 ParentString.add(corsi.get(i-1).getNome());
             }
 

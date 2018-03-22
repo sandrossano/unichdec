@@ -37,18 +37,19 @@ import java.util.ArrayList;
  * Created by Sandro on 21/02/2018.
  */
 public class SplashActivity extends AppCompatActivity{
-    public class SottoLivelli{
+    public class SottoLivelli {
         private int i;
         private String titolo;
         private int id_gruppo;
         private int id_pagina;
         private int livello;
-        public SottoLivelli(int i, String a,int g, int p,int l){
-            this.i=i;
-            titolo=a;
-            id_gruppo=g;
-            id_pagina=p;
-            livello=l;
+
+        public SottoLivelli(int i, String a, int g, int p, int l) {
+            this.i = i;
+            titolo = a;
+            id_gruppo = g;
+            id_pagina = p;
+            livello = l;
         }
 
         public int getI() {
@@ -70,12 +71,54 @@ public class SplashActivity extends AppCompatActivity{
             return livello;
         }
     }
+
+
+    public static class DipartimentiScuola {
+        private int id;
+        private String nome;
+        private String sigla;
+        private String tipo_gruppo;
+        private int livello;
+
+        public DipartimentiScuola(int i, String a, String g, String p, int l) {
+            this.id = i;
+            nome = a;
+            sigla = g;
+            tipo_gruppo = p;
+            livello = l;
+        }
+        public int getId() {
+            return id;
+        }
+
+        public String getNome() {
+            return nome;
+        }
+        public String getSigla() {
+            return sigla;
+        }
+
+        public String getTipo_gruppo() {
+            return tipo_gruppo;
+        }
+
+        public int getLivello() {
+            return livello;
+        }
+    }
+
     public static class Corso{
         private int id;
         private String nome;
-        public Corso(int i, String a){
+        public int color;
+        public Corso(int i, String a,int sem){
             this.id=i;
             nome=a;
+            color=sem;
+        }
+
+        public int getColor() {
+            return color;
         }
 
         public int getId() {
@@ -96,6 +139,7 @@ public class SplashActivity extends AppCompatActivity{
     public static ArrayList<Ruoli> ruoli = new ArrayList<>();
     public static ArrayList<Corso> corsi = new ArrayList<>();
     public static ArrayList<SottoLivelli> livello2dec = new ArrayList<>();
+    public static ArrayList<DipartimentiScuola> dipartimenti = new ArrayList<>();
 
     public static int count = 0;
 
@@ -123,6 +167,8 @@ public class SplashActivity extends AppCompatActivity{
     boolean finish4=false;
     boolean finish5=false;
     boolean finish6=false;
+    boolean finish7=false;
+
 
 
 
@@ -243,7 +289,7 @@ public class SplashActivity extends AppCompatActivity{
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    corsi.add(new Corso(expl.getInt("id"), expl.getString("sigla")));
+                                    corsi.add(new Corso(expl.getInt("id"), expl.getString("sigla"), expl.getInt("semestre")));
 
                                 }
                                 finish3 = true;
@@ -267,6 +313,49 @@ public class SplashActivity extends AppCompatActivity{
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queuecors.add(stringRequestcors);
+
+
+//Corsi
+            // Instantiate the RequestQueue.
+            RequestQueue queueini = Volley.newRequestQueue(this);
+            String urlini = "https://economia.unich.it/decapp/menus/menu_ini.php";
+
+// Request a string response from the provided URL.
+            StringRequest stringRequestini = new StringRequest(Request.Method.GET, urlini,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Display the first 500 characters of the response string.
+                           try {
+
+                                JSONObject c = new JSONObject(response);
+                                JSONArray cacca = c.getJSONArray("records");
+
+                                for (int i = 0; i < cacca.length(); i++) {
+                                    JSONObject expl = cacca.getJSONObject(i);
+                                    dipartimenti.add(new DipartimentiScuola(expl.getInt("id"), expl.getString("nome"),expl.getString("sigla"),expl.getString("tipo_gruppo"), expl.getInt("livello")));
+                                }
+                                finish7 = true;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+
+// Add the request to the RequestQueue.
+            stringRequestini.setRetryPolicy(new DefaultRetryPolicy(
+                    300000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queueini.add(stringRequestini);
 
 /*
 // Categorie... IMPORTANTE!!!!!
@@ -363,8 +452,8 @@ public class SplashActivity extends AppCompatActivity{
 
 
     public void fine() {
-        if(finish1 && finish3 && finish6) {
-            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        if(finish1 && finish3 && finish6&&finish7) {
+            Intent i = new Intent(getApplicationContext(), MainActivityMultiDipartimento.class);
             startActivity(i);
         }
         else{

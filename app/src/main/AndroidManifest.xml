@@ -88,6 +88,11 @@
             android:label="DEC"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".MainActivityMultiDipartimento"
+            android:label="DEC"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

@@ -4,12 +4,15 @@ package com.example.sandro.dec_dipartimentoeconomia;
  * Created by sandro on 27/02/18.
  */
 import android.content.Context;
+import android.graphics.Color;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -23,14 +26,14 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
 
     String[] headers;
 
-    ImageView ivGroupIndicator;
+    int position;
 
 
-    public SecondLevelAdapter(Context context, String[] headers, List<String[]> data) {
+    public SecondLevelAdapter(Context context, String[] headers, List<String[]> data,int position) {
         this.context = context;
         this.data = data;
         this.headers = headers;
-
+        this.position=position;
     }
 
     @Override
@@ -57,6 +60,34 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
         TextView text = (TextView) convertView.findViewById(R.id.submenu2);
         String groupText = getGroup(groupPosition).toString();
         text.setText(groupText);
+
+        RelativeLayout layout=(RelativeLayout) convertView.findViewById(R.id.layout_item);
+
+            if(MainActivity.parent.get(position).getColor()==0)
+                layout.setBackgroundColor(Color.parseColor("#0e185a"));
+            if(MainActivity.parent.get(position).getColor()==1)
+                layout.setBackgroundColor(Color.parseColor("#b30000"));
+            if(MainActivity.parent.get(position).getColor()==2)
+                layout.setBackgroundColor(Color.parseColor("#e6b800"));
+            if(MainActivity.parent.get(position).getColor()==3)
+                layout.setBackgroundColor(Color.parseColor("#00cc7a"));
+            if(MainActivity.parent.get(position).getColor()==4)
+                layout.setBackgroundColor(Color.parseColor("#00663d"));
+            if(MainActivity.parent.get(position).getColor()==5)
+                layout.setBackgroundColor(Color.parseColor("#b30077"));
+            if(MainActivity.parent.get(position).getColor()==6)
+                layout.setBackgroundColor(Color.parseColor("#804000"));
+            if(MainActivity.parent.get(position).getColor()==7)
+                layout.setBackgroundColor(Color.parseColor("#808080"));
+            if(MainActivity.parent.get(position).getColor()==8)
+                layout.setBackgroundColor(Color.parseColor("#600080"));
+            if(MainActivity.parent.get(position).getColor()==9)
+                layout.setBackgroundColor(Color.parseColor("#b38f00"));
+            if(MainActivity.parent.get(position).getColor()==10)
+                layout.setBackgroundColor(Color.parseColor("#ff704d"));
+            if(MainActivity.parent.get(position).getColor()==11)
+                layout.setBackgroundColor(Color.parseColor("#33bbff"));
+
         return convertView;
     }
 

@@ -127,7 +127,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         }
 
 
-        secondLevelELV.setAdapter(new SecondLevelAdapter(context, headers, childData));
+        secondLevelELV.setAdapter(new SecondLevelAdapter(context, headers, childData,groupPosition));
 
         secondLevelELV.setGroupIndicator(null);
 
