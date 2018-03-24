@@ -110,11 +110,14 @@ public class SplashActivity extends AppCompatActivity{
     public static class Corso{
         private int id;
         private String nome;
-        public int color;
-        public Corso(int i, String a,int sem){
+        private int color;
+        private int id_gruppo;
+
+        public Corso(int i, String a,int sem,int gruppo){
             this.id=i;
             nome=a;
             color=sem;
+            id_gruppo=gruppo;
         }
 
         public int getColor() {
@@ -129,10 +132,11 @@ public class SplashActivity extends AppCompatActivity{
             return nome;
         }
 
-
+        public int getId_gruppo() {return id_gruppo;}
     }
 
     public String localhost = "proxybar.altervista.org";
+    public String localhost2 ="https://economia.unich.it/decapp/";
     public static ArrayList<Categoria> categorie = new ArrayList<>();
     public static JSONArray listaPersone = new JSONArray();
     public static JSONArray listaDocumenti = new JSONArray();
@@ -187,7 +191,7 @@ public class SplashActivity extends AppCompatActivity{
             //decLv2e3
             // Instantiate the RequestQueue.
             RequestQueue queue23 = Volley.newRequestQueue(this);
-            String url23 = "http://" + localhost + "/menu/readlv2.php";
+            String url23 = localhost2+"menus/menu_dipartimenti.php";
 
 // Request a string response from the provided URL.
             StringRequest stringRequest23 = new StringRequest(Request.Method.GET, url23,
@@ -274,7 +278,7 @@ public class SplashActivity extends AppCompatActivity{
 //Corsi
             // Instantiate the RequestQueue.
             RequestQueue queuecors = Volley.newRequestQueue(this);
-            String urlcors = "http://" + localhost + "/corsi/read.php";
+            String urlcors = localhost2+"corsidilaurea/";
 
 // Request a string response from the provided URL.
             StringRequest stringRequestcors = new StringRequest(Request.Method.GET, urlcors,
@@ -289,7 +293,7 @@ public class SplashActivity extends AppCompatActivity{
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    corsi.add(new Corso(expl.getInt("id"), expl.getString("sigla"), expl.getInt("semestre")));
+                                    corsi.add(new Corso(expl.getInt("id"), expl.getString("sigla"), expl.getInt("semestre"), expl.getInt("id_gruppo")));
 
                                 }
                                 finish3 = true;
@@ -318,7 +322,7 @@ public class SplashActivity extends AppCompatActivity{
 //Corsi
             // Instantiate the RequestQueue.
             RequestQueue queueini = Volley.newRequestQueue(this);
-            String urlini = "https://economia.unich.it/decapp/menus/menu_ini.php";
+            String urlini = localhost2+"menus/menu_ini.php";
 
 // Request a string response from the provided URL.
             StringRequest stringRequestini = new StringRequest(Request.Method.GET, urlini,

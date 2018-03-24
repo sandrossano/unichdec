@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 
 public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
@@ -106,11 +108,12 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         if(groupPosition!=0) immagine.setBackgroundResource(R.drawable.didattica_white);
         else{immagine.setBackgroundResource(R.drawable.dipico_white);}
         return convertView;
+
     }
 
     @Override
     public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-
+    if(groupPosition==0) {
         final SecondLevelExpandableListView secondLevelELV = new SecondLevelExpandableListView(context);
 
         String[] headers = secondLevel.get(groupPosition);
@@ -127,41 +130,41 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         }
 
 
-        secondLevelELV.setAdapter(new SecondLevelAdapter(context, headers, childData,groupPosition));
+        secondLevelELV.setAdapter(new SecondLevelAdapter(context, headers, childData, groupPosition));
 
         secondLevelELV.setGroupIndicator(null);
 
         secondLevelELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                String prova="";
-                prova="Hai premuto: "+MainActivity.parent.get(groupPosition).getNome() +", id: "+MainActivity.parent.get(groupPosition).getId();
-                Log.d("primolivello",prova);
+                String prova = "";
+                prova = "Hai premuto: " + MainActivity.parent.get(groupPosition).getNome() + ", id: " + MainActivity.parent.get(groupPosition).getId();
+                Log.d("primolivello", prova);
 
-                ArrayList<SplashActivity.SottoLivelli>second=new ArrayList<SplashActivity.SottoLivelli>();
-                for (int j=0;j<livello2dec.size();j++) {
-                    if(MainActivity.parent.get(groupPosition).getId()==1) {
+                ArrayList<SplashActivity.SottoLivelli> second = new ArrayList<SplashActivity.SottoLivelli>();
+                for (int j = 0; j < livello2dec.size(); j++) {
+                    if (MainActivity.parent.get(groupPosition).getId() == 1) {
                         if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_pagina() == 0 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId()) {
                             second.add(livello2dec.get(j));
                         }
+                    } else {
+                        if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_pagina() <= 0 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId()) {
+                            second.add(livello2dec.get(j));
+                        }
                     }
-                        else{
-                            if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_pagina() <= 0 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId()) {
-                                second.add(livello2dec.get(j));
-                            }
-                        }
                 }
-                Log.d("secondolivello","Hai premuto: "+second.get(i).getTitolo());
+                Log.d("secondolivello", "Hai premuto: " + second.get(i).getTitolo());
 
-                ArrayList<SplashActivity.SottoLivelli>terzo=new ArrayList<SplashActivity.SottoLivelli>();
-                for (int j=0;j<livello2dec.size();j++) {
-                        if(livello2dec.get(j).getLivello()==2 && livello2dec.get(j).getId_pagina()>-2 && livello2dec.get(j).getId_gruppo()==MainActivity.parent.get(groupPosition).getId() && livello2dec.get(j).getI()>=second.get(i).getI()){
-                            terzo.add(livello2dec.get(j));
-                        }
+                ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
+                for (int j = 0; j < livello2dec.size(); j++) {
+                    if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId() && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                        terzo.add(livello2dec.get(j));
+                    }
                 }
-                Log.d("terzolivello","Hai premuto: "+terzo.get(i1).getTitolo());;
+                Log.d("terzolivello", "Hai premuto: " + terzo.get(i1).getTitolo());
+                ;
 
-                Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n"+"primolivello: "+ prova+"\n\n secondolivello: "+ second.get(i).getTitolo()+"\n\n terzolivello: "+ terzo.get(i1).getTitolo(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_LONG).show();
                 return false;
             }
         });
@@ -179,6 +182,23 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
 
         return secondLevelELV;
+    } else{
+        int count=0;
+        for(int i=0;i<corsi.size();i++) {
+
+            if (corsi.get(i).getId_gruppo() == corsi_dipartimento) {
+                count++;
+                if(count==groupPosition) {
+                    Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + corsi.get(i).getId(), Toast.LENGTH_LONG).show();
+
+                }
+            }
+        }
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.list_empty, null);
+        return convertView;
+    }
+
     }
 
     @Override

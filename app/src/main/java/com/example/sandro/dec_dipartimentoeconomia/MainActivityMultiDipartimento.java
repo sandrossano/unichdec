@@ -55,10 +55,9 @@ public class MainActivityMultiDipartimento extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("Titolo");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_multidipartimento);
-
-        Log.d("array", livello2dec.toString());
 
         mContext=getApplicationContext();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -149,9 +148,9 @@ public class MainActivityMultiDipartimento extends AppCompatActivity
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Log.d("premuto:",dipartimenti.get(i).getSigla());
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
+                                Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+                                intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
+                                startActivity(intent);
                             }
                         });
                         return convertView;
