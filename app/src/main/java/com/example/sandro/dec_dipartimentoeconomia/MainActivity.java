@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                         ordinidia.add(new Integer(livello2dec.get(j).getI()));
                     }
                 }
-                /*else{
+                /*else{                     //Se ci sono altri espandibili oltre il dipartimento
 
                     for(int l=0;l<corsi.size();l++) {
 
@@ -185,24 +185,6 @@ public class MainActivity extends AppCompatActivity
                 for (int j = 0; j < a.size(); j++) {
                     ArrayList<String> lista = new ArrayList<>();
                     for (int k = 0; k < livello2dec.size(); k++) {
-
-                        /*if(j==0){
-                            if(ordinidia.size()!=1) {
-                                if (livello2dec.get(k).getId_pagina() > 0 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
-                                    lista.add(livello2dec.get(k).getTitolo());
-                                    }
-                                }
-                                else{
-                                if (livello2dec.get(k).getId_pagina() > 0 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() < ordinidia.get(0).intValue()) {
-                                    lista.add(livello2dec.get(k).getTitolo());
-                                    }
-                                }
-                            }
-                        if(j+1<a.size()){
-                            {if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==id_dipartimento && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }else {
-                            {if(livello2dec.get(k).getId_pagina()>0 && livello2dec.get(k).getId_gruppo()==id_dipartimento && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }*/
                         if (j == 0 && a.size() == 1) {
                             if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 lista.add(livello2dec.get(k).getTitolo());
@@ -225,51 +207,7 @@ public class MainActivity extends AppCompatActivity
                         }
 
                     }
-                    /*else{
-                        if(j==0){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<=ordinidia.get(j+1).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
 
-                        if(j+1<a.size()){
-                            if(j==1){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }else {
-                            if(j==1){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }
-                        if(j+1<a.size()){
-                            if(j==2){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }else {
-                            if(j==2){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }
-
-                        if(j+1<a.size()){
-                            if(j==3){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }else {
-                            if(j==3){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }
-
-                        if(j+1<a.size()){
-                            if(j==4){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }else {
-                            if(j==4){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }
-
-                        if(j+1<a.size()){
-                            if(j==5){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }else {
-                            if(j==5){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }
-
-                        if(j+1<a.size()){
-                            if(j==6){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }else {
-                            if(j==6){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }
-
-                        if(j+1<a.size()){
-                            if(j==7){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()<ordinidia.get(j+1).intValue() && livello2dec.get(k).getI()>=ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }else {
-                            if(j==7){if(livello2dec.get(k).getLivello()==2 && livello2dec.get(k).getId_pagina()>-2 && livello2dec.get(k).getId_gruppo()==corsi.get(i-1).getId() && livello2dec.get(k).getI()>ordinidia.get(j).intValue()){lista.add(livello2dec.get(k).getTitolo());}}
-                        }
-
-                    }*/
                     des.add(lista.toArray(new String[0]));
                     Log.d("des", des.toString());
                     thirdLevelq1.put(a.get(j), des.get(j));
@@ -302,109 +240,6 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-/*
-    private void setUpAdapter2() {
-
-        ArrayList<String> ParentString = new ArrayList<String>();
-
-        int lunghezza=0;
-        for(int i=0;i<corsi.size();i++) {
-
-            if(corsi.get(i).getId_gruppo()==corsi_dipartimento) {lunghezza++;}
-
-        }
-        final int count =lunghezza;
-
-        listView2 = (ListView) findViewById(R.id.listmenu2);
-
-            for(int i=0;i<corsi.size();i++) {
-
-                if(corsi.get(i).getId_gruppo()==corsi_dipartimento) {
-
-                    listView2.setAdapter(new ListAdapter() {
-                        @Override
-                        public boolean areAllItemsEnabled() {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean isEnabled(int i) {
-                            return false;
-                        }
-
-                        @Override
-                        public void registerDataSetObserver(DataSetObserver dataSetObserver) {
-
-                        }
-
-                        @Override
-                        public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
-
-                        }
-
-                        @Override
-                        public int getCount() {
-                            return count;
-                        }
-
-                        @Override
-                        public Object getItem(int i) {
-                            return corsi.get(i);
-                        }
-
-                        @Override
-                        public long getItemId(int i) {
-                            return corsi.get(i).getId();
-                        }
-
-                        @Override
-                        public boolean hasStableIds() {
-                            return false;
-                        }
-
-                        @Override
-                        public View getView(final int i, View view, ViewGroup viewGroup) {
-
-                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                            View convertView = inflater.inflate(R.layout.list_group, null);
-                            ImageView immagine = (ImageView) convertView.findViewById(R.id.ident);
-                            TextView text = (TextView) convertView.findViewById(R.id.submenu1);
-                            text.setText(corsi.get(i).getNome());
-
-                            immagine.setBackgroundResource(R.drawable.didattica_white);
-
-                            convertView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-*/
-                                    /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    intent.putExtra("id_corso", corsi.get(pos).getId());
-                                    startActivity(intent);*/
- /*                                   Log.d("corso",corsi.get(i).getId()+"");
-                                }
-                            });
-                            return convertView;
-                        }
-
-                        @Override
-                        public int getItemViewType(int i) {
-                            return 1;
-                        }
-
-                        @Override
-                        public int getViewTypeCount() {
-                            return 1;
-                        }
-
-                        @Override
-                        public boolean isEmpty() {
-                            return false;
-                        }
-                    });
-                }
-            }
-        }
-*/
         @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
