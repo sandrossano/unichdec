@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -60,9 +61,6 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-
-
-        // no idea why this code is working
 
         return 1;
 
@@ -134,57 +132,112 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         secondLevelELV.setAdapter(new SecondLevelAdapter(context, headers, childData, groupPosition));
 
         secondLevelELV.setGroupIndicator(null);
-
-        secondLevelELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        secondLevelELV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                String prova = "";
-                prova = "Hai premuto: id_dip: " + id_dipartimento;
-                Log.d("primolivello", prova);
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i,long l) {
+                    String prova = "";
+                    prova = "Hai premuto: id_dip: " + id_dipartimento;
+                    Log.d("primolivello", prova);
 
-                ArrayList<SplashActivity.SottoLivelli> second = new ArrayList<SplashActivity.SottoLivelli>();
-                for (int j = 0; j < livello2dec.size(); j++) {
-                    //if (MainActivity.parent.get(groupPosition).getId() == id_dipartimento) {
-                    //&& livello2dec.get(j).getId_pagina() == 0
+                    ArrayList<SplashActivity.SottoLivelli> second = new ArrayList<SplashActivity.SottoLivelli>();
+                    for (int j = 0; j < livello2dec.size(); j++) {
+                        //if (MainActivity.parent.get(groupPosition).getId() == id_dipartimento) {
+                        //&& livello2dec.get(j).getId_pagina() == 0
                         if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_gruppo() == id_dipartimento) {
                             second.add(livello2dec.get(j));
                         }
-                    //}
+                        //}
                     /*else {
                         if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_pagina() <= 0 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId()) {
                             second.add(livello2dec.get(j));
                         }
                     }*/
-                }
-                Log.d("secondolivello", "Hai premuto: " + second.get(i).getTitolo());
-
-                ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
-                for (int j = 0; j < livello2dec.size(); j++) {
-                    if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
-                        terzo.add(livello2dec.get(j));
                     }
+                    Log.d("secondolivello", "Hai premuto: " + second.get(i).getTitolo());
+
+                    ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
+                    for (int j = 0; j < livello2dec.size(); j++) {
+                        if(i==0 && second.size()==1){
+                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                                terzo.add(livello2dec.get(j));
+                            }
+                        }
+                        if(i==0 && second.size()>1) {
+                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
+                                terzo.add(livello2dec.get(j));
+                            }
+                        }
+                        if(i!=0 && i!=second.size()-1){
+                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
+                                terzo.add(livello2dec.get(j));
+                            }
+                        }
+                        if(i==second.size()-1){
+                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                                terzo.add(livello2dec.get(j));
+                            }
+                        }
+                    }
+                    //Log.d("terzo",terzo.get(0).getTitolo());
+                    if(terzo.size()==0)
+                    Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo(), Toast.LENGTH_SHORT).show();
+
+                    return false;
+
+
+
+        }});
+        secondLevelELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                    String prova = "";
+                    prova = "Hai premuto: id_dip: " + id_dipartimento;
+                    Log.d("primolivello", prova);
+
+                    ArrayList<SplashActivity.SottoLivelli> second = new ArrayList<SplashActivity.SottoLivelli>();
+                    for (int j = 0; j < livello2dec.size(); j++) {
+                        //if (MainActivity.parent.get(groupPosition).getId() == id_dipartimento) {
+                        //&& livello2dec.get(j).getId_pagina() == 0
+                        if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_gruppo() == id_dipartimento) {
+                            second.add(livello2dec.get(j));
+                        }
+                        //}
+                    /*else {
+                        if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_pagina() <= 0 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId()) {
+                            second.add(livello2dec.get(j));
+                        }
+                    }*/
+                    }
+                    Log.d("secondolivello", "Hai premuto: " + second.get(i).getTitolo());
+
+                    ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
+                    for (int j = 0; j < livello2dec.size(); j++) {
+                        if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                            terzo.add(livello2dec.get(j));
+                        }
+                    }
+                    Log.d("terzolivello", "Hai premuto: " + terzo.get(i1).getTitolo());
+
+                    Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_SHORT).show();
+                    return false;
                 }
-                Log.d("terzolivello", "Hai premuto: " + terzo.get(i1).getTitolo());
-                ;
+            });
 
-                Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+            secondLevelELV.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                int previousGroup = -1;
 
-        secondLevelELV.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            int previousGroup = -1;
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                if (groupPosition != previousGroup)
-                    secondLevelELV.collapseGroup(previousGroup);
-                previousGroup = groupPosition;
-            }
-        });
+                @Override
+                public void onGroupExpand(int groupPosition) {
+                    if (groupPosition != previousGroup)
+                        secondLevelELV.collapseGroup(previousGroup);
+                    previousGroup = groupPosition;
+                }
+            });
 
 
         return secondLevelELV;
+
+
     } else{
         int count=0;
         for(int i=0;i<corsi.size();i++) {

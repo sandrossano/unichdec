@@ -14,8 +14,13 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 
 
 public class SecondLevelAdapter extends BaseExpandableListAdapter {
@@ -55,40 +60,41 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.list_item, null);
-        TextView text = (TextView) convertView.findViewById(R.id.submenu2);
-        String groupText = getGroup(groupPosition).toString();
-        text.setText(groupText);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_item, null);
+            TextView text = (TextView) convertView.findViewById(R.id.submenu2);
+            String groupText = getGroup(groupPosition).toString();
+            text.setText(groupText);
 
-        RelativeLayout layout=(RelativeLayout) convertView.findViewById(R.id.layout_item);
+            RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.layout_item);
 
-            if(MainActivity.parent.get(position).getColor()==0)
+            if (MainActivity.parent.get(position).getColor() == 0)
                 layout.setBackgroundColor(Color.parseColor("#0e185a"));
-            if(MainActivity.parent.get(position).getColor()==1)
+            if (MainActivity.parent.get(position).getColor() == 1)
                 layout.setBackgroundColor(Color.parseColor("#b30000"));
-            if(MainActivity.parent.get(position).getColor()==2)
+            if (MainActivity.parent.get(position).getColor() == 2)
                 layout.setBackgroundColor(Color.parseColor("#e6b800"));
-            if(MainActivity.parent.get(position).getColor()==3)
+            if (MainActivity.parent.get(position).getColor() == 3)
                 layout.setBackgroundColor(Color.parseColor("#00cc7a"));
-            if(MainActivity.parent.get(position).getColor()==4)
+            if (MainActivity.parent.get(position).getColor() == 4)
                 layout.setBackgroundColor(Color.parseColor("#00663d"));
-            if(MainActivity.parent.get(position).getColor()==5)
+            if (MainActivity.parent.get(position).getColor() == 5)
                 layout.setBackgroundColor(Color.parseColor("#b30077"));
-            if(MainActivity.parent.get(position).getColor()==6)
+            if (MainActivity.parent.get(position).getColor() == 6)
                 layout.setBackgroundColor(Color.parseColor("#804000"));
-            if(MainActivity.parent.get(position).getColor()==7)
+            if (MainActivity.parent.get(position).getColor() == 7)
                 layout.setBackgroundColor(Color.parseColor("#808080"));
-            if(MainActivity.parent.get(position).getColor()==8)
+            if (MainActivity.parent.get(position).getColor() == 8)
                 layout.setBackgroundColor(Color.parseColor("#600080"));
-            if(MainActivity.parent.get(position).getColor()==9)
+            if (MainActivity.parent.get(position).getColor() == 9)
                 layout.setBackgroundColor(Color.parseColor("#b38f00"));
-            if(MainActivity.parent.get(position).getColor()==10)
+            if (MainActivity.parent.get(position).getColor() == 10)
                 layout.setBackgroundColor(Color.parseColor("#ff704d"));
-            if(MainActivity.parent.get(position).getColor()==11)
+            if (MainActivity.parent.get(position).getColor() == 11)
                 layout.setBackgroundColor(Color.parseColor("#33bbff"));
 
-        return convertView;
+            return convertView;
+
     }
 
     @Override
@@ -109,24 +115,24 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.list_subitem, null);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_subitem, null);
 
-        TextView textView = (TextView) convertView.findViewById(R.id.submenu3);
+            TextView textView = (TextView) convertView.findViewById(R.id.submenu3);
 
-        String[] childArray = data.get(groupPosition);
+            String[] childArray = data.get(groupPosition);
 
-        String text = childArray[childPosition];
+            String text = childArray[childPosition];
 
-        textView.setText(text);
+            textView.setText(text);
 
-        return convertView;
+            return convertView;
+
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
         String[] children = data.get(groupPosition);
-
 
         return children.length;
     }
