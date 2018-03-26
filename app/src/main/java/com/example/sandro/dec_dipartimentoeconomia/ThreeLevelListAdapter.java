@@ -26,6 +26,7 @@ import java.util.List;
 
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 
 public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
@@ -138,33 +139,35 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
                 String prova = "";
-                prova = "Hai premuto: " + MainActivity.parent.get(groupPosition).getNome() + ", id: " + MainActivity.parent.get(groupPosition).getId();
+                prova = "Hai premuto: id_dip: " + id_dipartimento;
                 Log.d("primolivello", prova);
 
                 ArrayList<SplashActivity.SottoLivelli> second = new ArrayList<SplashActivity.SottoLivelli>();
                 for (int j = 0; j < livello2dec.size(); j++) {
-                    if (MainActivity.parent.get(groupPosition).getId() == 1) {
-                        if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_pagina() == 0 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId()) {
+                    //if (MainActivity.parent.get(groupPosition).getId() == id_dipartimento) {
+                    //&& livello2dec.get(j).getId_pagina() == 0
+                        if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_gruppo() == id_dipartimento) {
                             second.add(livello2dec.get(j));
                         }
-                    } else {
+                    //}
+                    /*else {
                         if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_pagina() <= 0 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId()) {
                             second.add(livello2dec.get(j));
                         }
-                    }
+                    }*/
                 }
                 Log.d("secondolivello", "Hai premuto: " + second.get(i).getTitolo());
 
                 ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
                 for (int j = 0; j < livello2dec.size(); j++) {
-                    if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == MainActivity.parent.get(groupPosition).getId() && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                    if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
                         terzo.add(livello2dec.get(j));
                     }
                 }
                 Log.d("terzolivello", "Hai premuto: " + terzo.get(i1).getTitolo());
                 ;
 
-                Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -189,7 +192,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
             if (corsi.get(i).getId_gruppo() == corsi_dipartimento) {
                 count++;
                 if(count==groupPosition) {
-                    Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + corsi.get(i).getId(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + corsi.get(i).getId(), Toast.LENGTH_SHORT).show();
 
                 }
             }

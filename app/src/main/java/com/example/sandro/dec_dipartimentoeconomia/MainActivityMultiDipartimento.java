@@ -1,10 +1,14 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -150,6 +154,7 @@ public class MainActivityMultiDipartimento extends AppCompatActivity
                             public void onClick(View view) {
                                 Intent intent=new Intent(getApplicationContext(), MainActivity.class);
                                 intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
+                                Log.d("invio",""+dipartimenti.get(i).getId());
                                 startActivity(intent);
                             }
                         });
@@ -186,7 +191,33 @@ public class MainActivityMultiDipartimento extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Conferma")
+                    .setMessage("Sei sicuro di voler uscire?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                finishAffinity();
+                            }
+                            int pid = Process.myPid();
+                            Process.killProcess(pid);
+                            MainActivityMultiDipartimento.super.onBackPressed();
+
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         }
     }
 

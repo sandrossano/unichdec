@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
 
     private DrawerLayout mDrawerLayout;
     private ExpandableListView expandableListView;
-    int id_dipartimento=1;
+    static int id_dipartimento=1;
     static int corsi_dipartimento;
     private ListView listView2;
     //
@@ -161,7 +161,8 @@ public class MainActivity extends AppCompatActivity
 
             for (int j = 0; j < livello2dec.size(); j++) {
                 if(i==0){
-                    if(livello2dec.get(j).getLivello()==1 && livello2dec.get(j).getId_pagina()==0 && livello2dec.get(j).getId_gruppo()==id_dipartimento){
+                    //&& livello2dec.get(j).getId_pagina()<=0
+                    if(livello2dec.get(j).getLivello()==1  && livello2dec.get(j).getId_gruppo()==id_dipartimento){
                         a.add(livello2dec.get(j).getTitolo());
                         ordinidia.add(new Integer(livello2dec.get(j).getI()));
                     }
@@ -425,6 +426,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 
