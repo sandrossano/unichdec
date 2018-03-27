@@ -456,7 +456,7 @@ public class SplashActivity extends AppCompatActivity{
 
 
     public void fine() {
-        if(finish1 && finish3 && finish6&&finish7) {
+        if(finish1 && finish3 && finish6 && finish7) {
             Intent i = new Intent(getApplicationContext(), MainActivityMultiDipartimento.class);
             startActivity(i);
         }
