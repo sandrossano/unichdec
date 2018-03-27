@@ -29,7 +29,7 @@ import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello
  */
 
 public class Corso extends AppCompatActivity {
-    int position;
+    String position;
     static int id_corso;
     private ExpandableListView expandableListView;
 
@@ -38,9 +38,12 @@ public class Corso extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_corso);
 
-        position=getIntent().getIntExtra("position",-1);
-        id_corso=corsi.get(position).getId();
-
+        position=getIntent().getStringExtra("position");
+        for(int i=0;i<corsi.size();i++) {
+            if(position.equals(corsi.get(i).getNome())){
+            id_corso = corsi.get(i).getId();
+            setTitle(corsi.get(i).getNome());}
+        }
         ArrayList<SplashActivity.Corso> listacorsiDipartimento=new ArrayList<>();
         for(int i=0;i<corsi.size();i++) {
             if (corsi.get(i).getId_gruppo() == corsi_dipartimento) {
@@ -49,10 +52,8 @@ public class Corso extends AppCompatActivity {
         }
         TextView text=(TextView)findViewById(R.id.testocorso);
 
-        text.setText("Dipartimento: "+id_dipartimento+"\n"+"Id_Corso: "+corsi.get(position).getId()+"\n"+"Nome_Corso: "+corsi.get(position).getNome());
+        text.setText("Dipartimento: "+id_dipartimento+"\n"+"Id_Corso: "+id_corso+"\n"+"Nome_Corso: "+position);
 
-
-        setTitle(corsi.get(position).getNome());
 
         setUpAdapter();
 
@@ -98,7 +99,6 @@ public class Corso extends AppCompatActivity {
                 for (int m = 0; m < corsi.size(); m++) {
                     if (corsi.get(m).getId_gruppo() == corsi_dipartimento) {
                         if (corsi.get(m).getId() == id_corso) {
-                            //a.add(corsi.get(m).getNome());
                             parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento));
                             ParentString.add(corsi.get(m).getNome());
                         }
@@ -116,11 +116,11 @@ public class Corso extends AppCompatActivity {
             }
 
             if(i!=0 && i!=1) {
-                if(corsi.get(i-1).getId_gruppo()==corsi_dipartimento) {
-                    if(corsi.get(i-1).getId()!=id_corso) {
-                        a.add(corsi.get(i - 1).getNome());
-                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento));
-                        ParentString.add(corsi.get(i - 1).getNome());
+                if(corsi.get(i-2).getId_gruppo()==corsi_dipartimento) {
+                    if(corsi.get(i-2).getId()!=id_corso) {
+                        a.add(corsi.get(i - 2).getNome());
+                        parent.add(new SplashActivity.Corso(corsi.get(i - 2).getId(), corsi.get(i - 2).getNome(), corsi.get(i - 2).getColor(), corsi_dipartimento));
+                        ParentString.add(corsi.get(i - 2).getNome());
                     }
                 }
             }

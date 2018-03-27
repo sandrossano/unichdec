@@ -114,7 +114,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                 @Override
                 public void onClick(View view) {
                     Intent corso=new Intent(mContext,Corso.class);
-                    corso.putExtra("position", groupPosition);
+                    corso.putExtra("position", parentHeaders.get(groupPosition));
                     corso.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(corso);
                 }
