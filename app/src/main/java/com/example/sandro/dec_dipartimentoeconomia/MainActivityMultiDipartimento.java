@@ -51,7 +51,6 @@ public class MainActivityMultiDipartimento extends AppCompatActivity
     public static ArrayList<SplashActivity.Corso> parent=new ArrayList<>();
     public static Context mContext;
 
-    private DrawerLayout mDrawerLayout;
     private ListView listView;
 
     //
@@ -64,7 +63,7 @@ public class MainActivityMultiDipartimento extends AppCompatActivity
         setContentView(R.layout.activity_main_multidipartimento);
 
         mContext=getApplicationContext();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
 
         setUpAdapter();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
