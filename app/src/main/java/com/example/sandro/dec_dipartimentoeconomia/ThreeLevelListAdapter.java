@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
@@ -117,6 +119,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     corso.putExtra("position", parentHeaders.get(groupPosition));
                     corso.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(corso);
+                    drawer.closeDrawer(GravityCompat.START);
                 }
             });
 
@@ -200,6 +203,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                         visualizza.putExtra("secondolv",second.get(i).getTitolo());
                         visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(visualizza);
+                        drawer.closeDrawer(GravityCompat.START);
                         //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo(), Toast.LENGTH_SHORT).show();
                     }
                     return false;
@@ -243,6 +247,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     visualizza.putExtra("terzolv",terzo.get(i1).getTitolo());
                     visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(visualizza);
+                    drawer.closeDrawer(GravityCompat.START);
                     //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_SHORT).show();
                     return false;
                 }

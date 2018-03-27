@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<SplashActivity.Corso> corsi = SplashActivity.corsi;
     public static ArrayList<SplashActivity.Corso> parent=new ArrayList<>();
     public static Context mContext;
+    static DrawerLayout drawer=null;
 
     private DrawerLayout mDrawerLayout;
     private ExpandableListView expandableListView;
@@ -100,7 +101,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         mContext=getApplicationContext();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         setUpAdapter();
 
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity
     }
         @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

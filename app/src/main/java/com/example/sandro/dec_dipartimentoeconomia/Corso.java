@@ -19,6 +19,7 @@ import java.util.List;
 
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
@@ -32,6 +33,7 @@ public class Corso extends AppCompatActivity {
     String position;
     static int id_corso;
     private ExpandableListView expandableListView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class Corso extends AppCompatActivity {
 
         text.setText("Dipartimento: "+id_dipartimento+"\n"+"Id_Corso: "+id_corso+"\n"+"Nome_Corso: "+position);
 
-
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         setUpAdapter();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -69,7 +71,7 @@ public class Corso extends AppCompatActivity {
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -211,7 +213,7 @@ public class Corso extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
