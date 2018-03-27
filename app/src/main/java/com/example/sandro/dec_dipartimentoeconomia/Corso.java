@@ -193,6 +193,7 @@ public class Corso extends AppCompatActivity {
         //passing three level of information to constructor
         ThreeLevelListAdapterCorsi threeLevelListAdapterAdapter = new ThreeLevelListAdapterCorsi(this, ParentString, secondLevel, data);
         expandableListView.setAdapter(threeLevelListAdapterAdapter);
+        expandableListView.expandGroup(0);
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;
