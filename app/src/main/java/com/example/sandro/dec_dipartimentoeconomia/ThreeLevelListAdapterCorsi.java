@@ -1,21 +1,11 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -27,13 +17,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 
-public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
+public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
 
     ArrayList<String> parentHeaders;
     List<String[]> secondLevel;
@@ -47,7 +38,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
      * @param secondLevel
      * @param data
      */
-    public ThreeLevelListAdapter(Context context, ArrayList<String> parentHeader, List<String[]> secondLevel, List<LinkedHashMap<String, String[]>> data) {
+    public ThreeLevelListAdapterCorsi(Context context, ArrayList<String> parentHeader, List<String[]> secondLevel, List<LinkedHashMap<String, String[]>> data) {
         this.context = context;
 
         this.parentHeaders = parentHeader;
@@ -107,15 +98,25 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
         ImageView immagine=(ImageView) convertView.findViewById(R.id.ident);
         TextView text = (TextView) convertView.findViewById(R.id.submenu1);
         text.setText(this.parentHeaders.get(groupPosition));
-        if(groupPosition!=0) immagine.setBackgroundResource(R.drawable.didattica_white);
+        if(groupPosition!=1) immagine.setBackgroundResource(R.drawable.didattica_white);
         else{immagine.setBackgroundResource(R.drawable.dipico_white);}
-        if(groupPosition!=0){
+        if(groupPosition!=0 && groupPosition!=1){
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent corso=new Intent(mContext,Corso.class);
                     corso.putExtra("position", groupPosition);
                     mContext.startActivity(corso);
+                }
+            });
+
+        }
+        if(groupPosition==1){
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent dipartimento=new Intent(mContext,MainActivity.class);
+                    mContext.startActivity(dipartimento);
                 }
             });
 
@@ -157,7 +158,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     for (int j = 0; j < livello2dec.size(); j++) {
                         //if (MainActivity.parent.get(groupPosition).getId() == id_dipartimento) {
                         //&& livello2dec.get(j).getId_pagina() == 0
-                        if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_gruppo() == id_dipartimento) {
+                        if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_gruppo() == id_corso) {
                             second.add(livello2dec.get(j));
                         }
                         //}
@@ -172,22 +173,22 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
                     for (int j = 0; j < livello2dec.size(); j++) {
                         if(i==0 && second.size()==1){
-                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
                                 terzo.add(livello2dec.get(j));
                             }
                         }
                         if(i==0 && second.size()>1) {
-                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
+                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
                                 terzo.add(livello2dec.get(j));
                             }
                         }
                         if(i!=0 && i!=second.size()-1){
-                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
+                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
                                 terzo.add(livello2dec.get(j));
                             }
                         }
                         if(i==second.size()-1){
-                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
                                 terzo.add(livello2dec.get(j));
                             }
                         }
@@ -196,6 +197,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     if(terzo.size()==0) {
                         Intent visualizza=new Intent(mContext,Visualizza.class);
                         visualizza.putExtra("id_dip", id_dipartimento);
+                        visualizza.putExtra("id_corso", id_corso);
                         visualizza.putExtra("secondolv",second.get(i).getTitolo());
                         mContext.startActivity(visualizza);
                         //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo(), Toast.LENGTH_SHORT).show();
@@ -215,7 +217,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     for (int j = 0; j < livello2dec.size(); j++) {
                         //if (MainActivity.parent.get(groupPosition).getId() == id_dipartimento) {
                         //&& livello2dec.get(j).getId_pagina() == 0
-                        if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_gruppo() == id_dipartimento) {
+                        if (livello2dec.get(j).getLivello() == 1 && livello2dec.get(j).getId_gruppo() == id_corso) {
                             second.add(livello2dec.get(j));
                         }
                         //}
@@ -229,7 +231,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
 
                     ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
                     for (int j = 0; j < livello2dec.size(); j++) {
-                        if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                        if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
                             terzo.add(livello2dec.get(j));
                         }
                     }
@@ -237,6 +239,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
 
                     Intent visualizza=new Intent(mContext,Visualizza.class);
                     visualizza.putExtra("id_dip", id_dipartimento);
+                    visualizza.putExtra("id_corso",id_corso);
                     visualizza.putExtra("secondolv",second.get(i).getTitolo());
                     visualizza.putExtra("terzolv",terzo.get(i1).getTitolo());
                     mContext.startActivity(visualizza);

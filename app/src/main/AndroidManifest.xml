@@ -98,6 +98,11 @@
             android:label=""
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".Corso"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
