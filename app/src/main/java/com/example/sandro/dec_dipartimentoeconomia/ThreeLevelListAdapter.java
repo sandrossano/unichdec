@@ -1,6 +1,8 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -28,9 +30,10 @@ import java.util.List;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 
-public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
+public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
 
     ArrayList<String> parentHeaders;
     List<String[]> secondLevel;
@@ -107,7 +110,6 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         if(groupPosition!=0) immagine.setBackgroundResource(R.drawable.didattica_white);
         else{immagine.setBackgroundResource(R.drawable.dipico_white);}
         return convertView;
-
     }
 
     @Override
@@ -178,15 +180,18 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                             }
                         }
                     }
-                    //Log.d("terzo",terzo.get(0).getTitolo());
-                    if(terzo.size()==0)
-                    Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo(), Toast.LENGTH_SHORT).show();
 
+                    if(terzo.size()==0) {
+                        Intent visualizza=new Intent(mContext,Visualizza.class);
+                        visualizza.putExtra("id_dip", id_dipartimento);
+                        visualizza.putExtra("secondolv",second.get(i).getTitolo());
+                        mContext.startActivity(visualizza);
+                        //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo(), Toast.LENGTH_SHORT).show();
+                    }
                     return false;
 
-
-
         }});
+
         secondLevelELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
                 public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
@@ -218,7 +223,12 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                     }
                     Log.d("terzolivello", "Hai premuto: " + terzo.get(i1).getTitolo());
 
-                    Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_SHORT).show();
+                    Intent visualizza=new Intent(mContext,Visualizza.class);
+                    visualizza.putExtra("id_dip", id_dipartimento);
+                    visualizza.putExtra("secondolv",second.get(i).getTitolo());
+                    visualizza.putExtra("terzolv",terzo.get(i1).getTitolo());
+                    mContext.startActivity(visualizza);
+                    //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_SHORT).show();
                     return false;
                 }
             });
