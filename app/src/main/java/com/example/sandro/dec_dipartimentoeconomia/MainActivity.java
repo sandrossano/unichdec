@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<SplashActivity.Corso> parent=new ArrayList<>();
     public static Context mContext;
     static DrawerLayout drawer=null;
+    static DrawerLayout drawerMain=null;
 
-    private DrawerLayout mDrawerLayout;
     private ExpandableListView expandableListView;
     static int id_dipartimento=1;
     static int corsi_dipartimento;
@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity
         });
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerMain = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);

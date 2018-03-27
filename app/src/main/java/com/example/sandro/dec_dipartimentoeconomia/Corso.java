@@ -20,10 +20,12 @@ import java.util.List;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawerMain;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.Visualizza.drawerVisual;
 
 /**
  * Created by sandro on 27/03/18.
@@ -33,6 +35,7 @@ public class Corso extends AppCompatActivity {
     String position;
     static int id_corso;
     private ExpandableListView expandableListView;
+    static DrawerLayout drawerCorso=null;
 
 
     @Override
@@ -56,7 +59,12 @@ public class Corso extends AppCompatActivity {
 
         text.setText("Dipartimento: "+id_dipartimento+"\n"+"Id_Corso: "+id_corso+"\n"+"Nome_Corso: "+position);
 
+        if(drawerCorso!=null)drawerCorso.closeDrawer(GravityCompat.START);
+        drawerMain.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.START);
+        if(drawerVisual!=null)drawerVisual.closeDrawer(GravityCompat.START);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerCorso = (DrawerLayout) findViewById(R.id.drawer_layout);
         setUpAdapter();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

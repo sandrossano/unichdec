@@ -18,10 +18,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static com.example.sandro.dec_dipartimentoeconomia.Corso.drawerCorso;
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawerMain;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
@@ -37,6 +39,7 @@ public class Visualizza extends AppCompatActivity {
     String terzolv;
     int corso;
     private ExpandableListView expandableListView;
+    static DrawerLayout drawerVisual=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +83,12 @@ public class Visualizza extends AppCompatActivity {
             }
         });
 
+        if(drawerVisual!=null)drawerVisual.closeDrawer(GravityCompat.START);
+        drawerMain.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.START);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerVisual = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if(drawerCorso!=null)drawerCorso.closeDrawer(GravityCompat.START);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -206,6 +214,7 @@ public class Visualizza extends AppCompatActivity {
         ThreeLevelListAdapterCorsi threeLevelListAdapterAdapter = new ThreeLevelListAdapterCorsi(this, ParentString, secondLevel, data);
         expandableListView.setAdapter(threeLevelListAdapterAdapter);
 
+
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;
 
@@ -217,7 +226,7 @@ public class Visualizza extends AppCompatActivity {
             }
         });
 
-
+        expandableListView.expandGroup(0);
     }
 
 
@@ -335,7 +344,7 @@ public class Visualizza extends AppCompatActivity {
             }
         });
 
-
+        expandableListView.expandGroup(0);
     }
 
     @Override

@@ -111,15 +111,18 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
         text.setText(this.parentHeaders.get(groupPosition));
         if(groupPosition!=0) immagine.setBackgroundResource(R.drawable.didattica_white);
         else{immagine.setBackgroundResource(R.drawable.dipico_white);}
+
         if(groupPosition!=0){
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     Intent corso=new Intent(mContext,Corso.class);
                     corso.putExtra("position", parentHeaders.get(groupPosition));
                     corso.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     mContext.startActivity(corso);
-                    drawer.closeDrawer(GravityCompat.START);
+
                 }
             });
 
@@ -198,12 +201,14 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     }
 
                     if(terzo.size()==0) {
+
                         Intent visualizza=new Intent(mContext,Visualizza.class);
                         visualizza.putExtra("id_dip", id_dipartimento);
                         visualizza.putExtra("secondolv",second.get(i).getTitolo());
                         visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                         mContext.startActivity(visualizza);
-                        drawer.closeDrawer(GravityCompat.START);
+
                         //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo(), Toast.LENGTH_SHORT).show();
                     }
                     return false;
@@ -216,6 +221,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     String prova = "";
                     prova = "Hai premuto: id_dip: " + id_dipartimento;
                     Log.d("primolivello", prova);
+
 
                     ArrayList<SplashActivity.SottoLivelli> second = new ArrayList<SplashActivity.SottoLivelli>();
                     for (int j = 0; j < livello2dec.size(); j++) {
@@ -246,8 +252,9 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     visualizza.putExtra("secondolv",second.get(i).getTitolo());
                     visualizza.putExtra("terzolv",terzo.get(i1).getTitolo());
                     visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     mContext.startActivity(visualizza);
-                    drawer.closeDrawer(GravityCompat.START);
+
                     //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_SHORT).show();
                     return false;
                 }

@@ -110,8 +110,9 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                     Intent corso=new Intent(mContext,Corso.class);
                     corso.putExtra("position", parentHeaders.get(groupPosition));
                     corso.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     mContext.startActivity(corso);
-                    drawer.closeDrawer(GravityCompat.START);
+
                 }
             });
 
@@ -123,7 +124,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                     Intent dipartimento=new Intent(mContext,MainActivity.class);
                     dipartimento.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(dipartimento);
-                    drawer.closeDrawer(GravityCompat.START);
+
                 }
             });
 
@@ -208,7 +209,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                         visualizza.putExtra("secondolv",second.get(i).getTitolo());
                         visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(visualizza);
-                        drawer.closeDrawer(GravityCompat.START);
+
                         //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo(), Toast.LENGTH_SHORT).show();
                     }
                     return false;
@@ -253,7 +254,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                     visualizza.putExtra("terzolv",terzo.get(i1).getTitolo());
                     visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(visualizza);
-                    drawer.closeDrawer(GravityCompat.START);
+
                     //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_SHORT).show();
                     return false;
                 }
@@ -281,7 +282,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
             if (corsi.get(i).getId_gruppo() == corsi_dipartimento) {
                 count++;
                 if(count==groupPosition) {
-                    Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + corsi.get(i).getId(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + corsi.get(i).getId(), Toast.LENGTH_SHORT).show();
 
                 }
             }
