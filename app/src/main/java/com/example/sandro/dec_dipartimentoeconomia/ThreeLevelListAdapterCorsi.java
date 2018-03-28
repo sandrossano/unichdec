@@ -123,6 +123,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                 public void onClick(View view) {
                     Intent dipartimento=new Intent(mContext,MainActivity.class);
                     dipartimento.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    dipartimento.putExtra("id_dipartimento",id_dipartimento);
                     mContext.startActivity(dipartimento);
 
                 }

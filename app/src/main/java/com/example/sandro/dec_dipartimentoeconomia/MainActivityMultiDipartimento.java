@@ -40,25 +40,18 @@ import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.diparti
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 
 
-public class MainActivityMultiDipartimento extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivityMultiDipartimento extends AppCompatActivity {
 
-    public static ArrayList<Categoria> categorie = SplashActivity.categorie;
-    public static JSONArray listaPersone = SplashActivity.listaPersone;
-    public static JSONArray listaDocumenti = SplashActivity.listaDocumenti;
-    public static ArrayList<Ruoli> ruoli = SplashActivity.ruoli;
     public static ArrayList<SplashActivity.Corso> corsi = SplashActivity.corsi;
     public static ArrayList<SplashActivity.Corso> parent=new ArrayList<>();
     public static Context mContext;
 
     private ListView listView;
 
-    //
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Titolo");
+        setTitle("Multidipartimento");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_multidipartimento);
 
@@ -66,6 +59,7 @@ public class MainActivityMultiDipartimento extends AppCompatActivity
 
 
         setUpAdapter();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -153,7 +147,6 @@ public class MainActivityMultiDipartimento extends AppCompatActivity
                             public void onClick(View view) {
                                 Intent intent=new Intent(getApplicationContext(), MainActivity.class);
                                 intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
-                                Log.d("invio",""+dipartimenti.get(i).getId());
                                 startActivity(intent);
                             }
                         });
@@ -177,12 +170,6 @@ public class MainActivityMultiDipartimento extends AppCompatActivity
                 });
 
             }
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-        });*/
     }
     @Override
     public void onBackPressed() {
@@ -248,42 +235,7 @@ public class MainActivityMultiDipartimento extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-
-        } else if (id == R.id.nav_dip) {
-            Intent i=new Intent(getApplicationContext(), Dipartimento.class);
-            startActivity(i);
-        } else if (id == R.id.nav_dida) {
-
-        } else if (id == R.id.nav_serv) {
-
-        } else if (id == R.id.nav_serch) {
-
-        } else if (id == R.id.nav_share) {
-            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("it.cineca.app.unich");
-            if (launchIntent != null) {
-                startActivity(launchIntent);//null pointer check in case package name was not found
-            }
-            else{
-
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=it.cineca.app.unich")));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=it.cineca.app.unich")));
-                }
-            }
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     public void apriAvviso(View v)
     {

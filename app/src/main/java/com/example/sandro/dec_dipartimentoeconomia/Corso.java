@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
@@ -25,6 +26,8 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipart
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
 import static com.example.sandro.dec_dipartimentoeconomia.Visualizza.drawerVisual;
 
 /**
@@ -49,6 +52,7 @@ public class Corso extends AppCompatActivity {
             id_corso = corsi.get(i).getId();
             setTitle(corsi.get(i).getNome());}
         }
+
         ArrayList<SplashActivity.Corso> listacorsiDipartimento=new ArrayList<>();
         for(int i=0;i<corsi.size();i++) {
             if (corsi.get(i).getId_gruppo() == corsi_dipartimento) {
@@ -104,37 +108,66 @@ public class Corso extends AppCompatActivity {
         ArrayList<String> a = new ArrayList<String>();
         ArrayList<Integer> ordinidia = new ArrayList<Integer>() {};
 
-        for(int i=0;i<corsi.size();i++) {
-            if(i==0) {
-                for (int m = 0; m < corsi.size(); m++) {
-                    if (corsi.get(m).getId_gruppo() == corsi_dipartimento) {
-                        if (corsi.get(m).getId() == id_corso) {
-                            parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento));
-                            ParentString.add(corsi.get(m).getNome());
+        for(int i=0;i<=corsi.size();i++) {
+            if(booleanoscuola==true) {
+                if (i == 0) {
+                    for (int m = 0; m < scuola.size(); m++) {
+                        if (scuola.get(m).getId_gruppo_scuola() == id_dipartimento) {
+                            if (scuola.get(m).getId() == id_corso) {
+                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS"));
+                                ParentString.add(scuola.get(m).getSigla());
+                            }
+                        }
+                    }
+                }
+                if (i == 1) {
+                    for (int c = 0; c < dipartimenti.size(); c++) {
+                        if (dipartimenti.get(c).getId() == id_dipartimento) {
+                            a.add(dipartimenti.get(c).getNome());
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            ParentString.add(dipartimenti.get(c).getSigla());
+                        }
+                    }
+                }
+                if (i != 0 && i != 1) {
+                    if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
+                        if (scuola.get(i - 1).getId() != id_corso) {
+                            a.add(scuola.get(i - 1).getSigla());
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            ParentString.add(scuola.get(i - 1).getSigla());
+                        }
+                    }
+                }
+            } else{
+                if (i == 0) {
+                    for (int m = 0; m < corsi.size(); m++) {
+                        if (corsi.get(m).getId_gruppo() == corsi_dipartimento) {
+                            if (corsi.get(m).getId() == id_corso) {
+                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS"));
+                                ParentString.add(corsi.get(m).getNome());
+                            }
+                        }
+                    }
+                }
+                if (i == 1) {
+                    for (int c = 0; c < dipartimenti.size(); c++) {
+                        if (dipartimenti.get(c).getId() == id_dipartimento) {
+                            a.add(dipartimenti.get(c).getNome());
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            ParentString.add(dipartimenti.get(c).getSigla());
+                        }
+                    }
+                }
+                if (i != 0 && i != 1) {
+                    if (corsi.get(i - 1).getId_gruppo() == corsi_dipartimento) {
+                        if (corsi.get(i - 1).getId() != id_corso) {
+                            a.add(corsi.get(i - 1).getNome());
+                            parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS"));
+                            ParentString.add(corsi.get(i - 1).getNome());
                         }
                     }
                 }
             }
-            if (i == 1) {
-                for (int c = 0; c < dipartimenti.size(); c++) {
-                    if (dipartimenti.get(c).getId() == id_dipartimento) {
-                        a.add(dipartimenti.get(c).getNome());
-                        parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento));
-                        ParentString.add(dipartimenti.get(c).getSigla());
-                    }
-                }
-            }
-
-            if(i!=0 && i!=1) {
-                if(corsi.get(i-2).getId_gruppo()==corsi_dipartimento) {
-                    if(corsi.get(i-2).getId()!=id_corso) {
-                        a.add(corsi.get(i - 2).getNome());
-                        parent.add(new SplashActivity.Corso(corsi.get(i - 2).getId(), corsi.get(i - 2).getNome(), corsi.get(i - 2).getColor(), corsi_dipartimento));
-                        ParentString.add(corsi.get(i - 2).getNome());
-                    }
-                }
-            }
-
 
             for (int j = 0; j < livello2dec.size(); j++) {
                 if(i==0){
