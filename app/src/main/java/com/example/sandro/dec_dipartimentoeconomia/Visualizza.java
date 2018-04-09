@@ -1,11 +1,13 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -43,6 +45,27 @@ public class Visualizza extends AppCompatActivity {
     private ExpandableListView expandableListView;
     static DrawerLayout drawerVisual=null;
 
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private void refreshContent() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        finish();
+        id_dipartimento=getIntent().getIntExtra("id_dip",0);
+        secondolv=getIntent().getStringExtra("secondolv");
+        terzolv=getIntent().getStringExtra("terzolv");
+        corso=getIntent().getIntExtra("id_corso",-1);
+
+        Intent i=new Intent(this, Visualizza.class);
+        i.putExtra("id_dip",id_dipartimento);
+        i.putExtra("secondolv",secondolv);
+        i.putExtra("terzolv",terzolv);
+        i.putExtra("id_corso",corso);
+        startActivity(i);
+        overridePendingTransition(0, 0);
+        Log.d("aggiorna","ok");
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +76,14 @@ public class Visualizza extends AppCompatActivity {
         terzolv=getIntent().getStringExtra("terzolv");
         corso=getIntent().getIntExtra("id_corso",-1);
         TextView text=(TextView)findViewById(R.id.testovisualizza);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
 
         if(corso!=-1) {
             if (terzolv == null)

@@ -1,17 +1,13 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
-import android.app.Activity;
-import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.text.Layout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,41 +19,40 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaPersone;
 
 
 public class Persona extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    ListView lista;
+    PersonAdapter adapter;
+    ArrayList<String> persone=new ArrayList<>();
+    ArrayList<Singolo> singolo=new ArrayList<>();
+    SearchView cerca;
+
+    private void refreshContent() {
+        adapter = new PersonAdapter(getApplicationContext(),persone,singolo);
+        lista.setAdapter(adapter);
+        cerca.setQuery("",false);
+        cerca.setQueryHint("Cerca... ");
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,21 +71,27 @@ public class Persona extends AppCompatActivity
         findViewById(R.id.include_doc_verbali).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_atti).setVisibility(View.INVISIBLE);
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
+
+
         final TextView mTextView = (TextView) findViewById(R.id.text);
         final LinearLayout layout=(LinearLayout) findViewById(R.id.layout_persone);
-        final SearchView cerca= (SearchView) findViewById(R.id.cerca);
+        cerca= (SearchView) findViewById(R.id.cerca);
         cerca.setIconified(false);
         cerca.setQueryHint("Cerca... ");
         cerca.setFocusable(false);
         cerca.clearFocus();
 
 
-                            final CaccAdapter adapter;
-                            final ListView lista = (ListView) findViewById(R.id.listview);
-                            final ArrayList<String> persone=new ArrayList<>();
 
+                            lista = (ListView) findViewById(R.id.listview);
 
-                            final ArrayList<Singolo> singolo=new ArrayList<>();
                             for(int i=0;i<listaPersone.length();i++){
                                 JSONObject expl= null;
                                 try {
@@ -103,7 +104,7 @@ public class Persona extends AppCompatActivity
                                 }
                             }
 
-                            adapter= new CaccAdapter(getApplicationContext(),persone,singolo);
+                            adapter= new PersonAdapter(getApplicationContext(),persone,singolo);
 
                             lista.setAdapter(adapter);
 
@@ -112,7 +113,7 @@ public class Persona extends AppCompatActivity
                                 @Override
                                 public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
                                 {
-                                    CaccAdapter t= (CaccAdapter) lista.getAdapter();
+                                    PersonAdapter t= (PersonAdapter) lista.getAdapter();
                                     int idscelto= t.singoli.get(position).getId();
                                     String nomescelto= t.singoli.get(position).getNome();
                                     String fotoscelto= t.singoli.get(position).getFoto();
@@ -149,7 +150,7 @@ public class Persona extends AppCompatActivity
                                                     }
                                                 }
                                             }
-                                            lista.setAdapter(new CaccAdapter(getApplicationContext(), temp, tempSingolo));
+                                            lista.setAdapter(new PersonAdapter(getApplicationContext(), temp, tempSingolo));
 
 
                                     return false;
@@ -269,12 +270,12 @@ public class Persona extends AppCompatActivity
     }
 }
 
-class CaccAdapter extends ArrayAdapter<String>{
+class PersonAdapter extends ArrayAdapter<String>{
     Context context;
     ArrayList<String> persone;
     ArrayList<Singolo> singoli;
 
-    CaccAdapter(Context context,ArrayList<String> titles, ArrayList<Singolo> singoli){
+    PersonAdapter(Context context, ArrayList<String> titles, ArrayList<Singolo> singoli){
         super(context,R.layout.single_row,R.id.nome_lista,titles);
         persone=titles;
         this.context=context;
@@ -287,7 +288,7 @@ class CaccAdapter extends ArrayAdapter<String>{
     public View getView (int position, View convertView, ViewGroup parent){
         LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row=inflater.inflate(R.layout.single_row,parent,false);
-        ImageView myImage=(ImageView)row.findViewById(R.id.imageView);
+        ImageView myImage=(ImageView)row.findViewById(R.id.logo_dipartimento);
         TextView a= (TextView) row.findViewById(R.id.nome_lista);
         a.setText(persone.get(position));
         a.setTextColor(Color.BLACK);

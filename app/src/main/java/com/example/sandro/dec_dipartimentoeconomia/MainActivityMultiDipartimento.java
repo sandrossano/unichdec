@@ -14,6 +14,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -47,7 +48,16 @@ public class MainActivityMultiDipartimento extends AppCompatActivity {
     public static Context mContext;
 
     private ListView listView;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
+    private void refreshContent() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        finish();
+        startActivity(new Intent(this, MainActivityMultiDipartimento.class));
+        overridePendingTransition(0, 0);
+        Log.d("aggiorna","ok");
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +66,14 @@ public class MainActivityMultiDipartimento extends AppCompatActivity {
         setContentView(R.layout.activity_main_multidipartimento);
 
         mContext=getApplicationContext();
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
 
 
         setUpAdapter();
@@ -206,35 +224,6 @@ public class MainActivityMultiDipartimento extends AppCompatActivity {
                     .show();
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.avvisi) {
-            return true;
-        }else if (id == R.id.main_doc) {
-            Intent i=new Intent(getApplicationContext(), Documenti.class);
-            startActivity(i);
-        }else if (id == R.id.item_persone) {
-            Intent i=new Intent(getApplicationContext(), Persona.class);
-            startActivity(i);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
 
     public void apriAvviso(View v)

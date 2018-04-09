@@ -37,7 +37,7 @@
                 android:id="@+id/menuvisual"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="192dp"
+                android:layout_marginTop="220dp"
                 android:groupIndicator="@null">
 
 

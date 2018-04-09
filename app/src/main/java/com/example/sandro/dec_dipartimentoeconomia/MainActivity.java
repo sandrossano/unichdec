@@ -1,22 +1,13 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.ActionBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,38 +17,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.SearchView;
-import android.widget.TextView;
-
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
@@ -80,13 +48,43 @@ public class MainActivity extends AppCompatActivity
     static int id_dipartimento=1;
     static int corsi_dipartimento;
     static boolean booleanoscuola=false;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private void refreshContent() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        finish();
+        id_dipartimento=getIntent().getIntExtra("id_dipartimento",1);
+        Intent i=new Intent(this, MainActivity.class);
+        i.putExtra("id_dipartimento",id_dipartimento);
+        startActivity(i);
+        overridePendingTransition(0, 0);
+        Log.d("aggiorna","ok");
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
+
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        ImageView logo = (ImageView)hView.findViewById(R.id.logo_dipartimento);
+
         id_dipartimento=getIntent().getIntExtra("id_dipartimento",1);
+        if(id_dipartimento==1)logo.setImageResource(R.drawable.declogo);
+        if(id_dipartimento==1275)logo.setImageResource(R.drawable.dsgs);
+        if(id_dipartimento==1270)logo.setImageResource(R.drawable.seags);
+
         for (int i=0;i<r_corsi.size();i++){
             if(r_corsi.get(i).getId_gruppo()==id_dipartimento)corsi_dipartimento=r_corsi.get(i).getId();
         }

@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,6 +65,20 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaDocu
 public class Documenti extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    ListView lista;
+    DocuAdapter adapter;
+    ArrayList<String> documenti = new ArrayList<>();
+    ArrayList<Doc> singolo = new ArrayList<>();
+    SearchView cerca;
+
+    private void refreshContent() {
+        adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
+        lista.setAdapter(adapter);
+        cerca.setQuery("",false);
+        cerca.setQueryHint("Cerca... ");
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
     ArrayList<Doc> singolo2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +98,14 @@ public class Documenti extends AppCompatActivity
         findViewById(R.id.include_apridoc).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_verbali).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_atti).setVisibility(View.INVISIBLE);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
 
 
         final LinearLayout layout=(LinearLayout) findViewById(R.id.layout_persone);
@@ -151,11 +174,9 @@ public class Documenti extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
 
-                        final DocAdapter adapter;
-                        final ListView lista = (ListView) findViewById(R.id.listview_docu);
-                        final ArrayList<String> documenti = new ArrayList<>();
-                        final ArrayList<Doc> singolo = new ArrayList<>();
-                        final SearchView cerca = (SearchView) findViewById(R.id.cerca_docu);
+                        lista = (ListView) findViewById(R.id.listview_docu);
+
+                        cerca = (SearchView) findViewById(R.id.cerca_docu);
 
                         JSONObject expl = null;
                         try {
@@ -184,7 +205,7 @@ public class Documenti extends AppCompatActivity
                             e.printStackTrace();
                         }
                         singolo2=singolo;
-                        adapter = new DocAdapter(getApplicationContext(), documenti, singolo);
+                        adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
 
                         lista.setAdapter(adapter);
 
@@ -193,7 +214,7 @@ public class Documenti extends AppCompatActivity
 
                             @Override
                             public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
-                                DocAdapter t = (DocAdapter) lista.getAdapter();
+                                DocuAdapter t = (DocuAdapter) lista.getAdapter();
                                 int idscelto = t.singoli.get(position).getId();
                                 String titolo = t.singoli.get(position).getTitolo();
                                 String descrizione = t.singoli.get(position).getDescrizione();
@@ -239,7 +260,7 @@ public class Documenti extends AppCompatActivity
                                         }
                                     }
                                 }
-                                lista.setAdapter(new DocAdapter(getApplicationContext(), temp, tempSingolo));
+                                lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
 
 
                                 return false;
@@ -365,7 +386,7 @@ public class Documenti extends AppCompatActivity
                 }
 
 
-                lista.setAdapter(new DocAdapter(getApplicationContext(), temp, tempSingolo));
+                lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
             }
 
             @Override
@@ -460,12 +481,12 @@ public class Documenti extends AppCompatActivity
     }
 }
 
-class DocAdapter extends ArrayAdapter<String>{
+class DocuAdapter extends ArrayAdapter<String>{
     Context context;
     ArrayList<String> documenti;
     ArrayList<Doc> singoli;
 
-    DocAdapter(Context context,ArrayList<String> titles, ArrayList<Doc> singoli){
+    DocuAdapter(Context context,ArrayList<String> titles, ArrayList<Doc> singoli){
         super(context,R.layout.single_row_doc,R.id.nome_lista,titles);
         documenti=titles;
         this.context=context;

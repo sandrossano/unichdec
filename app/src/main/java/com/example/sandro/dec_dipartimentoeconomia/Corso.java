@@ -1,10 +1,12 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,11 +42,32 @@ public class Corso extends AppCompatActivity {
     private ExpandableListView expandableListView;
     static DrawerLayout drawerCorso=null;
 
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private void refreshContent() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        finish();
+        Intent i=new Intent(this, Corso.class);
+        position=getIntent().getStringExtra("position");
+        i.putExtra("position",position);
+        startActivity(i);
+        overridePendingTransition(0, 0);
+        Log.d("aggiorna","ok");
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_corso);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
 
         position=getIntent().getStringExtra("position");
         for(int i=0;i<corsi.size();i++) {

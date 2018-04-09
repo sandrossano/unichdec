@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
-    android:layout_marginTop="32dp"
+    android:layout_height="220dp"
+    android:layout_marginTop="10dp"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -13,12 +13,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="65dp"
-        android:src="@drawable/declogo"
-        app:srcCompat="@drawable/declogo" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+        <ImageView
+            android:id="@+id/logo_dipartimento"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/background_light"
+            android:foreground="@drawable/rounded"
+            android:scaleType="fitCenter"
+            android:src="@drawable/declogo"
+            app:srcCompat="@drawable/declogo" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:foreground="@drawable/rounded"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo_unich_stretto"
+            app:srcCompat="@drawable/logo_unich_stretto" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="180dp"
