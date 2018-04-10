@@ -218,7 +218,7 @@ public class Persona extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_dipart, menu);
+        getMenuInflater().inflate(R.menu.main_pers, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
         searchView = null;

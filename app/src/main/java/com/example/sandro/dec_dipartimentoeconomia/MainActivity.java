@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity
 
     private ExpandableListView expandableListView;
     static int id_dipartimento=1;
+    static String nome_dipartimento="";
     static int corsi_dipartimento;
     static boolean booleanoscuola=false;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -54,8 +57,10 @@ public class MainActivity extends AppCompatActivity
         mSwipeRefreshLayout.setRefreshing(true);
         finish();
         id_dipartimento=getIntent().getIntExtra("id_dipartimento",1);
+        nome_dipartimento=getIntent().getStringExtra("nome_dipartimento");
         Intent i=new Intent(this, MainActivity.class);
         i.putExtra("id_dipartimento",id_dipartimento);
+        i.putExtra("nome_dipartimento",nome_dipartimento);
         startActivity(i);
         overridePendingTransition(0, 0);
         Log.d("aggiorna","ok");
@@ -81,9 +86,9 @@ public class MainActivity extends AppCompatActivity
         ImageView logo = (ImageView)hView.findViewById(R.id.logo_dipartimento);
 
         id_dipartimento=getIntent().getIntExtra("id_dipartimento",1);
-        if(id_dipartimento==1)logo.setImageResource(R.drawable.declogo);
-        if(id_dipartimento==1275)logo.setImageResource(R.drawable.dsgs);
-        if(id_dipartimento==1270)logo.setImageResource(R.drawable.seags);
+        nome_dipartimento=getIntent().getStringExtra("nome_dipartimento");
+        Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+nome_dipartimento+".png").into(logo);
+
 
         for (int i=0;i<r_corsi.size();i++){
             if(r_corsi.get(i).getId_gruppo()==id_dipartimento)corsi_dipartimento=r_corsi.get(i).getId();

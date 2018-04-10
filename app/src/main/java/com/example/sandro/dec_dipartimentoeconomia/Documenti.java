@@ -2,6 +2,7 @@ package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.app.Activity;
 import android.app.LauncherActivity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,6 +28,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
@@ -71,19 +73,23 @@ public class Documenti extends AppCompatActivity
     ArrayList<String> documenti = new ArrayList<>();
     ArrayList<Doc> singolo = new ArrayList<>();
     SearchView cerca;
+    SearchView searchView;
 
     private void refreshContent() {
-        adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
-        lista.setAdapter(adapter);
-        cerca.setQuery("",false);
-        cerca.setQueryHint("Cerca... ");
-        mSwipeRefreshLayout.setRefreshing(false);
+        if(mSwipeRefreshLayout.isEnabled()) {
+            adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
+            lista.setAdapter(adapter);
+            cerca.setQuery("", false);
+            cerca.setQueryHint("Cerca... ");
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
     ArrayList<Doc> singolo2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dipartimento);
+
         ProgressBar p=(ProgressBar) findViewById(R.id.progressBar);
         DrawableCompat.setTint(p.getIndeterminateDrawable(),Color.DKGRAY);
         findViewById(R.id.include).setVisibility(View.INVISIBLE);
@@ -107,6 +113,19 @@ public class Documenti extends AppCompatActivity
             }
         });
 
+        lista = (ListView) findViewById(R.id.listview_docu);
+        lista.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                if(absListView.canScrollList(-1)==true)mSwipeRefreshLayout.setEnabled(false);
+                else{mSwipeRefreshLayout.setEnabled(true);}
+            }
+        });
 
         final LinearLayout layout=(LinearLayout) findViewById(R.id.layout_persone);
         SearchView cerca= (SearchView) findViewById(R.id.cerca_docu);
@@ -209,7 +228,7 @@ public class Documenti extends AppCompatActivity
 
                         lista.setAdapter(adapter);
 
-
+/*
                         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                             @Override
@@ -265,7 +284,7 @@ public class Documenti extends AppCompatActivity
 
                                 return false;
                             }
-                        });
+                        });*/
                         lista.setAdapter(adapter);
 
                     }
@@ -407,8 +426,80 @@ public class Documenti extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_dipart, menu);
+        getMenuInflater().inflate(R.menu.main_pers, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+        searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+        }
+
+        searchView.setIconified(false);
+        searchView.setFocusable(true);
+        searchView.clearFocus();
+        searchView.setQueryHint("Cerca... ");
+
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
+                DocuAdapter t = (DocuAdapter) lista.getAdapter();
+                int idscelto = t.singoli.get(position).getId();
+                String titolo = t.singoli.get(position).getTitolo();
+                String descrizione = t.singoli.get(position).getDescrizione();
+                String data = t.singoli.get(position).getData();
+                int idcat = t.singoli.get(position).getId_categoria();
+                int dimensione = t.singoli.get(position).getDimensione();
+                String estensione = t.singoli.get(position).getEstensione();
+                String link = t.singoli.get(position).getLink();
+
+                Intent i = new Intent(getApplicationContext(), PaginaDocumento.class);
+                i.putExtra("iddoc", idscelto);
+                i.putExtra("idcat", idcat);
+                i.putExtra("titolo", titolo);
+                i.putExtra("descrizione", descrizione);
+                i.putExtra("data", data);
+                i.putExtra("dimensione", dimensione);
+                i.putExtra("estensione", estensione);
+                i.putExtra("link", link);
+                startActivity(i);
+
+            }
+        });
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                ArrayList<String> temp = new ArrayList<String>();
+                ArrayList<Doc> tempSingolo = new ArrayList<Doc>();
+                int textlength = searchView.getQuery().length();
+                temp.clear();
+                for (int i = 0; i < documenti.size(); i++) {
+                    if (textlength <= documenti.get(i).length()) {
+                        if (documenti.get(i).toString().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+                            temp.add(documenti.get(i));
+                            tempSingolo.add(singolo.get(i));
+                        }
+                    }
+                }
+                lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
+
+
+                return false;
+            }
+        });
+
+
         return true;
     }
 

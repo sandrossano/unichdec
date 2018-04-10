@@ -25,6 +25,7 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dip
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 
 public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
@@ -104,6 +105,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
         if(groupPosition!=1) immagine.setBackgroundResource(R.drawable.didattica_white);
         else{immagine.setBackgroundResource(R.drawable.dipico_white);}
         if(groupPosition!=0 && groupPosition!=1){
+            /*
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -112,6 +114,17 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                     corso.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                     mContext.startActivity(corso);
+
+                }
+            });
+            */
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent multi=new Intent(mContext,MainActivityMultiDipartimento.class);
+                    multi.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    mContext.startActivity(multi);
 
                 }
             });
@@ -124,6 +137,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                     Intent dipartimento=new Intent(mContext,MainActivity.class);
                     dipartimento.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     dipartimento.putExtra("id_dipartimento",id_dipartimento);
+                    dipartimento.putExtra("nome_dipartimento",nome_dipartimento);
                     mContext.startActivity(dipartimento);
 
                 }

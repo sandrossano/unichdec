@@ -17,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,10 +62,9 @@ public class MainActivityMultiDipartimento extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Multidipartimento");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_multidipartimento);
-
+        setTitle("Multidipartimento");
         mContext=getApplicationContext();
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
@@ -165,6 +165,7 @@ public class MainActivityMultiDipartimento extends AppCompatActivity {
                             public void onClick(View view) {
                                 Intent intent=new Intent(getApplicationContext(), MainActivity.class);
                                 intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
+                                intent.putExtra("nome_dipartimento",dipartimenti.get(i).getSigla());
                                 startActivity(intent);
                             }
                         });

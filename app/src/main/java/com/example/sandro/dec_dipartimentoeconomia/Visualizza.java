@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -22,12 +26,14 @@ import java.util.List;
 
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.drawerCorso;
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
+import static com.example.sandro.dec_dipartimentoeconomia.Corso.position;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawerMain;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
@@ -84,6 +90,18 @@ public class Visualizza extends AppCompatActivity {
                 refreshContent();
             }
         });
+
+        String str = position.replace("/", "");
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        ImageView logo = (ImageView)hView.findViewById(R.id.logo_dipartimento);
+        ImageView logo_prec = (ImageView)hView.findViewById(R.id.logo_precedente);
+
+        Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+str+".png").into(logo);
+
+        Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+nome_dipartimento+".png").into(logo_prec);
+
+
 
         if(corso!=-1) {
             if (terzolv == null)
@@ -163,16 +181,20 @@ public class Visualizza extends AppCompatActivity {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
                             parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
-                            ParentString.add(dipartimenti.get(c).getSigla());
+                            ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
                 }
-                if (i != 0 && i != 1) {
+                if (i == 2) {
+                    a.add("Torna al MultiDipartimento");
+                    ParentString.add("Torna al MultiDipartimento");
+                }
+                if (i != 0 && i != 1 && i!=2) {
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
                             parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
-                            ParentString.add(scuola.get(i - 1).getSigla());
+                            //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
                 }
@@ -193,17 +215,19 @@ public class Visualizza extends AppCompatActivity {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
                             parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
-                            ParentString.add(dipartimenti.get(c).getSigla());
+                            ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
                 }
-
-                if (i != 0 && i != 1) {
-                    if (corsi.get(i - 1).getId_gruppo() == corsi_dipartimento) {
-                        if (corsi.get(i - 1).getId() != id_corso) {
-                            a.add(corsi.get(i - 1).getNome());
-                            parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS"));
-                            ParentString.add(corsi.get(i - 1).getNome());
+                if (i == 2) {
+                    ParentString.add("Torna al MultiDipartimento");
+                }
+                if (i != 0 && i != 1 && i!=2) {
+                    if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
+                        if (scuola.get(i - 1).getId() != id_corso) {
+                            a.add(scuola.get(i - 1).getSigla());
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
                 }
