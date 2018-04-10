@@ -101,7 +101,7 @@ public class DocumentiVerbali extends AppCompatActivity
                                     public void onResponse(String response) {
                                         // Display the first 500 characters of the response string.
                                         try {
-                                            final DocAdapter adapter;
+                                            final DocuAdapter adapter;
                                             final ListView lista = (ListView) findViewById(R.id.listview_docu_verbali);
                                             final ArrayList<String> documenti = new ArrayList<>();
                                             final ArrayList<Doc> singolo = new ArrayList<>();
@@ -130,14 +130,14 @@ public class DocumentiVerbali extends AppCompatActivity
 
                                             }
 
-                                            adapter = new DocAdapter(getApplicationContext(), documenti, singolo);
+                                            adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
 
                                             lista.setAdapter(adapter);
 
                                             lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                                 @Override
                                                 public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
-                                                    DocAdapter t = (DocAdapter) lista.getAdapter();
+                                                    DocuAdapter t = (DocuAdapter) lista.getAdapter();
                                                     int idscelto = t.singoli.get(position).getId();
                                                     String titolo = t.singoli.get(position).getTitolo();
                                                     String descrizione = t.singoli.get(position).getDescrizione();
@@ -182,7 +182,7 @@ public class DocumentiVerbali extends AppCompatActivity
                                                             }
                                                         }
                                                     }
-                                                    lista.setAdapter(new DocAdapter(getApplicationContext(), temp, tempSingolo));
+                                                    lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
 
 
                                                     return false;

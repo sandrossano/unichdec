@@ -1,13 +1,17 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Path;
+import android.icu.text.RelativeDateTimeFormatter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -45,13 +50,16 @@ public class Persona extends AppCompatActivity
     ArrayList<String> persone=new ArrayList<>();
     ArrayList<Singolo> singolo=new ArrayList<>();
     SearchView cerca;
+    SearchView searchView;
 
     private void refreshContent() {
-        adapter = new PersonAdapter(getApplicationContext(),persone,singolo);
-        lista.setAdapter(adapter);
-        cerca.setQuery("",false);
-        cerca.setQueryHint("Cerca... ");
-        mSwipeRefreshLayout.setRefreshing(false);
+        if(mSwipeRefreshLayout.isEnabled()) {
+            adapter = new PersonAdapter(getApplicationContext(), persone, singolo);
+            lista.setAdapter(adapter);
+            cerca.setQuery("", false);
+            cerca.setQueryHint("Cerca... ");
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -82,15 +90,21 @@ public class Persona extends AppCompatActivity
 
         final TextView mTextView = (TextView) findViewById(R.id.text);
         final LinearLayout layout=(LinearLayout) findViewById(R.id.layout_persone);
-        cerca= (SearchView) findViewById(R.id.cerca);
-        cerca.setIconified(false);
-        cerca.setQueryHint("Cerca... ");
-        cerca.setFocusable(false);
-        cerca.clearFocus();
-
 
 
                             lista = (ListView) findViewById(R.id.listview);
+                            lista.setOnScrollListener(new AbsListView.OnScrollListener() {
+                                @Override
+                                public void onScrollStateChanged(AbsListView absListView, int i) {
+
+                                }
+
+                                @Override
+                                public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                                    if(absListView.canScrollList(-1)==true)mSwipeRefreshLayout.setEnabled(false);
+                                    else{mSwipeRefreshLayout.setEnabled(true);}
+                                }
+                            });
 
                             for(int i=0;i<listaPersone.length();i++){
                                 JSONObject expl= null;
@@ -107,6 +121,7 @@ public class Persona extends AppCompatActivity
                             adapter= new PersonAdapter(getApplicationContext(),persone,singolo);
 
                             lista.setAdapter(adapter);
+
 
                             lista.setOnItemClickListener(new AdapterView.OnItemClickListener()
                             {
@@ -126,6 +141,12 @@ public class Persona extends AppCompatActivity
                                 }
                             });
 
+        cerca= (SearchView) findViewById(R.id.cerca);
+        cerca.setIconified(false);
+        cerca.setQueryHint("Cerca... ");
+        cerca.setFocusable(false);
+        cerca.clearFocus();
+        /*
                             cerca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
                                 public boolean onQueryTextSubmit(String s) {
@@ -157,7 +178,7 @@ public class Persona extends AppCompatActivity
                                 }
                             });
                             lista.setAdapter(adapter);
-
+        */
 
 
 
@@ -198,6 +219,50 @@ public class Persona extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_dipart, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+        searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+        }
+
+        searchView.setIconified(false);
+        searchView.setFocusable(true);
+        searchView.clearFocus();
+        searchView.setQueryHint("Cerca... ");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                ArrayList<String> temp = new ArrayList<String>();
+                ArrayList<Singolo> tempSingolo=new ArrayList<Singolo>();
+                int textlength = searchView.getQuery().length();
+                temp.clear();
+                for (int i = 0; i < persone.size(); i++)
+                {
+                    if (textlength <= persone.get(i).length())
+                    {
+                        if(persone.get(i).toString().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase()))
+                        {
+                            temp.add(persone.get(i));
+                            tempSingolo.add(singolo.get(i));
+                        }
+                    }
+                }
+                lista.setAdapter(new PersonAdapter(getApplicationContext(), temp, tempSingolo));
+
+
+                return false;
+            }
+        });
         return true;
     }
 
