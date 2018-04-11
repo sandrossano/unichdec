@@ -172,7 +172,7 @@ public class SplashActivity extends AppCompatActivity{
         }
     }
 
-    public String localhost = "proxybar.altervista.org";
+    //public String localhost = "proxybar.altervista.org";
     public String localhost2 ="https://economia.unich.it/decapp/";
     public static ArrayList<Categoria> categorie = new ArrayList<>();
     public static JSONArray listaPersone = new JSONArray();
@@ -465,7 +465,7 @@ public class SplashActivity extends AppCompatActivity{
 //Persone
             // Instantiate the RequestQueue.
             RequestQueue queue5 = Volley.newRequestQueue(this);
-            String url5 = "http://" + localhost + "/person/read.php";
+            String url5 = localhost2 + "persone/";
 
 // Request a string response from the provided URL.
             StringRequest stringRequest5 = new StringRequest(Request.Method.GET, url5,

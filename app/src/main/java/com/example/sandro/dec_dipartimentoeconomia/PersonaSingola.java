@@ -50,8 +50,14 @@ public class PersonaSingola extends AppCompatActivity
 
         ImageView imm=(ImageView) findViewById(R.id.immagineSingolo);
         int idsing = getIntent().getIntExtra("idsing",0);
+
         String nomesing = getIntent().getStringExtra("nomesing");
         String fotosing = getIntent().getStringExtra("fotosing");
+        String email = getIntent().getStringExtra("email");
+        String telefono_fisso = getIntent().getStringExtra("telefono_fisso");
+        String sede = getIntent().getStringExtra("sede");
+        String indirizzo = getIntent().getStringExtra("indirizzo");
+
         if(fotosing.endsWith("jpg"))
             Picasso.with(getApplicationContext()).load("https://economia.unich.it/fototessera/"+fotosing).into(imm);
         else{
@@ -60,7 +66,15 @@ public class PersonaSingola extends AppCompatActivity
         setTitle(nomesing);
 
         TextView wow= (TextView) findViewById(R.id.idcacca);
-        wow.setText("id: "+idsing+",nome: "+nomesing+",foto: "+fotosing);
+        wow.setText("id: "+idsing+",nome: "+nomesing+",foto: "+fotosing );
+        TextView wow1= (TextView) findViewById(R.id.tvNumber1);
+        wow1.setText(telefono_fisso);
+        TextView wow2= (TextView) findViewById(R.id.tvNumber3);
+        wow2.setText(email);
+        TextView wow5= (TextView) findViewById(R.id.tvNumber5);
+        wow5.setText(sede);
+        TextView wow4= (TextView) findViewById(R.id.tvNumber4);
+        wow4.setText(indirizzo);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -133,7 +133,21 @@ public class Persona extends AppCompatActivity
                                 try {
                                     expl = listaPersone.getJSONObject(i);
                                     persone.add(expl.getString("nome")+" "+expl.getString("cognome"));
-                                    singolo.add(new Singolo(expl.getInt("id"),expl.getString("nome")+" "+expl.getString("cognome"),expl.getString("foto")));
+                                    String indirizzo="";
+                                    String sede="";
+                                    String email="";
+                                    String telefono="";
+
+                                    if(!expl.getString("indirizzo").equals(null)){indirizzo=expl.getString("indirizzo");}
+                                    if(!expl.getString("sede").equals(null)){sede=expl.getString("sede");}
+                                    if(!expl.getString("piano").equals(null)&&!expl.getString("piano").equals("")){sede+=", Piano: "+expl.getString("piano");}
+                                    if(!expl.getString("scala").equals(null)&&!expl.getString("scala").equals("")){sede+=", Scala: "+expl.getString("scala");}
+                                    if(!expl.getString("email").equals(null)){email=expl.getString("email");}
+                                    if(!expl.getString("telefono_fisso").equals(null)){telefono=expl.getString("telefono_fisso");}
+
+
+                                    singolo.add(new Singolo(expl.getInt("id"),expl.getString("nome")+" "+expl.getString("cognome"),expl.getString("foto"),email,telefono,sede,indirizzo));
+
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -158,6 +172,11 @@ public class Persona extends AppCompatActivity
                                     i.putExtra("idsing",idscelto);
                                     i.putExtra("nomesing",nomescelto);
                                     i.putExtra("fotosing",fotoscelto);
+                                    i.putExtra("email",t.singoli.get(position).getEmail());
+                                    i.putExtra("telefono_fisso",t.singoli.get(position).getTelefono_fisso());
+                                    i.putExtra("sede",t.singoli.get(position).getSede());
+                                    i.putExtra("indirizzo",t.singoli.get(position).getIndirizzo());
+
                                     startActivity(i);
 
                                 }
@@ -691,10 +710,25 @@ class Singolo{
     private int id;
     private String nome;
     private String foto;
-    public Singolo(int id, String nomecognome, String foto){
-        this.id=id; this.nome=nomecognome;this.foto=foto;
+    private String email;
+    private String telefono_fisso;
+    private String sede;
+    private String indirizzo;
+    public Singolo(int id, String nomecognome, String foto,String email,String telefono,String sede, String indirizzo){
+        this.id=id; this.nome=nomecognome;this.foto=foto;this.email=email;this.telefono_fisso=telefono; this.sede=sede;this.indirizzo=indirizzo;
     }
+
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
+    public String getSede() {
+        return sede;
+    }
+
     public int getId(){return id;}
     public String getNome(){return nome;}
     public String getFoto(){return foto;}
+    public String getEmail(){return email;}
+    public String getTelefono_fisso(){return telefono_fisso;}
 }
