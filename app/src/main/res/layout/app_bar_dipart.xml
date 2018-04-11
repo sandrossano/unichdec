@@ -2,118 +2,122 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/swipe_layout"
-    tools:context="com.example.sandro.dec_dipartimentoeconomia.MainActivity">
-
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.sandro.dec_dipartimentoeconomia.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        tools:context="com.example.sandro.dec_dipartimentoeconomia.MainActivity">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-    </android.support.design.widget.AppBarLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/content_dipart" />
+        </android.support.design.widget.AppBarLayout>
 
-    <include
-        android:id="@+id/include_apridoc"
-        layout="@layout/content_apridoc"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include"
+            layout="@layout/content_dipart"
+            android:layout_marginTop="56dp" />
 
-    <include
-        android:id="@+id/include_pers"
-        layout="@layout/content_pers"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include_apridoc"
+            layout="@layout/content_apridoc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-    <include
-        android:id="@+id/include_sing"
-        layout="@layout/content_sing"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include_pers"
+            layout="@layout/content_pers"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-    <include
-        android:id="@+id/include_org"
-        layout="@layout/content_org"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include_sing"
+            layout="@layout/content_sing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-    <include
-        android:id="@+id/include_cons"
-        layout="@layout/content_org2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include_org"
+            layout="@layout/content_org"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-    <include
-        android:id="@+id/include_gruppo"
-        layout="@layout/content_org3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include_cons"
+            layout="@layout/content_org2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-    <include
-        android:id="@+id/include_didattica"
-        layout="@layout/content_org4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include_gruppo"
+            layout="@layout/content_org3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-    <include
-        android:id="@+id/include_doc"
-        layout="@layout/content_doc"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include_didattica"
+            layout="@layout/content_org4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-    <include
-        android:id="@+id/include_doc_verbali"
-        layout="@layout/content_doc_verbali"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include_doc"
+            layout="@layout/content_doc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-    <include
-        android:id="@+id/include_doc_atti"
-        layout="@layout/content_doc_atti"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include_doc_verbali"
+            layout="@layout/content_doc_verbali"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-    <include
-        android:id="@+id/include_ricerca"
-        layout="@layout/content_org5"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/include_doc_atti"
+            layout="@layout/content_doc_atti"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        <include
+            android:id="@+id/include_ricerca"
+            layout="@layout/content_org5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="invisible" />
 
-</android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

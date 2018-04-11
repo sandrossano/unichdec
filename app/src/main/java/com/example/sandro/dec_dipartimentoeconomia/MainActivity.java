@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.squareup.picasso.Picasso;
 
@@ -27,6 +30,8 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
@@ -45,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     public static Context mContext;
     static DrawerLayout drawer=null;
     static DrawerLayout drawerMain=null;
+    private ViewPager viewPager;
 
     private ExpandableListView expandableListView;
     static int id_dipartimento=1;
@@ -52,6 +58,25 @@ public class MainActivity extends AppCompatActivity
     static int corsi_dipartimento;
     static boolean booleanoscuola=false;
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    public class MyTimerTask extends TimerTask{
+
+        @Override
+        public void run() {
+            MainActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(viewPager.getCurrentItem()==2){
+                        viewPager.setCurrentItem(0);
+                    }
+                    else {
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                    }
+                }
+            });
+
+        }
+    }
 
     private void refreshContent() {
         mSwipeRefreshLayout.setRefreshing(true);
@@ -71,6 +96,40 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        viewPager=(ViewPager) findViewById(R.id.viewPager);
+        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(this);
+        viewPager.setAdapter(viewPagerAdapter);
+
+        Timer timer=new Timer();
+        timer.scheduleAtFixedRate(new MyTimerTask(),0,4000);
+/*
+        final ProgressBar mProgressBar;
+        CountDownTimer mCountDownTimer;
+        final int[] lll = {0};
+
+        mProgressBar=(ProgressBar)findViewById(R.id.progressbar);
+        mProgressBar.setProgress(lll[0]);
+        mCountDownTimer=new CountDownTimer(4000,1) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Log.v("Log_tag", "Tick of Progress"+ lll[0] + millisUntilFinished);
+                lll[0]++;
+                mProgressBar.setProgress(lll[0]*100/(4000));
+
+            }
+
+            @Override
+            public void onFinish() {
+                //Do what you want
+                lll[0]=0;
+                mProgressBar.setProgress(100);
+
+            }
+        };
+        mCountDownTimer.start();
+*/
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -285,6 +344,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
         }else if (id == R.id.item_persone) {
             Intent i=new Intent(getApplicationContext(), Persona.class);
+            i.putExtra("from_dipartimento",1);
             startActivity(i);
         }
 

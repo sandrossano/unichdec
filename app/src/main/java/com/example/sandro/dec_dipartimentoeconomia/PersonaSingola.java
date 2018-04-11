@@ -3,8 +3,11 @@ package com.example.sandro.dec_dipartimentoeconomia;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,11 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 
 public class PersonaSingola extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,10 @@ public class PersonaSingola extends AppCompatActivity
         findViewById(R.id.include_apridoc).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_verbali).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_atti).setVisibility(View.INVISIBLE);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setEnabled(false);
+
 
         ImageView imm=(ImageView) findViewById(R.id.immagineSingolo);
         int idsing = getIntent().getIntExtra("idsing",0);
@@ -65,11 +74,20 @@ public class PersonaSingola extends AppCompatActivity
             }
         });
 
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        }
+
+/*
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+*/
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -88,7 +106,7 @@ public class PersonaSingola extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_dipart, menu);
+        //getMenuInflater().inflate(R.menu.main_dipart, menu);
         return true;
     }
 
@@ -97,26 +115,9 @@ public class PersonaSingola extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.person) {
-            Intent i = new Intent(getApplicationContext(), Persona.class);
-            startActivity(i);
-        }else if (id == R.id.organig) {
-            Intent i=new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
-        }else if (id == R.id.main_doc) {
-            Intent i=new Intent(getApplicationContext(), Documenti.class);
-            startActivity(i);
-        }else if (id == R.id.atti) {
-            Intent i=new Intent(getApplicationContext(), DocumentiAtti.class);
-            startActivity(i);
-        }else if (id == R.id.verbali) {
-            Intent i=new Intent(getApplicationContext(), DocumentiVerbali.class);
-            startActivity(i);
+        if(item.getItemId()==android.R.id.home){
+            finish();
         }
-
         return super.onOptionsItemSelected(item);
     }
 

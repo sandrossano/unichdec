@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -26,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -38,8 +40,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
+import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaPersone;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
 
 
 public class Persona extends AppCompatActivity
@@ -51,6 +64,7 @@ public class Persona extends AppCompatActivity
     ArrayList<Singolo> singolo=new ArrayList<>();
     SearchView cerca;
     SearchView searchView;
+    private ExpandableListView expandableListView;
 
     private void refreshContent() {
         if(mSwipeRefreshLayout.isEnabled()) {
@@ -87,6 +101,14 @@ public class Persona extends AppCompatActivity
             }
         });
 
+        if(getIntent().getIntExtra("from_dipartimento",0)==1) {setUpAdapter();}
+        if(getIntent().getIntExtra("from_corso",0)==1) {setUpAdapterCorso();}
+
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        }
 
         final TextView mTextView = (TextView) findViewById(R.id.text);
         final LinearLayout layout=(LinearLayout) findViewById(R.id.layout_persone);
@@ -274,6 +296,9 @@ public class Persona extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if(item.getItemId()==android.R.id.home){
+            finish();
+        }
         if (id == R.id.organig) {
             Intent i=new Intent(getApplicationContext(), Organigramma.class);
             startActivity(i);
@@ -333,6 +358,299 @@ public class Persona extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+    private void setUpAdapter() {
+
+        LinkedHashMap<String, String[]> thirdLevelq1;
+        /**
+         * Second level array list
+         */
+        List<String[]> secondLevel = new ArrayList<>();
+        /**
+         * Inner level data
+         */
+        List<LinkedHashMap<String, String[]>> data = new ArrayList<>();
+
+
+        ArrayList<String> ParentString= new ArrayList<String>();
+        ArrayList<String> a = new ArrayList<String>();
+        ArrayList<Integer> ordinidia = new ArrayList<Integer>() {};
+
+        for(int i=0;i<=corsi.size();i++) {
+            if (i == 0) {
+                for(int c=0;c<dipartimenti.size();c++) {
+                    if(dipartimenti.get(c).getId()==id_dipartimento){
+                        parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento,"DIP"));
+                        ParentString.add(dipartimenti.get(c).getSigla());}
+                }
+            }
+
+            if(i!=0) {
+                if(booleanoscuola==false) {
+                    if (corsi.get(i - 1).getId_gruppo() == corsi_dipartimento) {
+                        a.add(corsi.get(i - 1).getNome());
+                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS"));
+                        ParentString.add(corsi.get(i - 1).getNome());
+                    }
+                }
+                else{
+                    a.add(SplashActivity.scuola.get(i - 1).getSigla());
+                    parent.add(new SplashActivity.Corso(SplashActivity.scuola.get(i - 1).getId(), SplashActivity.scuola.get(i - 1).getSigla(), 0, id_dipartimento, "CS"));
+                    ParentString.add(SplashActivity.scuola.get(i - 1).getSigla());
+
+                }
+            }
+
+
+            for (int j = 0; j < livello2dec.size(); j++) {
+                if(i==0){
+                    //&& livello2dec.get(j).getId_pagina()<=0
+                    if(livello2dec.get(j).getLivello()==1  && livello2dec.get(j).getId_gruppo()==id_dipartimento){
+                        a.add(livello2dec.get(j).getTitolo());
+                        ordinidia.add(new Integer(livello2dec.get(j).getI()));
+                    }
+                }
+                /*else{                     //Se ci sono altri espandibili oltre il dipartimento
+
+                    for(int l=0;l<corsi.size();l++) {
+
+                        if (corsi.get(l).getId_gruppo() == corsi_dipartimento) {
+                            a.add(corsi.get(l).getNome());
+                        }
+                    }
+                }*/
+            }
+
+            if(i==0) {
+                ArrayList<String[]> des = new ArrayList<String[]>() {
+                };
+                thirdLevelq1 = new LinkedHashMap<>();
+                for (int j = 0; j < a.size(); j++) {
+                    ArrayList<String> lista = new ArrayList<>();
+                    for (int k = 0; k < livello2dec.size(); k++) {
+                        if (j == 0 && a.size() == 1) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                lista.add(livello2dec.get(k).getTitolo());
+                            }
+                        }
+                        if (j == 0 && a.size() > 1) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                lista.add(livello2dec.get(k).getTitolo());
+                            }
+                        }
+                        if (j != 0 && j != a.size() - 1) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                lista.add(livello2dec.get(k).getTitolo());
+                            }
+                        }
+                        if (j == a.size() - 1) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                lista.add(livello2dec.get(k).getTitolo());
+                            }
+                        }
+
+                    }
+
+                    des.add(lista.toArray(new String[0]));
+                    Log.d("des", des.toString());
+                    thirdLevelq1.put(a.get(j), des.get(j));
+                    lista.removeAll(lista);
+
+                }
+                secondLevel.add(a.toArray(new String[0]));
+                data.add(thirdLevelq1);
+                a.removeAll(a);
+                ordinidia.removeAll(ordinidia);
+                thirdLevelq1 = null;
+            }
+        }
+
+        expandableListView = (ExpandableListView) findViewById(R.id.navigationmenu);
+        //passing three level of information to constructor
+        ThreeLevelListAdapter threeLevelListAdapterAdapter = new ThreeLevelListAdapter(this, ParentString, secondLevel, data);
+        expandableListView.setAdapter(threeLevelListAdapterAdapter);
+
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousGroup = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != previousGroup)
+                    expandableListView.collapseGroup(previousGroup);
+                previousGroup = groupPosition;
+            }
+        });
+
+
+    }
+    private void setUpAdapterCorso() {
+
+        LinkedHashMap<String, String[]> thirdLevelq1;
+        /**
+         * Second level array list
+         */
+        List<String[]> secondLevel = new ArrayList<>();
+        /**
+         * Inner level data
+         */
+        List<LinkedHashMap<String, String[]>> data = new ArrayList<>();
+
+
+        ArrayList<String> ParentString= new ArrayList<String>();
+        ArrayList<String> a = new ArrayList<String>();
+        ArrayList<Integer> ordinidia = new ArrayList<Integer>() {};
+
+        for(int i=0;i<=corsi.size();i++) {
+            if(booleanoscuola==true) {
+                if (i == 0) {
+                    for (int m = 0; m < scuola.size(); m++) {
+                        if (scuola.get(m).getId_gruppo_scuola() == id_dipartimento) {
+                            if (scuola.get(m).getId() == id_corso) {
+                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS"));
+                                ParentString.add(scuola.get(m).getSigla());
+                            }
+                        }
+                    }
+                }
+                if (i == 1) {
+                    for (int c = 0; c < dipartimenti.size(); c++) {
+                        if (dipartimenti.get(c).getId() == id_dipartimento) {
+                            a.add(dipartimenti.get(c).getNome());
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
+                        }
+                    }
+                }
+                if (i == 2) {
+                    ParentString.add("Torna al MultiDipartimento");
+                }
+                if (i != 0 && i != 1 && i!=2) {
+                    if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
+                        if (scuola.get(i - 1).getId() != id_corso) {
+                            a.add(scuola.get(i - 1).getSigla());
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            //ParentString.add(scuola.get(i - 1).getSigla());
+                        }
+                    }
+                }
+            } else{
+                if (i == 0) {
+                    for (int m = 0; m < corsi.size(); m++) {
+                        if (corsi.get(m).getId_gruppo() == corsi_dipartimento) {
+                            if (corsi.get(m).getId() == id_corso) {
+                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS"));
+                                ParentString.add(corsi.get(m).getNome());
+                            }
+                        }
+                    }
+                }
+                if (i == 1) {
+                    for (int c = 0; c < dipartimenti.size(); c++) {
+                        if (dipartimenti.get(c).getId() == id_dipartimento) {
+                            a.add(dipartimenti.get(c).getNome());
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
+                        }
+                    }
+                }
+                if (i == 2) {
+                    ParentString.add("Torna al Multidipartimento");
+                }
+                if (i != 0 && i != 1 && i!=2) {
+                    if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
+                        if (scuola.get(i - 1).getId() != id_corso) {
+                            a.add(scuola.get(i - 1).getSigla());
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            //ParentString.add(scuola.get(i - 1).getSigla());
+                        }
+                    }
+                }
+            }
+
+            for (int j = 0; j < livello2dec.size(); j++) {
+                if(i==0){
+                    //&& livello2dec.get(j).getId_pagina()<=0
+                    if(livello2dec.get(j).getLivello()==1  && livello2dec.get(j).getId_gruppo()==id_corso){
+                        a.add(livello2dec.get(j).getTitolo());
+                        ordinidia.add(new Integer(livello2dec.get(j).getI()));
+                    }
+                }
+                /*else{                     //Se ci sono altri espandibili oltre il dipartimento
+
+                    for(int l=0;l<corsi.size();l++) {
+
+                        if (corsi.get(l).getId_gruppo() == corsi_dipartimento) {
+                            a.add(corsi.get(l).getNome());
+                        }
+                    }
+                }*/
+            }
+
+            if(i==0) {
+                ArrayList<String[]> des = new ArrayList<String[]>() {
+                };
+                thirdLevelq1 = new LinkedHashMap<>();
+                for (int j = 0; j < a.size(); j++) {
+                    ArrayList<String> lista = new ArrayList<>();
+                    for (int k = 0; k < livello2dec.size(); k++) {
+                        if (j == 0 && a.size() == 1) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                lista.add(livello2dec.get(k).getTitolo());
+                            }
+                        }
+                        if (j == 0 && a.size() > 1) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                lista.add(livello2dec.get(k).getTitolo());
+                            }
+                        }
+                        if (j != 0 && j != a.size() - 1) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                lista.add(livello2dec.get(k).getTitolo());
+                            }
+                        }
+                        if (j == a.size() - 1) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                lista.add(livello2dec.get(k).getTitolo());
+                            }
+                        }
+
+                    }
+
+                    des.add(lista.toArray(new String[0]));
+                    Log.d("des", des.toString());
+                    thirdLevelq1.put(a.get(j), des.get(j));
+                    lista.removeAll(lista);
+
+                }
+                secondLevel.add(a.toArray(new String[0]));
+                data.add(thirdLevelq1);
+                a.removeAll(a);
+                ordinidia.removeAll(ordinidia);
+                thirdLevelq1 = null;
+            }
+        }
+
+        expandableListView = (ExpandableListView) findViewById(R.id.navigationmenu);
+        //passing three level of information to constructor
+        ThreeLevelListAdapterCorsi threeLevelListAdapterAdapter = new ThreeLevelListAdapterCorsi(this, ParentString, secondLevel, data);
+        expandableListView.setAdapter(threeLevelListAdapterAdapter);
+        expandableListView.expandGroup(0);
+
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousGroup = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != previousGroup)
+                    expandableListView.collapseGroup(previousGroup);
+                previousGroup = groupPosition;
+            }
+        });
+
+
+    }
+
 }
 
 class PersonAdapter extends ArrayAdapter<String>{
@@ -364,6 +682,8 @@ class PersonAdapter extends ArrayAdapter<String>{
         }
         return row;
     }
+
+
 
 }
 
