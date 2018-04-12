@@ -24,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -49,6 +50,7 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaPersone;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
@@ -65,6 +67,8 @@ public class Persona extends AppCompatActivity
     SearchView cerca;
     SearchView searchView;
     private ExpandableListView expandableListView;
+    int from_dipartimento=0;
+    int from_corso=0;
 
     private void refreshContent() {
         if(mSwipeRefreshLayout.isEnabled()) {
@@ -94,6 +98,7 @@ public class Persona extends AppCompatActivity
         findViewById(R.id.include_doc_atti).setVisibility(View.INVISIBLE);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -101,8 +106,10 @@ public class Persona extends AppCompatActivity
             }
         });
 
-        if(getIntent().getIntExtra("from_dipartimento",0)==1) {setUpAdapter();}
-        if(getIntent().getIntExtra("from_corso",0)==1) {setUpAdapterCorso();}
+
+
+        if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
+        if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
 
         if(getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -157,7 +164,7 @@ public class Persona extends AppCompatActivity
                             adapter= new PersonAdapter(getApplicationContext(),persone,singolo);
 
                             lista.setAdapter(adapter);
-
+                            mSwipeRefreshLayout.setEnabled(true);
 
                             lista.setOnItemClickListener(new AdapterView.OnItemClickListener()
                             {
@@ -272,12 +279,33 @@ public class Persona extends AppCompatActivity
 
         searchView.setIconifiedByDefault(false);
         searchView.setIconified(false);
-        searchView.setFocusable(true);
+        searchView.setFocusable(false);
         searchView.setQueryHint("Cerca... ");
+        searchView.clearFocus();
+
+
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                // Do whatever you need
+                return true; // KEEP IT TO TRUE OR IT DOESN'T OPEN !!
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                searchView.clearFocus();
+                searchView.setQuery("",false);
+                adapter = new PersonAdapter(getApplicationContext(), persone, singolo);
+                lista.setAdapter(adapter);
+                return true; // OR FALSE IF YOU DIDN'T WANT IT TO CLOSE!
+            }
+        });
+
         int searchImgId = this.getResources().getIdentifier("android:id/search_mag_icon", null, null);
         ImageView searchImage = (ImageView) searchView.findViewById(searchImgId);
 
         ((ViewGroup) searchImage.getParent()).removeView(searchImage);
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -321,6 +349,7 @@ public class Persona extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if(item.getItemId()==android.R.id.home){
+
             finish();
         }
         if (id == R.id.organig) {
@@ -328,6 +357,8 @@ public class Persona extends AppCompatActivity
             startActivity(i);
         }else if (id == R.id.main_doc) {
             Intent i=new Intent(getApplicationContext(), Documenti.class);
+            if(from_dipartimento==1)i.putExtra("from_dipartimento",1);
+            if(from_corso==1)i.putExtra("from_corso",1);
             startActivity(i);
         }else if (id == R.id.atti) {
             Intent i=new Intent(getApplicationContext(), DocumentiAtti.class);

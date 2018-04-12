@@ -205,6 +205,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                         Intent visualizza=new Intent(mContext,Visualizza.class);
                         visualizza.putExtra("id_dip", id_dipartimento);
                         visualizza.putExtra("secondolv",second.get(i).getTitolo());
+                        visualizza.putExtra("position", parentHeaders.get(groupPosition));
                         visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                         mContext.startActivity(visualizza);
@@ -251,6 +252,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     visualizza.putExtra("id_dip", id_dipartimento);
                     visualizza.putExtra("secondolv",second.get(i).getTitolo());
                     visualizza.putExtra("terzolv",terzo.get(i1).getTitolo());
+                    visualizza.putExtra("position", parentHeaders.get(groupPosition));
                     visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                     mContext.startActivity(visualizza);

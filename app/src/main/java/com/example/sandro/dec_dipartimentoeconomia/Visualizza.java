@@ -90,17 +90,19 @@ public class Visualizza extends AppCompatActivity {
                 refreshContent();
             }
         });
-
-        String str = position.replace("/", "");
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
         ImageView logo = (ImageView)hView.findViewById(R.id.logo_dipartimento);
         ImageView logo_prec = (ImageView)hView.findViewById(R.id.logo_precedente);
 
+        String str=""; String str2="";
+        if(position!=null){str2=nome_dipartimento;str = position.replace("/", "");}
+        else{str=nome_dipartimento;}
+
         Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+str+".png").into(logo);
 
-        Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+nome_dipartimento+".png").into(logo_prec);
-
+        if(position!=null)Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+str2+".png").into(logo_prec);
+        else{logo_prec.setImageResource(R.drawable.logo_unich); }
 
 
         if(corso!=-1) {

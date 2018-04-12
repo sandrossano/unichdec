@@ -9,6 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:background="@color/cardview_light_background"
+        app:cardBackgroundColor="@android:color/background_light"
         app:cardCornerRadius="20dp"
         app:cardElevation="3dp"
         app:cardPreventCornerOverlap="false"

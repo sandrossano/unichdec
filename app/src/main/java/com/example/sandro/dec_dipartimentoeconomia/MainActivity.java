@@ -341,6 +341,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         }else if (id == R.id.main_doc) {
             Intent i=new Intent(getApplicationContext(), Documenti.class);
+            i.putExtra("from_dipartimento",1);
             startActivity(i);
         }else if (id == R.id.item_persone) {
             Intent i=new Intent(getApplicationContext(), Persona.class);
