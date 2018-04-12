@@ -16,6 +16,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/numero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -60,6 +61,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -84,7 +86,6 @@
                 android:layout_toEndOf="@id/ivContactItem3"
                 android:layout_toRightOf="@id/ivContactItem3"
                 android:ellipsize="end"
-                android:maxLines="1"
                 android:text="nome.cognome@unich.it"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
@@ -105,6 +106,7 @@
         </RelativeLayout>
         <!-- Picker -->
         <RelativeLayout
+            android:id="@+id/indirizzo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -122,14 +124,13 @@
 
             <TextView
                 android:id="@+id/tvNumber5"
-                android:layout_width="250dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/ivContactItem5"
                 android:layout_toRightOf="@id/ivContactItem5"
                 android:ellipsize="end"
-                android:maxLines="1"
                 android:text="nome.cognome@unich.it"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
@@ -151,6 +152,7 @@
 
         <!-- Webiste -->
         <RelativeLayout
+            android:id="@+id/sito"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -175,7 +177,6 @@
                 android:layout_toEndOf="@id/ivContactItem4"
                 android:layout_toRightOf="@id/ivContactItem4"
                 android:ellipsize="end"
-                android:maxLines="1"
                 android:text="nome.cognome@unich.it"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />

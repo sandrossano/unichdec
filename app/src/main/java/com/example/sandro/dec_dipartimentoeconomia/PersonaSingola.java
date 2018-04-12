@@ -76,6 +76,11 @@ public class PersonaSingola extends AppCompatActivity
         TextView wow4= (TextView) findViewById(R.id.tvNumber4);
         wow4.setText(indirizzo);
 
+        if(email.equals("")){findViewById(R.id.email).setVisibility(View.GONE);}
+        if(telefono_fisso.equals("")){findViewById(R.id.numero).setVisibility(View.GONE);}
+        if(sede.equals("")){findViewById(R.id.indirizzo).setVisibility(View.GONE);}
+        if(indirizzo.equals("")){findViewById(R.id.sito).setVisibility(View.GONE);}
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
