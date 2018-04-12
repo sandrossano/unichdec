@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -62,6 +64,7 @@ import java.util.List;
 
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.categorie;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaDocumenti;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 
 
 public class Documenti extends AppCompatActivity
@@ -420,8 +423,9 @@ public class Documenti extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
-        }
+
+            super.onBackPressed();}
+
     }
 
     @Override
@@ -437,10 +441,17 @@ public class Documenti extends AppCompatActivity
             searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
         }
 
+        searchView.setIconifiedByDefault(false);
         searchView.setIconified(false);
-        searchView.setFocusable(true);
-        searchView.clearFocus();
+        //searchView.setFocusable(true);
         searchView.setQueryHint("Cerca... ");
+
+        int searchImgId = this.getResources().getIdentifier("android:id/search_mag_icon", null, null);
+        ImageView searchImage = (ImageView) searchView.findViewById(searchImgId);
+
+        ((ViewGroup) searchImage.getParent()).removeView(searchImage);
+
+
 
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

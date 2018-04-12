@@ -270,10 +270,15 @@ public class Persona extends AppCompatActivity
             searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
         }
 
+        searchView.setIconifiedByDefault(false);
         searchView.setIconified(false);
         searchView.setFocusable(true);
-        searchView.clearFocus();
         searchView.setQueryHint("Cerca... ");
+        int searchImgId = this.getResources().getIdentifier("android:id/search_mag_icon", null, null);
+        ImageView searchImage = (ImageView) searchView.findViewById(searchImgId);
+
+        ((ViewGroup) searchImage.getParent()).removeView(searchImage);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

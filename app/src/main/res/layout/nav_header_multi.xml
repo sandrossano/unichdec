@@ -26,12 +26,14 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Viale Pindaro, 42 - 65127 Pescara" />
+        android:text="Viale Pindaro, 42 - 65127 Pescara"
+        android:textColor="@android:color/background_light" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tel: +39 085 4537560" />
+        android:text="Tel: +39 085 4537560"
+        android:textColor="@android:color/background_light" />
 
 </LinearLayout>
