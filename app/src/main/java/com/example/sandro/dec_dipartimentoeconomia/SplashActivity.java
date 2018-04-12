@@ -1,6 +1,7 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -16,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -215,11 +217,13 @@ public class SplashActivity extends AppCompatActivity{
 
 
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-
+        Window window = getWindow();
+        window.setStatusBarColor(R.color.colorPrimaryDark);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar4);
         DrawableCompat.setTint(progressBar.getIndeterminateDrawable(), Color.DKGRAY);
         haveStoragePermission();
