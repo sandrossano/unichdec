@@ -95,24 +95,37 @@ public class PaginaDocumento extends AppCompatActivity
 
 
 
-        String doc="<iframe src=\"http://docs.google.com/gview?embedded=true&url=https://economia.unich.it/dec/download.php?id="+iddoc+"&embedded=true\" width=\"100%\" height=\"100%\" style=\"border: none;\"></iframe>";
+        //String doc="<iframe src=\"http://docs.google.com/gview?embedded=true&url=https://economia.unich.it/dec/download.php?id="+iddoc+"&embedded=true\" width=\"100%\" height=\"100%\" style=\"border: none;\"></iframe>";
         final WebView wv = (WebView)findViewById(R.id.mWeb);
         wv.getSettings().setJavaScriptEnabled(true);
         //wv.getSettings().setPluginsEnabled(true);
         wv.getSettings().setAllowFileAccess(true);
-        wv.loadData(doc, "text/html",  "UTF-8");
+        wv.loadUrl("http://docs.google.com/gview?embedded=true&url=https://economia.unich.it/dec/download.php?id="+iddoc+"&embedded=true");
+        //wv.loadData(doc, "text/html",  "UTF-8");
         wv.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url)
             {Handler handler=new Handler();
+                wv.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('ndfHFb-c4YZDc-Wrql6b')[0].style.display='none'; " +
+                        "document.getElementsByClassName('ndfHFb-c4YZDc-Wrql6b')[1].style.display='none'; " +
+                        "document.getElementsByClassName('ndfHFb-c4YZDc-Wrql6b')[2].style.display='none'; " +
+                        "document.getElementsByClassName('ndfHFb-c4YZDc-Wrql6b')[3].style.display='none'; " +
+                        "})()");
+                wv.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('ndfHFb-c4YZDc-q77wGc')[0].style.display='none'; " +
+                        "})()");
+
+                wv.loadUrl("javascript:(function() { " +
+                        "document.documentElement.style.overflow = 'hidden'; document.body.scroll = \"no\";" +
+                        "})()");
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         RelativeLayout progress=(RelativeLayout)findViewById(R.id.progress);
                         progress.setVisibility(View.GONE);
-                        wv.setVisibility(View.VISIBLE);
                     }
-                },1000);
+                },800);
 
             }
         });
