@@ -9,11 +9,16 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +28,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -83,6 +91,32 @@ public class PaginaDocumento extends AppCompatActivity
 */
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+
+
+        String doc="<iframe src=\"http://docs.google.com/gview?embedded=true&url=https://economia.unich.it/dec/download.php?id="+iddoc+"&embedded=true\" width=\"100%\" height=\"100%\" style=\"border: none;\"></iframe>";
+        final WebView wv = (WebView)findViewById(R.id.mWeb);
+        wv.getSettings().setJavaScriptEnabled(true);
+        //wv.getSettings().setPluginsEnabled(true);
+        wv.getSettings().setAllowFileAccess(true);
+        wv.loadData(doc, "text/html",  "UTF-8");
+        wv.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url)
+            {Handler handler=new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RelativeLayout progress=(RelativeLayout)findViewById(R.id.progress);
+                        progress.setVisibility(View.GONE);
+                        wv.setVisibility(View.VISIBLE);
+                    }
+                },1000);
+
+            }
+        });
+
     }
 
     @Override
@@ -207,5 +241,4 @@ public class PaginaDocumento extends AppCompatActivity
             Long reference = downloadManager.enqueue(request);
         }
     }
-
 }
