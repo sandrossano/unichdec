@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -35,6 +36,7 @@ public class PaginaDocumento extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public int iddoc;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class PaginaDocumento extends AppCompatActivity
         findViewById(R.id.include_doc_verbali).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_atti).setVisibility(View.INVISIBLE);
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setEnabled(false);
         iddoc = getIntent().getIntExtra("iddoc", 0);
         String titolo = getIntent().getStringExtra("titolo");
         int idcat = getIntent().getIntExtra("idcat", 0);
@@ -64,21 +68,19 @@ public class PaginaDocumento extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        }
+/*
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+*/
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -96,7 +98,7 @@ public class PaginaDocumento extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_dipart, menu);
+        //getMenuInflater().inflate(R.menu.main_dipart, menu);
         return true;
     }
 
@@ -105,10 +107,9 @@ public class PaginaDocumento extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
+        //int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.person) {
+        /*if (id == R.id.person) {
             Intent i = new Intent(getApplicationContext(), Persona.class);
             startActivity(i);
         } else if (id == R.id.organig) {
@@ -125,6 +126,11 @@ public class PaginaDocumento extends AppCompatActivity
             startActivity(i);
         }
 
+        return super.onOptionsItemSelected(item);
+        */
+        if(item.getItemId()==android.R.id.home){
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 

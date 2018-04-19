@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
+            android:onClick="chiamata"
             android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
@@ -66,6 +67,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
+            android:onClick="email"
             android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView

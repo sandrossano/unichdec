@@ -3,6 +3,7 @@ package com.example.sandro.dec_dipartimentoeconomia;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -26,7 +29,13 @@ import android.widget.ProgressBar;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -51,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     static DrawerLayout drawer=null;
     static DrawerLayout drawerMain=null;
     private ViewPager viewPager;
+    WebView mWebView;
 
     private ExpandableListView expandableListView;
     static int id_dipartimento=1;
@@ -92,6 +102,7 @@ public class MainActivity extends AppCompatActivity
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +114,28 @@ public class MainActivity extends AppCompatActivity
 
         Timer timer=new Timer();
         timer.scheduleAtFixedRate(new MyTimerTask(),0,4000);
-/*
+
+        mWebView=(WebView)findViewById(R.id.browser);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageFinished(WebView view, String url)
+            {
+                mWebView.loadUrl("javascript:(function() { " +
+                        "document.getElementById('section-header').style.display='none'; " +
+                        "document.getElementById('zone-postscript-wrapper').style.display='none'; " +
+                        "document.getElementById('section-footer').style.display='none'; " +
+                        "document.getElementById('region-preface-second').style.display='none'; " +
+                        "document.getElementsByClassName('col-md-4 padding-l-r-5')[0].style.display='none'; " +
+                        "document.getElementsByClassName('col-md-4 padding-l-r-5')[1].style.display='none'; " +
+                        "document.getElementsByClassName('col-md-4 padding-l-r-5')[2].style.display='none'; " +
+                        "})()");
+            }
+        });
+
+        mWebView.loadUrl("https://economia.unich.it/");
+        /*
         final ProgressBar mProgressBar;
         CountDownTimer mCountDownTimer;
         final int[] lll = {0};

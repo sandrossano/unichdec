@@ -26,6 +26,8 @@ import com.squareup.picasso.Picasso;
 public class PersonaSingola extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     SwipeRefreshLayout mSwipeRefreshLayout;
+    String telefono_fisso;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,8 @@ public class PersonaSingola extends AppCompatActivity
 
         String nomesing = getIntent().getStringExtra("nomesing");
         String fotosing = getIntent().getStringExtra("fotosing");
-        String email = getIntent().getStringExtra("email");
-        String telefono_fisso = getIntent().getStringExtra("telefono_fisso");
+        email = getIntent().getStringExtra("email");
+        telefono_fisso = getIntent().getStringExtra("telefono_fisso");
         String sede = getIntent().getStringExtra("sede");
         String indirizzo = getIntent().getStringExtra("indirizzo");
 
@@ -182,5 +184,22 @@ public class PersonaSingola extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void chiamata(View view) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        String str=telefono_fisso.replace("/","");
+        str=str.replace("-","");
+        intent.setData(Uri.parse("tel:"+str));
+        startActivity(Intent.createChooser(intent, "Chiama..."));
+    }
+
+    public void email(View view) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto",email, null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
+
     }
 }

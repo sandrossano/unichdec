@@ -111,12 +111,6 @@ public class Persona extends AppCompatActivity
         if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
         if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
 
-        if(getSupportActionBar()!=null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        }
-
         final TextView mTextView = (TextView) findViewById(R.id.text);
         final LinearLayout layout=(LinearLayout) findViewById(R.id.layout_persone);
 
@@ -348,10 +342,6 @@ public class Persona extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if(item.getItemId()==android.R.id.home){
-
-            finish();
-        }
         if (id == R.id.organig) {
             Intent i=new Intent(getApplicationContext(), Organigramma.class);
             startActivity(i);
