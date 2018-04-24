@@ -10,7 +10,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="230dp"
         android:fitsSystemWindows="true"
         android:isScrollContainer="false"
         android:nestedScrollingEnabled="false"
@@ -30,14 +30,21 @@
             <WebView
                 android:id="@+id/mWeb"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:scrollbars="horizontal|vertical"
+                android:layout_height="300dp"
+                android:clickable="false"
+                android:defaultFocusHighlightEnabled="false"
+                android:focusable="false"
+                android:focusedByDefault="false"
+                android:nestedScrollingEnabled="false"
+                android:saveEnabled="false"
+                android:scrollbars="none"
+                android:touchscreenBlocksFocus="false"
                 android:visibility="visible" />
 
             <RelativeLayout
                 android:id="@+id/progress"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="230dp"
                 android:background="@color/colorPrimary">
 
                 <ProgressBar

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
@@ -45,6 +47,7 @@ public class PaginaDocumento extends AppCompatActivity
 
     public int iddoc;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    WebView wv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,13 +99,41 @@ public class PaginaDocumento extends AppCompatActivity
 
 
         //String doc="<iframe src=\"http://docs.google.com/gview?embedded=true&url=https://economia.unich.it/dec/download.php?id="+iddoc+"&embedded=true\" width=\"100%\" height=\"100%\" style=\"border: none;\"></iframe>";
-        final WebView wv = (WebView)findViewById(R.id.mWeb);
+        wv = (WebView)findViewById(R.id.mWeb);
+        wv.clearCache(true);
         wv.getSettings().setJavaScriptEnabled(true);
+        wv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
         //wv.getSettings().setPluginsEnabled(true);
         wv.getSettings().setAllowFileAccess(true);
-        wv.loadUrl("http://docs.google.com/gview?embedded=true&url=https://economia.unich.it/dec/download.php?id="+iddoc+"&embedded=true");
+        wv.loadUrl("http://docs.google.com/gview?&url=https://economia.unich.it/dec/download.php?id="+iddoc+"&embedded=true");
         //wv.loadData(doc, "text/html",  "UTF-8");
+        final boolean[] loadingFinished = {true};
+        final boolean[] redirect = {false};
         wv.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(
+                    WebView view, WebResourceRequest request) {
+                if (!loadingFinished[0]) {
+                    redirect[0] = true;
+                }
+
+                loadingFinished[0] = false;
+                wv.loadUrl(request.getUrl().toString());
+                return true;
+            }
+            @Override
+            public void onPageStarted(
+                    WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                loadingFinished[0] = false;
+                //SHOW LOADING IF IT ISNT ALREADY VISIBLE
+            }
             @Override
             public void onPageFinished(WebView view, String url)
             {Handler handler=new Handler();
@@ -111,21 +142,27 @@ public class PaginaDocumento extends AppCompatActivity
                         "document.getElementsByClassName('ndfHFb-c4YZDc-Wrql6b')[1].style.display='none'; " +
                         "document.getElementsByClassName('ndfHFb-c4YZDc-Wrql6b')[2].style.display='none'; " +
                         "document.getElementsByClassName('ndfHFb-c4YZDc-Wrql6b')[3].style.display='none'; " +
-                        "})()");
-                wv.loadUrl("javascript:(function() { " +
-                        "document.getElementsByClassName('ndfHFb-c4YZDc-q77wGc')[0].style.display='none'; " +
-                        "})()");
-
-                wv.loadUrl("javascript:(function() { " +
                         "document.documentElement.style.overflow = 'hidden'; document.body.scroll = \"no\";" +
                         "})()");
+
+                if(!redirect[0]){
+                    loadingFinished[0] = true;
+                }
+
+                if(loadingFinished[0] && !redirect[0]){
+                    RelativeLayout progress=(RelativeLayout)findViewById(R.id.progress);
+                    progress.setVisibility(View.GONE);
+                    //HIDE LOADING IT HAS FINISHED // HIDE YOUR SPLASH/LOADING VIEW
+                } else{
+                    redirect[0] = false;
+                }
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        RelativeLayout progress=(RelativeLayout)findViewById(R.id.progress);
-                        progress.setVisibility(View.GONE);
+
+
                     }
-                },800);
+                },300);
 
             }
         });
@@ -139,6 +176,8 @@ public class PaginaDocumento extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            wv.clearHistory();
+            wv.clearCache(true);
         }
     }
 
