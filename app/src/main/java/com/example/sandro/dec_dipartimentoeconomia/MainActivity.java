@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -42,6 +43,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import me.relex.circleindicator.CircleIndicator;
+
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
@@ -61,6 +64,10 @@ public class MainActivity extends AppCompatActivity
     static DrawerLayout drawerMain=null;
     private ViewPager viewPager;
     WebView mWebView;
+    private int currentPage = 0;
+    private final Integer[] XMEN= {R.drawable.logo_unich,R.drawable.declogo,R.drawable.dsgs,R.drawable.dipico,R.drawable.didattica};
+    private ArrayList<Integer> XMENArray = new ArrayList<Integer>();
+
 
     private ExpandableListView expandableListView;
     static int id_dipartimento=1;
@@ -102,19 +109,43 @@ public class MainActivity extends AppCompatActivity
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    private void init() {
+        for(int i=0;i<XMEN.length;i++)
+            XMENArray.add(XMEN[i]);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(new SlideAdapter(MainActivity.this,XMENArray));
+        CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
+        indicator.setViewPager(viewPager);
+
+        // Auto start of viewpager
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                if (currentPage == XMEN.length) {
+                    currentPage = 0;
+                }
+                viewPager.setCurrentItem(currentPage++, true);
+
+            }
+        };
+        Timer swipeTimer = new Timer();
+        swipeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        },500,4000);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        init();
 
-        viewPager=(ViewPager) findViewById(R.id.viewPager);
-        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(this);
-        viewPager.setAdapter(viewPagerAdapter);
 
-        Timer timer=new Timer();
-        timer.scheduleAtFixedRate(new MyTimerTask(),0,4000);
-
+        /*
         mWebView=(WebView)findViewById(R.id.browser);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
@@ -135,6 +166,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         mWebView.loadUrl("https://economia.unich.it/");
+        */
         /*
         final ProgressBar mProgressBar;
         CountDownTimer mCountDownTimer;

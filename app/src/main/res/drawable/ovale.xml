@@ -7,9 +7,9 @@
         android:right="10dp"
         android:bottom="10dp" />
     <stroke
-        android:width="3px" android:color="@color/colorPrimaryDark"/>
+        android:width="3px" android:color="#ffffff"/>
 
 
-        <solid android:color="#D6D6D6" />
+        <solid android:color="#ff9900" />
 
 </shape>
