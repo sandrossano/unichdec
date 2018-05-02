@@ -10,8 +10,13 @@ package com.example.sandro.dec_dipartimentoeconomia;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.ImageView;
+        import android.widget.TextView;
+
+        import com.squareup.picasso.Picasso;
 
         import java.util.ArrayList;
+
+        import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.immagini_dec;
 
 public class SlideAdapter extends PagerAdapter {
 
@@ -40,7 +45,12 @@ public class SlideAdapter extends PagerAdapter {
         View myImageLayout = inflater.inflate(R.layout.slide, view, false);
         ImageView myImage = (ImageView) myImageLayout
                 .findViewById(R.id.image);
-        myImage.setImageResource(images.get(position));
+        Picasso.with(context).load("https://economia.unich.it/immagini_home/"+immagini_dec.get(position).getPath()).into(myImage);
+        TextView text=(TextView)myImageLayout.findViewById(R.id.textView10) ;
+        text.setVisibility(View.VISIBLE);
+        text.setText(immagini_dec.get(position).getTitolo());
+        if (immagini_dec.get(position).getTitolo().equals("")){text.setVisibility(View.INVISIBLE);}
+        //myImage.setImageResource(images.get(position));
         view.addView(myImageLayout, 0);
         return myImageLayout;
     }

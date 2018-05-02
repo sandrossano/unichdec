@@ -2,11 +2,14 @@ package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -26,6 +29,8 @@ import android.webkit.WebViewClient;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -37,16 +42,23 @@ import org.jsoup.select.Elements;
 
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import me.relex.circleindicator.CircleIndicator;
 
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.immagini_dec;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.localhost2;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
 
 
@@ -65,7 +77,6 @@ public class MainActivity extends AppCompatActivity
     private ViewPager viewPager;
     WebView mWebView;
     private int currentPage = 0;
-    private final Integer[] XMEN= {R.drawable.logo_unich,R.drawable.declogo,R.drawable.dsgs,R.drawable.dipico,R.drawable.didattica};
     private ArrayList<Integer> XMENArray = new ArrayList<Integer>();
 
 
@@ -74,7 +85,9 @@ public class MainActivity extends AppCompatActivity
     static String nome_dipartimento="";
     static int corsi_dipartimento;
     static boolean booleanoscuola=false;
+
     SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     public class MyTimerTask extends TimerTask{
 
@@ -96,6 +109,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refreshContent() {
+        if(mSwipeRefreshLayout.isEnabled()) {
         mSwipeRefreshLayout.setRefreshing(true);
         finish();
         id_dipartimento=getIntent().getIntExtra("id_dipartimento",1);
@@ -107,11 +121,15 @@ public class MainActivity extends AppCompatActivity
         overridePendingTransition(0, 0);
         Log.d("aggiorna","ok");
         mSwipeRefreshLayout.setRefreshing(false);
+        }
+
     }
 
     private void init() {
-        for(int i=0;i<XMEN.length;i++)
-            XMENArray.add(XMEN[i]);
+        final Integer[] XMEN= {R.drawable.logo_unich,R.drawable.declogo,R.drawable.dsgs};
+        for(int i=0;i<immagini_dec.size();i++) {
+            XMENArray.add(i);
+        }
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new SlideAdapter(MainActivity.this,XMENArray));
@@ -122,7 +140,7 @@ public class MainActivity extends AppCompatActivity
         final Handler handler = new Handler();
         final Runnable Update = new Runnable() {
             public void run() {
-                if (currentPage == XMEN.length) {
+                if (currentPage == immagini_dec.size()) {
                     currentPage = 0;
                 }
                 viewPager.setCurrentItem(currentPage++, true);
@@ -135,9 +153,10 @@ public class MainActivity extends AppCompatActivity
             public void run() {
                 handler.post(Update);
             }
-        },500,4000);
+        },500,6000);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,6 +222,15 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        ScrollView scroll=(ScrollView)findViewById(R.id.scrollmain);
+        scroll.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                if(view.canScrollVertically(-1)==true)mSwipeRefreshLayout.setEnabled(false);
+                else{mSwipeRefreshLayout.setEnabled(true);}
+            }
+        });
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
@@ -241,6 +269,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        fab.setVisibility(View.GONE);
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerMain = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -248,6 +278,56 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        //SETTO GLI APPUNTAMENTI
+
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy", Locale.ITALY);
+        Date date = null;
+
+
+        TextView data1=(TextView)findViewById(R.id.data1);
+        try {
+            date = format1.parse(appuntamenti.get(0).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data1.setText(format2.format(date));
+        TextView testo1=(TextView)findViewById(R.id.testoavviso);
+        testo1.setText(appuntamenti.get(0).getTitolo());
+
+        TextView data2=(TextView)findViewById(R.id.data2);
+        try {
+            date = format1.parse(appuntamenti.get(1).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data2.setText(format2.format(date));
+        TextView testo2=(TextView)findViewById(R.id.testoavviso2);
+        testo2.setText(appuntamenti.get(1).getTitolo());
+
+        TextView data3=(TextView)findViewById(R.id.data3);
+        try {
+            date = format1.parse(appuntamenti.get(2).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data3.setText(format2.format(date));
+        TextView testo3=(TextView)findViewById(R.id.testoavviso3);
+        testo3.setText(appuntamenti.get(2).getTitolo());
+
+        TextView data4=(TextView)findViewById(R.id.data4);
+        try {
+            date = format1.parse(appuntamenti.get(3).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data4.setText(format2.format(date));
+        TextView testo4=(TextView)findViewById(R.id.testoavviso4);
+        testo4.setText(appuntamenti.get(3).getTitolo());
+
+
+
     }
 
 

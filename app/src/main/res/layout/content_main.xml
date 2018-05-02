@@ -1,140 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollmain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.sandro.dec_dipartimentoeconomia.MainActivity">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#d8e5f0"
-        tools:context="com.example.sandro.dec_dipartimentoeconomia.MainActivity">
+        android:background="#d8e5f0">
 
         <TextView
-        android:id="@+id/avviso"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Avviso"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="40sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.561" />
+            android:id="@+id/avviso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Avviso"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="40sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.561" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/avviso"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="92dp"
-        tools:layout_editor_absoluteY="99dp" />
-
-    <me.relex.circleindicator.CircleIndicator
-        android:id="@+id/indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_below="@+id/pager"
-        android:layout_centerHorizontal="true">
-
-    </me.relex.circleindicator.CircleIndicator>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/indicator"
-        android:layout_margin="5dp"
-        android:background="@color/cardview_light_background"
-        app:cardBackgroundColor="@android:color/background_light"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="3dp"
-        app:cardPreventCornerOverlap="false"
-        app:contentPadding="0dp">
-
-        <!-- your layout stuff here -->
-        <RelativeLayout
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
             android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/avviso"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="92dp"
+            tools:layout_editor_absoluteY="99dp" />
+
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignBottom="@+id/pager"
+            android:layout_centerHorizontal="true">
+
+        </me.relex.circleindicator.CircleIndicator>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp">
+            android:layout_below="@+id/indicator"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/cardview_light_background"
+            app:cardBackgroundColor="@android:color/background_light"
+            app:cardElevation="3dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
 
-            <TextView
-                android:id="@+id/avvisi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="10dp"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="10dp"
-                android:text="AVVISI"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold|italic" />
-
-            <TextView
-                android:id="@+id/nome_lista2"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/avvisi"
-                android:background="@drawable/ovale"
-                android:text="13 febbraio"
-                android:textAlignment="center"
-                android:textColor="@color/cardview_dark_background"
-                android:textSize="8sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/testodesc"
+            <!-- your layout stuff here -->
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/nome_lista2"
-                android:layout_alignBottom="@+id/nome_lista2"
-                android:layout_toEndOf="@+id/nome_lista2"
-                android:paddingLeft="5dp"
-                android:paddingRight="10dp"
-                android:text="TESTO AVVISO"
-                android:textColor="@android:color/black"
-                android:textSize="12sp"
-                android:textStyle="italic" />
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp"
+                android:paddingRight="10dp">
 
-            <TextView
-                android:id="@+id/nome_lista7"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/nome_lista2"
-                android:background="@drawable/ovale"
-                android:text="13 settembre"
-                android:textAlignment="center"
-                android:textColor="@color/cardview_dark_background"
-                android:textSize="8sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/avvisi"
+                    android:layout_width="105dp"
+                    android:layout_height="45dp"
+                    android:layout_centerHorizontal="false"
+                    android:background="?attr/colorPrimaryDark"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp"
+                    android:text="AVVISI"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="20sp"
+                    android:textStyle="bold|italic" />
 
-            <TextView
-                android:id="@+id/testodesc2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/nome_lista7"
-                android:layout_alignBottom="@+id/nome_lista7"
-                android:layout_toEndOf="@+id/nome_lista7"
-                android:paddingLeft="5dp"
-                android:paddingRight="10dp"
-                android:text="TESTO AVVISO"
-                android:textColor="@android:color/black"
-                android:textSize="12sp"
-                android:textStyle="italic" />
+                <RelativeLayout
+                    android:id="@+id/avviso1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/avvisi"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="10dp">
 
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/data1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/avvisi"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#ff9900"
+                        android:text="13 feb"
+                        android:textAlignment="center"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="20sp" />
 
-    </android.support.v7.widget.CardView>
+                    <TextView
+                        android:id="@+id/testoavviso"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/data1"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="10dp"
+                        android:text="TESTO AVVISO"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:textStyle="italic" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/avviso2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/avviso1"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:id="@+id/data2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/avviso1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#ff9900"
+                        android:text="13 feb"
+                        android:textAlignment="center"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/testoavviso2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/data2"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="10dp"
+                        android:text="TESTO AVVISO"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:textStyle="italic" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/avviso3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/avviso2"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:id="@+id/data3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/avvisi"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#ff9900"
+                        android:text="13 feb"
+                        android:textAlignment="center"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/testoavviso3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/data3"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="10dp"
+                        android:text="TESTO AVVISO"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:textStyle="italic" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/avviso4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/avviso3"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:id="@+id/data4"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/avvisi"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#ff9900"
+                        android:text="13 feb"
+                        android:textAlignment="center"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/testoavviso4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/data4"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="10dp"
+                        android:text="TESTO AVVISO"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:textStyle="italic" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/avviso4">
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="false"
+                        android:layout_centerHorizontal="false"
+                        android:text="mostra altri avvisi"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="15sp"
+                        android:textStyle="italic" />
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="false"
+                        android:layout_alignTop="@+id/textView9"
+                        android:layout_toEndOf="@+id/textView9"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
 
 
     </RelativeLayout>
 
+</ScrollView>

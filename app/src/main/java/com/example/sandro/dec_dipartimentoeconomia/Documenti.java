@@ -1,23 +1,16 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
-import android.app.Activity;
-import android.app.LauncherActivity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,12 +27,10 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,18 +40,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -71,7 +57,6 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaDocumenti;
-import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
@@ -92,6 +77,7 @@ public class Documenti extends AppCompatActivity
     private ExpandableListView expandableListView;
     int from_dipartimento=0;
     int from_corso=0;
+    boolean caricati=false;
 
     private void refreshContent() {
         if(mSwipeRefreshLayout.isEnabled() && finito) {
@@ -177,20 +163,31 @@ public class Documenti extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         CaricaLista();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ListView lista = (ListView) findViewById(R.id.listview_docu);
-                ProgressBar progressBar=(ProgressBar) findViewById(R.id.progressBar);
-                progressBar.setVisibility(View.GONE);
-                finito=true;
-                lista.setVisibility(View.VISIBLE);
-            }
-        },2000);
+        caricato();
         snipper();
 
         if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
         if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
+
+    }
+
+    public void caricato() {
+        if(caricati) {
+            ListView lista = (ListView) findViewById(R.id.listview_docu);
+            ProgressBar progressBar=(ProgressBar) findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.GONE);
+            finito=true;
+            lista.setVisibility(View.VISIBLE);
+        }
+        else{
+            Handler handler=new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    caricato();
+                }
+            },100);
+        }
 
     }
 
@@ -539,9 +536,12 @@ public class Documenti extends AppCompatActivity
                                 }
                                 singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getInt("id_categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, nome_cat, nome_gruppo, id_gruppo));
                             }
+                            caricati=true;
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+
                         singolo2=singolo;
                         adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
 
@@ -939,7 +939,7 @@ class DocuAdapter extends ArrayAdapter<String>{
         LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row=inflater.inflate(R.layout.single_row_doc,parent,false);
         TextView a= (TextView) row.findViewById(R.id.nome_lista);
-        TextView b= (TextView) row.findViewById(R.id.testodesc);
+        TextView b= (TextView) row.findViewById(R.id.testoavviso);
         TextView c= (TextView) row.findViewById(R.id.testodata);
         TextView d= (TextView) row.findViewById(R.id.testodim);
         TextView e= (TextView) row.findViewById(R.id.testocat);
