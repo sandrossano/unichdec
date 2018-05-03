@@ -39,6 +39,13 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <include
+            android:id="@+id/include_avv"
+            layout="@layout/avvisi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <include
             android:id="@+id/include_apridoc"
             layout="@layout/content_apridoc"
             android:layout_width="match_parent"

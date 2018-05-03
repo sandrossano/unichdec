@@ -228,10 +228,4 @@ public class MainActivityMultiDipartimento extends AppCompatActivity {
     }
 
 
-    public void apriAvviso(View v)
-    {
-        Intent i=new Intent(getApplicationContext(), Avviso.class);
-        i.putExtra("id",1);
-        startActivity(i);
-    }
 }

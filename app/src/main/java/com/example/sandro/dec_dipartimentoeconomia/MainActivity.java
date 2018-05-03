@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<SplashActivity.Corso> corsi = SplashActivity.corsi;
     public static ArrayList<SplashActivity.Corso> parent=new ArrayList<>();
     public static Context mContext;
+    public static Context mContextMain;
     static DrawerLayout drawer=null;
     static DrawerLayout drawerMain=null;
     private ViewPager viewPager;
@@ -253,7 +254,8 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        mContext=getApplicationContext();
+        mContext=MainActivity.this;
+        mContextMain=getApplicationContext();
 
         setUpAdapter();
 
@@ -533,10 +535,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void apriAvviso(View v)
+    public void apriAvvisi(View v)
     {
-        Intent i=new Intent(getApplicationContext(), Avviso.class);
-        i.putExtra("id",1);
+        Intent i=new Intent(getApplicationContext(), ListaAvvisi.class);
+        i.putExtra("from_dipartimento",1);
         startActivity(i);
     }
 }

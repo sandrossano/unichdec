@@ -31,8 +31,12 @@ import java.util.List;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawerMain;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContextMain;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 
 public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
@@ -201,15 +205,26 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     }
 
                     if(terzo.size()==0) {
+                        if(second.get(i).getTitolo().equals("Home")&&mContext.getClass().getSimpleName().equals("MainActivity")){
+                            drawerMain.closeDrawers();
+                        }
+                        else {
+                            if(second.get(i).getTitolo().equals("Home")){
+                                Intent intent=new Intent(mContext, MainActivity.class);
+                                intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
+                                intent.putExtra("nome_dipartimento",dipartimenti.get(i).getSigla());
+                                mContext.startActivity(intent);
+                            }
+                            else {
+                                Intent visualizza = new Intent(mContext, Visualizza.class);
+                                visualizza.putExtra("id_dip", id_dipartimento);
+                                visualizza.putExtra("secondolv", second.get(i).getTitolo());
+                                visualizza.putExtra("position", parentHeaders.get(groupPosition));
+                                visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                        Intent visualizza=new Intent(mContext,Visualizza.class);
-                        visualizza.putExtra("id_dip", id_dipartimento);
-                        visualizza.putExtra("secondolv",second.get(i).getTitolo());
-                        visualizza.putExtra("position", parentHeaders.get(groupPosition));
-                        visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        mContext.startActivity(visualizza);
-
+                                mContext.startActivity(visualizza);
+                            }
+                        }
                         //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo(), Toast.LENGTH_SHORT).show();
                     }
                     return false;

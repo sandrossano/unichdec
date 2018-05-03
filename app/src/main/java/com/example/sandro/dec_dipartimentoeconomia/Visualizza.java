@@ -33,6 +33,7 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dip
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawerMain;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
@@ -77,6 +78,7 @@ public class Visualizza extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualizza);
 
+        mContext=this;
         id_dipartimento=getIntent().getIntExtra("id_dip",0);
         secondolv=getIntent().getStringExtra("secondolv");
         terzolv=getIntent().getStringExtra("terzolv");

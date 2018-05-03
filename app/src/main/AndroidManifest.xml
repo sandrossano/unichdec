@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Avviso"
+            android:name=".ListaAvvisi"
             android:label="Avvisi"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
