@@ -263,15 +263,23 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     }
                     Log.d("terzolivello", "Hai premuto: " + terzo.get(i1).getTitolo());
 
-                    Intent visualizza=new Intent(mContext,Visualizza.class);
-                    visualizza.putExtra("id_dip", id_dipartimento);
-                    visualizza.putExtra("secondolv",second.get(i).getTitolo());
-                    visualizza.putExtra("terzolv",terzo.get(i1).getTitolo());
-                    visualizza.putExtra("position", parentHeaders.get(groupPosition));
-                    visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    if(!terzo.get(i1).getTitolo().toUpperCase().equals("PERSONE")) {
+                        Intent visualizza = new Intent(mContext, Visualizza.class);
+                        visualizza.putExtra("id_dip", id_dipartimento);
+                        visualizza.putExtra("secondolv", second.get(i).getTitolo());
+                        visualizza.putExtra("terzolv", terzo.get(i1).getTitolo());
+                        visualizza.putExtra("terzolvpag", terzo.get(i1).getId_pagina());
+                        visualizza.putExtra("position", parentHeaders.get(groupPosition));
+                        visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                    mContext.startActivity(visualizza);
-
+                        mContext.startActivity(visualizza);
+                    }
+                    else{
+                        Intent persona = new Intent(mContext, Persona.class);
+                        persona.putExtra("id_dip", id_dipartimento);
+                        persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        persona.putExtra("from_dipartimento",1);
+                        mContext.startActivity(persona);}
                     //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_SHORT).show();
                     return false;
                 }

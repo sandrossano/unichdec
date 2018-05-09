@@ -78,6 +78,7 @@ public class Documenti extends AppCompatActivity
     int from_dipartimento=0;
     int from_corso=0;
     boolean caricati=false;
+    ProgressBar p;
 
     private void refreshContent() {
         if(mSwipeRefreshLayout.isEnabled() && finito) {
@@ -95,7 +96,7 @@ public class Documenti extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dipartimento);
 
-        ProgressBar p=(ProgressBar) findViewById(R.id.progressBar);
+        p=(ProgressBar) findViewById(R.id.progressBarDocu);
         DrawableCompat.setTint(p.getIndeterminateDrawable(),Color.DKGRAY);
         findViewById(R.id.include).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_pers).setVisibility(View.INVISIBLE);
@@ -109,6 +110,7 @@ public class Documenti extends AppCompatActivity
         findViewById(R.id.include_apridoc).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_verbali).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_atti).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_avv).setVisibility(View.INVISIBLE);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -174,10 +176,9 @@ public class Documenti extends AppCompatActivity
     public void caricato() {
         if(caricati) {
             ListView lista = (ListView) findViewById(R.id.listview_docu);
-            ProgressBar progressBar=(ProgressBar) findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.GONE);
             finito=true;
             lista.setVisibility(View.VISIBLE);
+            p.setVisibility(View.GONE);
         }
         else{
             Handler handler=new Handler();
@@ -746,8 +747,8 @@ public class Documenti extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_pers, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        getMenuInflater().inflate(R.menu.main_doc, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search_doc);
         SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
         searchView = null;
         if (searchItem != null) {

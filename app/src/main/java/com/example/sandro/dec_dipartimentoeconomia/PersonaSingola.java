@@ -23,16 +23,21 @@ import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 
+import static com.example.sandro.dec_dipartimentoeconomia.Persona.singolo;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.singolo_splash;
+
 public class PersonaSingola extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     SwipeRefreshLayout mSwipeRefreshLayout;
-    String telefono_fisso;
-    String email;
+    String telefono_fisso="";
+    String email="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dipartimento);
+
+        findViewById(R.id.include_avv).setVisibility(View.INVISIBLE);
         findViewById(R.id.include).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_pers).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_sing).setVisibility(View.VISIBLE);
@@ -52,13 +57,23 @@ public class PersonaSingola extends AppCompatActivity
 
         ImageView imm=(ImageView) findViewById(R.id.immagineSingolo);
         int idsing = getIntent().getIntExtra("idsing",0);
+        String nomesing="";
+        String fotosing="";
 
-        String nomesing = getIntent().getStringExtra("nomesing");
-        String fotosing = getIntent().getStringExtra("fotosing");
-        email = getIntent().getStringExtra("email");
-        telefono_fisso = getIntent().getStringExtra("telefono_fisso");
-        String sede = getIntent().getStringExtra("sede");
-        String indirizzo = getIntent().getStringExtra("indirizzo");
+
+        String sede ="";
+        String indirizzo="";
+        for (int i=0;i<singolo_splash.size();i++){
+            if(singolo_splash.get(i).getId()==idsing){
+                 nomesing = singolo_splash.get(i).getNome();
+                 fotosing = singolo_splash.get(i).getFoto();
+                email = singolo_splash.get(i).getEmail();
+                telefono_fisso = singolo_splash.get(i).getTelefono_fisso();
+                 sede = singolo_splash.get(i).getSede();
+                 indirizzo = singolo_splash.get(i).getIndirizzo();
+            }
+        }
+
 
         if(fotosing.endsWith("jpg"))
             Picasso.with(getApplicationContext()).load("https://economia.unich.it/fototessera/"+fotosing).into(imm);

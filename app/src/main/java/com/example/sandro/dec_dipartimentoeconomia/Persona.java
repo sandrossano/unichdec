@@ -63,7 +63,7 @@ public class Persona extends AppCompatActivity
     ListView lista;
     PersonAdapter adapter;
     ArrayList<String> persone=new ArrayList<>();
-    ArrayList<Singolo> singolo=new ArrayList<>();
+    static ArrayList<Singolo> singolo=new ArrayList<>();
     SearchView cerca;
     SearchView searchView;
     private ExpandableListView expandableListView;
@@ -74,8 +74,9 @@ public class Persona extends AppCompatActivity
         if(mSwipeRefreshLayout.isEnabled()) {
             adapter = new PersonAdapter(getApplicationContext(), persone, singolo);
             lista.setAdapter(adapter);
-            cerca.setQuery("", false);
-            cerca.setQueryHint("Cerca... ");
+            searchView.setQuery("", false);
+            searchView.setQueryHint("Cerca... ");
+            searchView.clearFocus();
             mSwipeRefreshLayout.setRefreshing(false);
         }
     }
@@ -96,6 +97,7 @@ public class Persona extends AppCompatActivity
         findViewById(R.id.include_apridoc).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_verbali).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_atti).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_avv).setVisibility(View.INVISIBLE);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setEnabled(false);
@@ -182,13 +184,13 @@ public class Persona extends AppCompatActivity
 
                                 }
                             });
-
+/*
         cerca= (SearchView) findViewById(R.id.cerca);
-        cerca.setIconified(false);
+        cerca.setIconified(true);
         cerca.setQueryHint("Cerca... ");
-        cerca.setFocusable(false);
+        cerca.setFocusable(true);
         cerca.clearFocus();
-        /*
+
                             cerca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
                                 public boolean onQueryTextSubmit(String s) {
@@ -261,7 +263,7 @@ public class Persona extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_pers, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItem searchItem = menu.findItem(R.id.action_search_pers);
         SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
         searchView = null;
         if (searchItem != null) {
@@ -273,7 +275,7 @@ public class Persona extends AppCompatActivity
 
         searchView.setIconifiedByDefault(false);
         searchView.setIconified(false);
-        searchView.setFocusable(false);
+        //searchView.setFocusable(false);
         searchView.setQueryHint("Cerca... ");
         searchView.clearFocus();
 
@@ -291,6 +293,7 @@ public class Persona extends AppCompatActivity
                 searchView.setQuery("",false);
                 adapter = new PersonAdapter(getApplicationContext(), persone, singolo);
                 lista.setAdapter(adapter);
+
                 return true; // OR FALSE IF YOU DIDN'T WANT IT TO CLOSE!
             }
         });
@@ -331,6 +334,7 @@ public class Persona extends AppCompatActivity
                 return false;
             }
         });
+
         return true;
     }
 

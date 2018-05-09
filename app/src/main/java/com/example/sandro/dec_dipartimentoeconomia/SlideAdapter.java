@@ -16,6 +16,7 @@ package com.example.sandro.dec_dipartimentoeconomia;
 
         import java.util.ArrayList;
 
+        import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.immagini_multidip;
         import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.immagini_dec;
 
 public class SlideAdapter extends PagerAdapter {
@@ -45,11 +46,11 @@ public class SlideAdapter extends PagerAdapter {
         View myImageLayout = inflater.inflate(R.layout.slide, view, false);
         ImageView myImage = (ImageView) myImageLayout
                 .findViewById(R.id.image);
-        Picasso.with(context).load("https://economia.unich.it/immagini_home/"+immagini_dec.get(position).getPath()).into(myImage);
+        Picasso.with(context).load("https://economia.unich.it/immagini_home/"+immagini_multidip.get(position).getPath()).into(myImage);
         TextView text=(TextView)myImageLayout.findViewById(R.id.textView10) ;
         text.setVisibility(View.VISIBLE);
-        text.setText(immagini_dec.get(position).getTitolo());
-        if (immagini_dec.get(position).getTitolo().equals("")){text.setVisibility(View.INVISIBLE);}
+        text.setText(immagini_multidip.get(position).getTitolo());
+        if (immagini_multidip.get(position).getTitolo().equals("")){text.setVisibility(View.INVISIBLE);}
         //myImage.setImageResource(images.get(position));
         view.addView(myImageLayout, 0);
         return myImageLayout;

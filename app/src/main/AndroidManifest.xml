@@ -30,10 +30,14 @@
             android:label="Dipartimento"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity
-            android:name=".Persona"
+        <activity android:name="Persona"
             android:label="Persone"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="activity_persona" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".PersonaSingola"

@@ -27,9 +27,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.jsoup.helper.StringUtil;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.drawerCorso;
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
@@ -40,12 +44,16 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dip
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawerMain;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaPersone;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.contenuti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.ruoli;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.tutti_gruppi;
 
 /**
  * Created by sandro on 27/03/18.
@@ -55,6 +63,7 @@ public class Visualizza extends AppCompatActivity {
     int id_dipartimento;
     String secondolv;
     String terzolv;
+    int terzolvpag;
     int corso;
     private ExpandableListView expandableListView;
     static DrawerLayout drawerVisual=null;
@@ -73,6 +82,7 @@ public class Visualizza extends AppCompatActivity {
         i.putExtra("id_dip",id_dipartimento);
         i.putExtra("secondolv",secondolv);
         i.putExtra("terzolv",terzolv);
+        i.putExtra("terzolvpag",terzolvpag);
         i.putExtra("id_corso",corso);
         startActivity(i);
         overridePendingTransition(0, 0);
@@ -85,6 +95,14 @@ public class Visualizza extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualizza);
+
+        mContext=this;
+        id_dipartimento=getIntent().getIntExtra("id_dip",0);
+        secondolv=getIntent().getStringExtra("secondolv");
+        terzolv=getIntent().getStringExtra("terzolv");
+        terzolvpag=getIntent().getIntExtra("terzolvpag",0);
+        corso=getIntent().getIntExtra("id_corso",-1);
+        TextView text=(TextView)findViewById(R.id.testovisualizza);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -102,67 +120,112 @@ public class Visualizza extends AppCompatActivity {
                 else{mSwipeRefreshLayout.setEnabled(true);}
             }
         });
-
-        String data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<p>Il Dipartimento di Economia (DEC) eÌ€ stato istituito il 28 gennaio 2011 per poi essere formalmente ricostituito con Decreto del Decano n. 953 del 4 luglio 2012, al fine di tenere conto delle novitaÌ€ della riforma Gelmini. Attualmente si compone di 51 afferenti (12 professori ordinari, 19 professori associati, 20 ricercatori) appartenenti a differenti Settori Scientifico Disciplinari (SSD), come indicato nella tabella di seguito riportata.</p>\n" +
-                "<table border=\"1\" cellpadding=\"5\">\n" +
-                "<tbody>\n" +
-                "<tr>\n" +
-                "<td>Macro-settore</td>\n" +
-                "<td>Settore Scientifico Disciplinare</td>\n" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<td>01/A - MATEMATICA</td>\n" +
-                "<td>MAT/03 - GEOMETRIA<br /> MAT/05 - ANALISI MATEMATICA<br /> MAT/06 - PROBABILITA' E STATISTICA MATEMATICA <br /> MAT/09 - RICERCA OPERATIVA</td>\n" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<td>01/B - INFORMATICA</td>\n" +
-                "<td>INF/01 - INFORMATICA</td>\n" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<td>07/A - ECONOMIA AGRARIA ED ESTIMO</td>\n" +
-                "<td>AGR/01 - ECONOMIA ED ESTIMO RURALE</td>\n" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<td>11/B - GEOGRAFIA</td>\n" +
-                "<td>M-GGR/02 - GEOGRAFIA ECONOMICO POLITICA</td>\n" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<td>13/A &ndash; ECONOMIA</td>\n" +
-                "<td>SECS-P/01 - ECONOMIA POLITICA<br /> SECS-P/02 - POLITICA ECONOMICA<br /> SECS-P/03 - SCIENZA DELLE FINANZE<br /> SECS-P/06 - ECONOMIA APPLICATA</td>\n" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<td>13/B - ECONOMIA AZIENDALE</td>\n" +
-                "<td>SECS-P/07 - ECONOMIA AZIENDALE<br /> SECS-P/10 - ORGANIZZAZIONE AZIENDALE<br /> SECS-P/11 - ECONOMIA DEGLI INTERMEDIARI FINANZIARI <br /> SECS-P/13 - SCIENZE MERCEOLOGICHE</td>\n" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<td>13/C - STORIA ECONOMICA</td>\n" +
-                "<td>SECS-P/12 - STORIA ECONOMICA</td>\n" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<td>13/D - STATISTICA E METODI MATEMATICI PER LE DECISIONI</td>\n" +
-                "<td>SECS-S/01 - STATISTICA<br /> SECS-S/03 - STATISTICA ECONOMICA</td>\n" +
-                "</tr>\n" +
-                "</tbody>\n" +
-                "</table>\n" +
-                "<p>&nbsp;</p>\n" +
-                "<p>L'aggregazione dei SSD nel Dipartimento di Economia presenta evidenti tratti di omogeneitaÌ€ ed importanti sinergie scientifiche, in continuitaÌ€ con gli studi economici, aziendali, matematico-statistici e storico-geografici caratterizzanti â€’ nella tradizione dell'universitaÌ€ italiana â€’ la FacoltaÌ€ di Economia e Commercio (poi Economia). Ne emerge immediatamente uno spettro interdisciplinare ampio ed esaustivo, che definisce la coerenza della denominazione scelta in sede di costituzione del Dipartimento e trova riscontro nelle declaratorie dei Settori scientifico-disciplinari ex D.M. 4 ottobre 2000.</p>\n" +
-                "<p>La varietaÌ€ e la coerenza scientifica dei SSD del DEC consentono â€’ nell&rsquo;ambito della Scuola delle Scienze Economiche, Aziendali, Giuridiche e Sociologiche che comprende anche il Dipartimento di Scienze Giuridiche e Sociali &ndash; di esprimere una offerta formativa in grado di continuare ad attrarre la domanda espressa da un bacino di utenza giaÌ€ vasto e consistente, ma suscettibile di ulteriore significativo ampliamento.</p>\n" +
-                "<p>Nell&rsquo;intento di continuare a favorire lo sviluppo economico e culturale generale ed un piuÌ€ efficace impatto della ricerca dipartimentale sulle dinamiche socio- culturali del territorio in cui esso eÌ€ inserito, il DEC prevede di riproporre nel periodo 2015-2017 i seguenti corsi di laurea giaÌ€ attivi nei precedenti anni accademici ed in quello ancora in corso:<br /><br />Corsi di Laurea Triennale</p>\n" +
-                "<ul>\n" +
-                "<li><a href=\"visualizza.php?type=gruppo&amp;id=74\">Economia Aziendale</a> (Classe L-18 - Scienze dell'Economia e della Gestione Aziendale), articolato nei percorsi curricolari di Gestione Aziendale, Gestione Ambientale e Professionale;</li>\n" +
-                "<li><a href=\"visualizza.php?type=gruppo&amp;id=66\">Economia e Commercio</a> (Classe L-33 - Scienze Economiche),articolato nei percorsi curricolari di Economia e Commercio e Economia e Finanza;</li>\n" +
-                "<li><a href=\"visualizza.php?type=gruppo&amp;id=59\">Economia e Informatica per l'Impresa</a> (Classe L-33 - Scienze Economiche).</li>\n" +
-                "</ul>\n" +
-                "<p>Corsi di Laurea Magistrale</p>\n" +
-                "<ul>\n" +
-                "<li><a href=\"visualizza.php?type=gruppo&amp;id=75\">Economia Aziendale</a> (Classe LM-77 - Scienze Economico-aziendali), articolato nei percorsi curricolari di Direzione Aziendale, Eco-Management e Professionale;</li>\n" +
-                "<li><a href=\"visualizza.php?type=gruppo&amp;id=73\">Economia e Commercio</a> (Classe LM-56 - Scienze dell'Economia).</li>\n" +
-                "</ul>\n" +
-                "<p>Corsi di Dottorato</p>\n" +
-                "<ul>\n" +
-                "<li><a \"visualizza.php?type=gruppo&amp;id=76\">Business, Institutions, Markets</a>.</li>\n" +
-                "</ul>"+ "</body>" + "</html>";
+        Log.d("pagina",""+terzolvpag);
+        int pos=4;
+        for(int i=0;i<contenuti.size();i++){
+            if(contenuti.get(i).getId_pagine()==terzolvpag){pos=i;break;}
+        }
+        String data="";
+        if(!contenuti.get(pos).getTesto_contenuto().contains("[[[")){
+            data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+terzolv+"</h2>"+
+                contenuti.get(pos).getTesto_contenuto()+
+                "</body>" + "</html>";
         data=data.replace("href=","");
+        if(terzolv.equals("Esami")){data=data.replace("</body>","vai alla app Uda + intent</body>");}
+        }
+
+        else{
+            int count = 0;
+            Pattern p = Pattern.compile("]]]");
+            Matcher m = p.matcher( contenuti.get(pos).getTesto_contenuto() );
+            while (m.find()) {
+                count++;
+            }
+            String a="";
+            String completa=contenuti.get(pos).getTesto_contenuto();
+            int start=0;
+
+            for (int i=0;i<count;i++) {
+                int primo = contenuti.get(pos).getTesto_contenuto().indexOf("[[[",start) + 3;
+                int ultimo = contenuti.get(pos).getTesto_contenuto().indexOf("]]]",start) - 1;
+                start=contenuti.get(pos).getTesto_contenuto().indexOf("]]]",start)+1;
+                String pulita = contenuti.get(pos).getTesto_contenuto().substring(primo, ultimo +1);
+                String[] array = pulita.split(";");
+                int gruppo = -250;
+                int ruolo = -250;
+                String tipo_gr="ciao";
+                String modulo="";
+                for (int j = 0; j < array.length; j++) {
+                    if (array[j].startsWith("modulo=")) {
+                        String[] subarray = array[j].split("=");
+                        modulo = subarray[1];
+                    }
+                    if (array[j].startsWith("gruppo=")) {
+                        String[] subarray = array[j].split("=");
+                        gruppo = Integer.parseInt(subarray[1]);
+                    }
+                    if (array[j].startsWith("ruolo=")) {
+                        String[] subarray = array[j].split("=");
+                        ruolo = Integer.parseInt(subarray[1]);
+                    }
+                    if (array[j].startsWith("tipo=")) {
+                        String[] subarray = array[j].split("=");
+                        tipo_gr = subarray[1];
+                    }
+                }
+                //a="gruppo: "+gruppo+" - ruolo: "+ruolo+";";
+                if(ruolo!=-250) {                                   //paginatore persona
+                    for (int k = 0; k < ruoli.size(); k++) {
+                        if (ruoli.get(k).getId() == ruolo) {
+                            if (ruoli.get(k).getFoto() != "null") {
+                                a+= "<img  style=\"width:75px;height:75px;\" src=\"https://economia.unich.it/fototessera/" + ruoli.get(k).getFoto() + "\" alt=\"Foto Docente\">" + ruoli.get(k).getNome() + ruoli.get(k).getCognome() + "<br>";
+                                a+= "<a href=\"https://economia.unich.it/decapp/persone/id_persona="+ruoli.get(k).getId_persona()+"\">Activity p</a> :<br> ";
+                            } else {
+                                a += "<img style=\"width:75px;height:75px;\" src=\"https://economia.unich.it/fototessera/persona_generica.jpg" + "\" alt=\"Foto Docente\">" + ruoli.get(k).getNome() + ruoli.get(k).getCognome() + "<br>";
+                                a+= "<a href=\"https://economia.unich.it/decapp/persone/id_persona="+ruoli.get(k).getId_persona()+"\">Activity p</a> :<br> ";
+                            }
+                        }
+                    }
+                    completa = completa.replace("[[[" + pulita + "]]]", a);
+                    a = "";
+                }
+                int numero=gruppo;
+                if(modulo.equals("pag_sezioni")){
+                    for (int n=0;n<tutti_gruppi.size();n++){
+                        if(tipo_gr.equals("GR")){
+                            if (tutti_gruppi.get(n).getTipo_gruppo().equals("R_GR")&&tutti_gruppi.get(n).getId_gruppo()==gruppo){
+                                numero=tutti_gruppi.get(n).getId();
+                                break;
+                            }
+                        }
+                        if(tipo_gr.equals("CS")) {
+                            if (tutti_gruppi.get(n).getTipo_gruppo().equals("R_CS") && tutti_gruppi.get(n).getId_gruppo() == gruppo) {
+                                numero = tutti_gruppi.get(n).getId();
+                                break;
+                            }
+                        }
+                        if(tipo_gr.equals("CD")) {
+                            if (tutti_gruppi.get(n).getTipo_gruppo().equals("R_CD") && tutti_gruppi.get(n).getId_gruppo() == gruppo) {
+                                numero = tutti_gruppi.get(n).getId();
+                                break;
+                            }
+                        }
+                    }
+                    for (int l=0;l<tutti_gruppi.size();l++){
+                        if (tutti_gruppi.get(l).getTipo_gruppo().equals(tipo_gr) && tutti_gruppi.get(l).getId_gruppo()==numero){
+                            a+=tutti_gruppi.get(l).getNome()+"<br>";
+                        }
+                    }
+
+                    completa = completa.replace("[[[" + pulita + "]]]", a);
+                    a = "";
+                }
+            }
+
+            data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+terzolv+"</h2>"+
+                completa+"</body>" + "</html>";
+            //data=data.replace("href=","");
+            };
         //TextView textView = (TextView) findViewById(R.id.html);
         //textView.setText(Html.fromHtml(Html.fromHtml(data).toString()));
 
@@ -172,16 +235,20 @@ public class Visualizza extends AppCompatActivity {
         engine.getSettings().setJavaScriptEnabled(true);
         engine.getSettings().setAppCacheEnabled(false);
         engine.getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
+        engine.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                String[] a=url.split("id_persona=");
+                Log.d("id_persona",a[1]);
+                    Intent intent=new Intent(Visualizza.this,PersonaSingola.class);
+                    intent.putExtra("idsing",Integer.parseInt(a[1]));
+                    mContext.startActivity(intent);
+                    return true;
+            }
+        });
         engine.setClickable(false);
 
         engine.loadData(data, "text/html", "UTF-8");
-
-        mContext=this;
-        id_dipartimento=getIntent().getIntExtra("id_dip",0);
-        secondolv=getIntent().getStringExtra("secondolv");
-        terzolv=getIntent().getStringExtra("terzolv");
-        corso=getIntent().getIntExtra("id_corso",-1);
-        TextView text=(TextView)findViewById(R.id.testovisualizza);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

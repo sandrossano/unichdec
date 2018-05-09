@@ -18,7 +18,7 @@
         android:id="@+id/verbali"
         android:title="Verbali" />
     <item
-        android:id="@+id/action_search_pers"
+        android:id="@+id/action_search_doc"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"

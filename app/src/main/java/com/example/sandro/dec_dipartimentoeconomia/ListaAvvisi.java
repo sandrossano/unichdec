@@ -678,8 +678,8 @@ public class ListaAvvisi extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_pers, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        getMenuInflater().inflate(R.menu.main_avv, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search_avv);
         SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
         searchView = null;
         if (searchItem != null) {

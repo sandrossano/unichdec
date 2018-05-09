@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<Ruoli> ruoli = SplashActivity.ruoli;
     public static ArrayList<SplashActivity.Corso> corsi = SplashActivity.corsi;
     public static ArrayList<SplashActivity.Corso> parent=new ArrayList<>();
+    public static ArrayList<SplashActivity.Immagini> immagini_multidip=new ArrayList<>();
     public static Context mContext;
     public static Context mContextMain;
     static DrawerLayout drawer=null;
@@ -127,11 +128,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void init() {
+        immagini_multidip.clear();
+        int lunghezza_foto=0;
         final Integer[] XMEN= {R.drawable.logo_unich,R.drawable.declogo,R.drawable.dsgs};
         for(int i=0;i<immagini_dec.size();i++) {
-            XMENArray.add(i);
+            if(immagini_dec.get(i).getId_gruppo()==id_dipartimento) {
+                immagini_multidip.add(immagini_dec.get(i));lunghezza_foto++;XMENArray.add(i);
+            }
         }
-
+        final int length=lunghezza_foto;
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new SlideAdapter(MainActivity.this,XMENArray));
         CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
@@ -141,7 +146,7 @@ public class MainActivity extends AppCompatActivity
         final Handler handler = new Handler();
         final Runnable Update = new Runnable() {
             public void run() {
-                if (currentPage == immagini_dec.size()) {
+                if (currentPage == length) {
                     currentPage = 0;
                 }
                 viewPager.setCurrentItem(currentPage++, true);
@@ -162,7 +167,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        init();
+
 
 
         /*
@@ -238,6 +243,7 @@ public class MainActivity extends AppCompatActivity
         ImageView logo = (ImageView)hView.findViewById(R.id.logo_dipartimento);
 
         id_dipartimento=getIntent().getIntExtra("id_dipartimento",1);
+        init();
         nome_dipartimento=getIntent().getStringExtra("nome_dipartimento");
         Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+nome_dipartimento+".png").into(logo);
 
