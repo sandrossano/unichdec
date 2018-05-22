@@ -29,6 +29,8 @@ import com.squareup.picasso.Picasso;
 
 import org.jsoup.helper.StringUtil;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,6 +40,7 @@ import java.util.regex.Pattern;
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.drawerCorso;
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.position;
+import static com.example.sandro.dec_dipartimentoeconomia.Documenti.singolo;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
@@ -69,6 +72,7 @@ public class Visualizza extends AppCompatActivity {
     static DrawerLayout drawerVisual=null;
 
     SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     private void refreshContent() {
         mSwipeRefreshLayout.setRefreshing(true);
@@ -155,6 +159,7 @@ public class Visualizza extends AppCompatActivity {
                 int ruolo = -250;
                 String tipo_gr="ciao";
                 String modulo="";
+                int categoria=0;
                 for (int j = 0; j < array.length; j++) {
                     if (array[j].startsWith("modulo=")) {
                         String[] subarray = array[j].split("=");
@@ -172,17 +177,31 @@ public class Visualizza extends AppCompatActivity {
                         String[] subarray = array[j].split("=");
                         tipo_gr = subarray[1];
                     }
+                    if (array[j].startsWith("cat=")) {
+                        String[] subarray = array[j].split("=");
+                        categoria = Integer.parseInt(subarray[1]);
+                    }
                 }
                 //a="gruppo: "+gruppo+" - ruolo: "+ruolo+";";
                 if(ruolo!=-250) {                                   //paginatore persona
                     for (int k = 0; k < ruoli.size(); k++) {
                         if (ruoli.get(k).getId() == ruolo) {
                             if (ruoli.get(k).getFoto() != "null") {
-                                a+= "<img  style=\"width:75px;height:75px;\" src=\"https://economia.unich.it/fototessera/" + ruoli.get(k).getFoto() + "\" alt=\"Foto Docente\">" + ruoli.get(k).getNome() + ruoli.get(k).getCognome() + "<br>";
-                                a+= "<a href=\"https://economia.unich.it/decapp/persone/id_persona="+ruoli.get(k).getId_persona()+"\">Activity p</a> :<br> ";
+                                a+="<div>\n";
+                                a+= "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona="+ruoli.get(k).getId_persona()+"\">"+
+                                        "<div class=\"card container\">\n"+
+                                        "  <img src=\"https://economia.unich.it/fototessera/"+ruoli.get(k).getFoto()+"\" alt=\"Avatar\"   style=\"width:70px; height:70px; float:right;\">\n" +
+                                        "  <p>"+ruoli.get(k).getNome() +"  "+ ruoli.get(k).getCognome()+"</p> \n" +
+                                        "</div>" +
+                                        "</a></div><br>";
                             } else {
-                                a += "<img style=\"width:75px;height:75px;\" src=\"https://economia.unich.it/fototessera/persona_generica.jpg" + "\" alt=\"Foto Docente\">" + ruoli.get(k).getNome() + ruoli.get(k).getCognome() + "<br>";
-                                a+= "<a href=\"https://economia.unich.it/decapp/persone/id_persona="+ruoli.get(k).getId_persona()+"\">Activity p</a> :<br> ";
+                                a+="<div>\n";
+                                a+= "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona="+ruoli.get(k).getId_persona()+"\">";
+                                a+="<div class=\"card container\">\n" +
+                                        "  <img src=\"https://economia.unich.it/fototessera/persona_generica.jpg\" alt=\"Avatar\"   style=\"width:70px; height:70px; float:right;\">\n" +
+                                        "  <p>"+ruoli.get(k).getNome() +"  "+ ruoli.get(k).getCognome()+"</p> \n" +
+                                        "</div>";
+                                a+="</a></div><br>";
                             }
                         }
                     }
@@ -220,10 +239,56 @@ public class Visualizza extends AppCompatActivity {
                     completa = completa.replace("[[[" + pulita + "]]]", a);
                     a = "";
                 }
-            }
+                if(modulo.equals("pag_documenti")){
+                    for (int d =0;d<singolo.size();d++){
+                        if(singolo.get(d).getId_gruppo()==gruppo&& singolo.get(d).getId_categoria()==categoria){
+                            a+= "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_doc="+singolo.get(d).getId()+"&"+singolo.get(d).getTitolo()+"&"+singolo.get(d).getId_categoria()+"\">"+singolo.get(d).getTitolo()+"</a><br><br>";
 
-            data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+terzolv+"</h2>"+
-                completa+"</body>" + "</html>";
+                        }
+                    }
+
+                    completa = completa.replace("[[[" + pulita + "]]]", a);
+                    a = "";
+                }
+            }
+            
+               data="<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+                       "<style>\n" +
+                       ".card {\n" +
+                       "    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);\n" +
+                       "    transition: 0.3s;\n" +
+                       "    border-radius: 25px;\n" +
+                       "    background-color:#FFF;"+
+                       "    width:90%;"+
+                       "   \n" +
+                       "}\n" +
+                       "\n" +
+                       ".card:hover {\n" +
+                       "    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);\n" +
+                       "}\n" +
+                       "\n" +
+                       "img {\n" +
+                       "\n" +
+                       "  margin:auto;  border-radius: 120px;\n" +
+                       "}\n" +
+                       "\n" +
+                       ".container {\n" +
+                       " font-family: Arial, Helvetica, sans-serif;\n" +
+                       "    padding: 15px;\n" +
+                       "}\n" +
+                       "p{\n" +
+                       "margin:17px 0px 17px 10px;\n" +
+                       "}\n" +
+                       "img{\n" +
+                       "margin:-9px 0px 25px 10px;\n" +
+                       "}\n" +
+                       "a,a:hover, a:active, a:focus {\n" +
+                       "    outline: none;\n" +
+                       "    color: inherit; border: 0;\n" +
+                       "}" +
+                       "</style></head><body style=\"background:#d8e5f0\">" +completa+"</body>" + "</html>";
+            //data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+terzolv+"</h2>"+
+              //  completa+"</body>" + "</html>";
             //data=data.replace("href=","");
             };
         //TextView textView = (TextView) findViewById(R.id.html);
@@ -239,11 +304,28 @@ public class Visualizza extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 String[] a=url.split("id_persona=");
-                Log.d("id_persona",a[1]);
-                    Intent intent=new Intent(Visualizza.this,PersonaSingola.class);
-                    intent.putExtra("idsing",Integer.parseInt(a[1]));
+                String[] b=url.split("id_doc=");
+                if(a.length!=1) {
+                    Log.d("id_persona", a[1]);
+                    Intent intent = new Intent(Visualizza.this, PersonaSingola.class);
+                    intent.putExtra("idsing", Integer.parseInt(a[1]));
                     mContext.startActivity(intent);
                     return true;
+                }
+                if(b.length!=1) {
+                    String[] valori=b[1].split("&");
+                    Intent intent = new Intent(Visualizza.this, PaginaDocumento.class);
+                    intent.putExtra("iddoc", Integer.parseInt(valori[0]));
+                    try {
+                        intent.putExtra("titolo", URLDecoder.decode(valori[1], "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        intent.putExtra("titolo", valori[1]);
+                    }
+                    intent.putExtra("idcat", Integer.parseInt(valori[2]));
+                    mContext.startActivity(intent);
+                    return true;
+                }
+                return true;
             }
         });
         engine.setClickable(false);

@@ -35,6 +35,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.example.sandro.dec_dipartimentoeconomia.Documenti.documenti;
+import static com.example.sandro.dec_dipartimentoeconomia.Documenti.singolo;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.categorie;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaDocumenti;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaPersone;
 
 /**
@@ -365,7 +369,8 @@ public class SplashActivity extends AppCompatActivity{
     boolean finishapp=false;
     boolean finish_imm=false;
     boolean finish_cont=false;
-
+    static boolean finishdocu=false;
+    boolean finish_pers=false;
 
 
     @SuppressLint("ResourceAsColor")
@@ -385,7 +390,7 @@ public class SplashActivity extends AppCompatActivity{
             //decLv2e3
             // Instantiate the RequestQueue.
             RequestQueue queue23 = Volley.newRequestQueue(this);
-            String url23 = localhost2+"menus/menu_dipartimenti.php";
+            String url23 = localhost2 + "menus/menu_dipartimenti.php";
 
 // Request a string response from the provided URL.
             StringRequest stringRequest23 = new StringRequest(Request.Method.GET, url23,
@@ -400,10 +405,9 @@ public class SplashActivity extends AppCompatActivity{
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    livello2dec.add(new SottoLivelli(expl.getInt("ordine"), expl.getString("titolo"), expl.getInt("id_gruppo"), expl.getInt("id_pagina"),expl.getInt("livello")));
-
+                                    livello2dec.add(new SottoLivelli(expl.getInt("ordine"), expl.getString("titolo"), expl.getInt("id_gruppo"), expl.getInt("id_pagina"), expl.getInt("livello")));
                                 }
-                                Log.d("res1","ok");
+                                Log.d("res1", "ok");
                                 finish1 = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -427,9 +431,57 @@ public class SplashActivity extends AppCompatActivity{
             queue23.add(stringRequest23);
             queue23.getCache().clear();
 
-//IMMAGINI
+
+            //Documenti
+
+// Instantiate the RequestQueue.
+            RequestQueue queue2 = Volley.newRequestQueue(getApplicationContext());
+            String url2 = localhost2 + "documenti/";
+
+// Request a string response from the provided URL.
+            StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+
+                            JSONObject expl = null;
+                            try {
+
+                                JSONObject c = new JSONObject(response);
+                                listaDocumenti = c.getJSONArray("records");
+                                for (int i = 0; i < listaDocumenti.length(); i++) {
+                                    expl = listaDocumenti.getJSONObject(i);
+                                    String data = expl.getString("data_creazione").substring(0, 10);
+                                    String link = expl.getString("link");
+                                    String estensione = link.substring(link.length() - 3, link.length());
+                                    documenti.add(expl.getString("titolo"));
+                                    singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getInt("id_categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, expl.getString("nome"), "", expl.getInt("id_gruppo"), expl.getInt("id_gruppo_padre")));
+                                }
+                                finishdocu=true;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+
+// Add the request to the RequestQueue.
+            stringRequest2.setRetryPolicy(new DefaultRetryPolicy(
+                    30000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue2.add(stringRequest2);
+            queue2.getCache().clear();
+
+
+//CONTENUTO
             RequestQueue queue_cont = Volley.newRequestQueue(this);
-            String url_cont = localhost2+"contenuto/";
+            String url_cont = localhost2 + "contenuto/";
 
 // Request a string response from the provided URL.
             StringRequest stringRequest_cont = new StringRequest(Request.Method.GET, url_cont,
@@ -446,9 +498,9 @@ public class SplashActivity extends AppCompatActivity{
                                     JSONObject expl = cacca.getJSONObject(i);
                                     //livello2dec.add(new SottoLivelli(expl.getInt("ordine"), expl.getString("titolo"), expl.getInt("id_gruppo"), expl.getInt("id_pagina"),expl.getInt("livello")));
                                     //immagini_dec.add(new Immagini(expl.getString("path"),expl.getString("titolo"),expl.getString("link"),expl.getString("data_fine")));
-                                    contenuti.add(new Contenuto(expl.getInt("idcontenuto"),expl.getString("testocontenuto"),expl.getInt("idpagine"),expl.getString("nomepagine")));
+                                    contenuti.add(new Contenuto(expl.getInt("idcontenuto"), expl.getString("testocontenuto"), expl.getInt("idpagine"), expl.getString("nomepagine")));
                                 }
-                                Log.d("res_cont","ok");
+                                Log.d("res_cont", "ok");
                                 finish_cont = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -474,7 +526,7 @@ public class SplashActivity extends AppCompatActivity{
 
 //IMMAGINI
             RequestQueue queue_imm = Volley.newRequestQueue(this);
-            String url_imm = localhost2+"immagini/";
+            String url_imm = localhost2 + "immagini/";
 
 // Request a string response from the provided URL.
             StringRequest stringRequest_imm = new StringRequest(Request.Method.GET, url_imm,
@@ -490,9 +542,9 @@ public class SplashActivity extends AppCompatActivity{
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
                                     //livello2dec.add(new SottoLivelli(expl.getInt("ordine"), expl.getString("titolo"), expl.getInt("id_gruppo"), expl.getInt("id_pagina"),expl.getInt("livello")));
-                                    immagini_dec.add(new Immagini(expl.getString("path"),expl.getString("titolo"),expl.getString("link"),expl.getString("data_fine"),expl.getInt("id_gruppo")));
+                                    immagini_dec.add(new Immagini(expl.getString("path"), expl.getString("titolo"), expl.getString("link"), expl.getString("data_fine"), expl.getInt("id_gruppo")));
                                 }
-                                Log.d("res_imm","ok");
+                                Log.d("res_imm", "ok");
                                 finish_imm = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -560,10 +612,10 @@ public class SplashActivity extends AppCompatActivity{
             queue.add(stringRequest);
             queue.getCache().clear();
 
-//Corsi
+//CorsiLaurea
             // Instantiate the RequestQueue.
             RequestQueue queuecors = Volley.newRequestQueue(this);
-            String urlcors = localhost2+"corsidilaurea/";
+            String urlcors = localhost2 + "corsidilaurea/";
 
 // Request a string response from the provided URL.
             StringRequest stringRequestcors = new StringRequest(Request.Method.GET, urlcors,
@@ -578,24 +630,23 @@ public class SplashActivity extends AppCompatActivity{
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    tutti_gruppi.add(new Gruppi(expl.getInt("id"),expl.getString("nome"),expl.getInt("id_gruppo"),expl.getString("tipo_gruppo")));
+                                    tutti_gruppi.add(new Gruppi(expl.getInt("id"), expl.getString("nome"), expl.getInt("id_gruppo"), expl.getString("tipo_gruppo")));
 
-                                    if(!expl.isNull("id_gruppo_scuola") && !expl.isNull("semestre")) {
-                                        scuola.add(new Scuola(expl.getInt("id"), expl.getString("sigla"), expl.getInt("id_gruppo"), expl.getInt("id_gruppo_scuola"),expl.getString("tipo_gruppo")));
+                                    if (!expl.isNull("id_gruppo_scuola") && !expl.isNull("semestre")) {
+                                        scuola.add(new Scuola(expl.getInt("id"), expl.getString("sigla"), expl.getInt("id_gruppo"), expl.getInt("id_gruppo_scuola"), expl.getString("tipo_gruppo")));
                                         corsi.add(new Corso(expl.getInt("id"), expl.getString("sigla"), expl.getInt("semestre"), expl.getInt("id_gruppo"), expl.getString("tipo_gruppo")));
 
-                                    }
-                                    else{
-                                            if (expl.getString("tipo_gruppo").equals("R_CS"))
-                                                r_corsi.add(new Corso(expl.getInt("id"), expl.getString("sigla"),-100, expl.getInt("id_gruppo"), expl.getString("tipo_gruppo")));
-                                            if (expl.getString("tipo_gruppo").equals("CS") && !expl.isNull("semestre"))
-                                                corsi.add(new Corso(expl.getInt("id"), expl.getString("sigla"), expl.getInt("semestre"), expl.getInt("id_gruppo"), expl.getString("tipo_gruppo")));
+                                    } else {
+                                        if (expl.getString("tipo_gruppo").equals("R_CS"))
+                                            r_corsi.add(new Corso(expl.getInt("id"), expl.getString("sigla"), -100, expl.getInt("id_gruppo"), expl.getString("tipo_gruppo")));
+                                        if (expl.getString("tipo_gruppo").equals("CS") && !expl.isNull("semestre"))
+                                            corsi.add(new Corso(expl.getInt("id"), expl.getString("sigla"), expl.getInt("semestre"), expl.getInt("id_gruppo"), expl.getString("tipo_gruppo")));
 
                                     }
 
                                 }
 
-                                Log.d("res3","ok");
+                                Log.d("res3", "ok");
                                 finish3 = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -619,10 +670,10 @@ public class SplashActivity extends AppCompatActivity{
             queuecors.add(stringRequestcors);
             queuecors.getCache().clear();
 
-//Corsi
+//Menù
             // Instantiate the RequestQueue.
             RequestQueue queueini = Volley.newRequestQueue(this);
-            String urlini = localhost2+"menus/menu_ini.php";
+            String urlini = localhost2 + "menus/menu_ini.php";
 
 // Request a string response from the provided URL.
             StringRequest stringRequestini = new StringRequest(Request.Method.GET, urlini,
@@ -630,16 +681,16 @@ public class SplashActivity extends AppCompatActivity{
                         @Override
                         public void onResponse(String response) {
                             // Display the first 500 characters of the response string.
-                           try {
+                            try {
 
                                 JSONObject c = new JSONObject(response);
                                 JSONArray cacca = c.getJSONArray("records");
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    dipartimenti.add(new DipartimentiScuola(expl.getInt("id"), expl.getString("nome"),expl.getString("sigla"),expl.getString("tipo_gruppo"), expl.getInt("livello")));
+                                    dipartimenti.add(new DipartimentiScuola(expl.getInt("id"), expl.getString("nome"), expl.getString("sigla"), expl.getString("tipo_gruppo"), expl.getInt("livello")));
                                 }
-                               Log.d("res7","ok");
+                                Log.d("res7", "ok");
                                 finish7 = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -726,35 +777,47 @@ public class SplashActivity extends AppCompatActivity{
 
                                 JSONObject c = new JSONObject(response);
                                 listaPersone = c.getJSONArray("records");
-                                Log.d("res6","ok");
+                                Log.d("res6", "ok");
                                 finish6 = true;
 
-                                for(int i=0;i<listaPersone.length();i++){
-                                    JSONObject expl= null;
+                                for (int i = 0; i < listaPersone.length(); i++) {
+                                    JSONObject expl = null;
                                     try {
                                         expl = listaPersone.getJSONObject(i);
-                                        String indirizzo="";
-                                        String sede="";
-                                        String email="";
-                                        String telefono="";
+                                        String indirizzo = "";
+                                        String sede = "";
+                                        String email = "";
+                                        String telefono = "";
 
-                                        if(!expl.getString("indirizzo").equals(null)){indirizzo=expl.getString("indirizzo");}
-                                        if(!expl.getString("sede").equals(null)){sede=expl.getString("sede");}
-                                        if(!expl.getString("piano").equals(null)&&!expl.getString("piano").equals("")){sede+=", Piano: "+expl.getString("piano");}
-                                        if(!expl.getString("scala").equals(null)&&!expl.getString("scala").equals("")){sede+=", Scala: "+expl.getString("scala");}
-                                        if(!expl.getString("email").equals(null)){email=expl.getString("email");}
-                                        if(!expl.getString("telefono_fisso").equals(null)){telefono=expl.getString("telefono_fisso");}
+                                        if (!expl.getString("indirizzo").equals(null)) {
+                                            indirizzo = expl.getString("indirizzo");
+                                        }
+                                        if (!expl.getString("sede").equals(null)) {
+                                            sede = expl.getString("sede");
+                                        }
+                                        if (!expl.getString("piano").equals(null) && !expl.getString("piano").equals("")) {
+                                            sede += ", Piano: " + expl.getString("piano");
+                                        }
+                                        if (!expl.getString("scala").equals(null) && !expl.getString("scala").equals("")) {
+                                            sede += ", Scala: " + expl.getString("scala");
+                                        }
+                                        if (!expl.getString("email").equals(null)) {
+                                            email = expl.getString("email");
+                                        }
+                                        if (!expl.getString("telefono_fisso").equals(null)) {
+                                            telefono = expl.getString("telefono_fisso");
+                                        }
 
 
-                                        singolo_splash.add(new Singolo(expl.getInt("id"),expl.getString("nome")+" "+expl.getString("cognome"),expl.getString("foto"),email,telefono,sede,indirizzo));
+                                        singolo_splash.add(new Singolo(expl.getInt("id"), expl.getString("nome") + " " + expl.getString("cognome"), expl.getString("foto"), email, telefono, sede, indirizzo));
 
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 }
-                                Log.d("res7","ok");
-                                finish7 = true;
+                                Log.d("res7", "ok");
+                                finish_pers = true;
 
 
                             } catch (JSONException e) {
@@ -780,7 +843,7 @@ public class SplashActivity extends AppCompatActivity{
             queue5.getCache().clear();
 
 
-//Persone
+//Appuntamenti
             // Instantiate the RequestQueue.
             RequestQueue queueapp = Volley.newRequestQueue(this);
             String urlapp = localhost2 + "appuntamenti/";
@@ -798,9 +861,9 @@ public class SplashActivity extends AppCompatActivity{
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    appuntamenti.add(new Appuntamento(expl.getInt("id"), expl.getString("titolo"),expl.getString("data_inizio"),expl.getString("data_fine"),expl.getString("data_inizio_pubb"),expl.getString("data_fine_pubb"),expl.getString("descrizione_breve")));
+                                    appuntamenti.add(new Appuntamento(expl.getInt("id"), expl.getString("titolo"), expl.getString("data_inizio"), expl.getString("data_fine"), expl.getString("data_inizio_pubb"), expl.getString("data_fine_pubb"), expl.getString("descrizione_breve")));
                                 }
-                                Log.d("app","ok");
+                                Log.d("app", "ok");
                                 finishapp = true;
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -878,7 +941,7 @@ public class SplashActivity extends AppCompatActivity{
 
 
     public void fine() {
-        if(finish1 &&finish2&& finish3 && finish7&& finishapp&& finish_imm&& finish_cont) {
+        if(finish3 &&finish7&& finish_imm) { //finish1 && finish_cont&&finishdocu&& finish_pers&&finish2&&finishapp&&
             Intent i = new Intent(getApplicationContext(), MainActivityMultiDipartimento.class);
             startActivity(i);
         }

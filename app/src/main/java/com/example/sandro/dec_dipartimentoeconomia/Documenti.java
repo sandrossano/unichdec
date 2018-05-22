@@ -59,7 +59,9 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipart
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaDocumenti;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.finishdocu;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.localhost2;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
 
 
@@ -70,14 +72,17 @@ public class Documenti extends AppCompatActivity
     SwipeRefreshLayout mSwipeRefreshLayout;
     ListView lista;
     DocuAdapter adapter;
-    ArrayList<String> documenti = new ArrayList<>();
-    ArrayList<Doc> singolo = new ArrayList<>();
+    static ArrayList<String> documenti = new ArrayList<>();
+    static ArrayList<Doc> singolo = new ArrayList<>();
     SearchView cerca;
     SearchView searchView;
     private ExpandableListView expandableListView;
     int from_dipartimento=0;
     int from_corso=0;
-    boolean caricati=false;
+    static ArrayList<String> temp = new ArrayList<String>();
+    static ArrayList<Doc> tempSingolo=new ArrayList<Doc>();
+    static int pos_spinner=0;
+    static ArrayList<SplashActivity.Corso> Corsi=new ArrayList<SplashActivity.Corso>();
     ProgressBar p;
 
     private void refreshContent() {
@@ -98,19 +103,20 @@ public class Documenti extends AppCompatActivity
 
         p=(ProgressBar) findViewById(R.id.progressBarDocu);
         DrawableCompat.setTint(p.getIndeterminateDrawable(),Color.DKGRAY);
-        findViewById(R.id.include).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_pers).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_sing).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_org).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_cons).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_gruppo).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_didattica).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_ricerca).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include).setVisibility(View.GONE);
+        findViewById(R.id.include_pers).setVisibility(View.GONE);
+        findViewById(R.id.include_sing).setVisibility(View.GONE);
+        findViewById(R.id.include_org).setVisibility(View.GONE);
+        findViewById(R.id.include_cons).setVisibility(View.GONE);
+        findViewById(R.id.include_gruppo).setVisibility(View.GONE);
+        findViewById(R.id.include_didattica).setVisibility(View.GONE);
+        findViewById(R.id.include_ricerca).setVisibility(View.GONE);
         findViewById(R.id.include_doc).setVisibility(View.VISIBLE);
-        findViewById(R.id.include_apridoc).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_doc_verbali).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_doc_atti).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_avv).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_apridoc).setVisibility(View.GONE);
+        findViewById(R.id.include_doc_verbali).setVisibility(View.GONE);
+        findViewById(R.id.include_doc_atti).setVisibility(View.GONE);
+        findViewById(R.id.include_avv).setVisibility(View.GONE);
+
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -174,20 +180,10 @@ public class Documenti extends AppCompatActivity
     }
 
     public void caricato() {
-        if(caricati) {
+        if (finishdocu) {
             ListView lista = (ListView) findViewById(R.id.listview_docu);
-            finito=true;
             lista.setVisibility(View.VISIBLE);
             p.setVisibility(View.GONE);
-        }
-        else{
-            Handler handler=new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    caricato();
-                }
-            },100);
         }
 
     }
@@ -497,133 +493,18 @@ public class Documenti extends AppCompatActivity
 
     public void CaricaLista(){
 
-        //Documenti
-
-// Instantiate the RequestQueue.
-        RequestQueue queue2 = Volley.newRequestQueue(getApplicationContext());
-        String url2 = "http://proxybar.altervista.org/document/read.php";
-
-
-// Request a string response from the provided URL.
-        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
 
                         lista = (ListView) findViewById(R.id.listview_docu);
 
                         cerca = (SearchView) findViewById(R.id.cerca_docu);
 
-                        JSONObject expl = null;
-                        try {
-
-                            JSONObject c = new JSONObject(response);
-                            listaDocumenti = c.getJSONArray("records");
-                            for (int i = 0; i < listaDocumenti.length(); i++) {
-                                expl = listaDocumenti.getJSONObject(i);
-                                String data = expl.getString("data_creazione").substring(0, 10);
-                                String link = expl.getString("link");
-                                String estensione = link.substring(link.length() - 3, link.length());
-                                documenti.add(expl.getString("titolo"));
-                                String nome_cat = "";
-                                String nome_gruppo = "";
-                                int id_gruppo = 0;
-                                for (int j = 0; j < categorie.size(); j++) {
-                                    if (expl.getInt("id_categoria") == categorie.get(j).getId()) {
-                                        nome_cat = categorie.get(j).getNome_cat();
-                                        nome_gruppo = categorie.get(j).getNome();
-                                        id_gruppo = categorie.get(j).getId_gruppo();
-                                    }
-                                }
-                                singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getInt("id_categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, nome_cat, nome_gruppo, id_gruppo));
-                            }
-                            caricati=true;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
                         singolo2=singolo;
                         adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
 
                         lista.setAdapter(adapter);
-
-/*
-                        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                            @Override
-                            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
-                                DocuAdapter t = (DocuAdapter) lista.getAdapter();
-                                int idscelto = t.singoli.get(position).getId();
-                                String titolo = t.singoli.get(position).getTitolo();
-                                String descrizione = t.singoli.get(position).getDescrizione();
-                                String data = t.singoli.get(position).getData();
-                                int idcat = t.singoli.get(position).getId_categoria();
-                                int dimensione = t.singoli.get(position).getDimensione();
-                                String estensione = t.singoli.get(position).getEstensione();
-                                String link = t.singoli.get(position).getLink();
-
-                                Intent i = new Intent(getApplicationContext(), PaginaDocumento.class);
-                                i.putExtra("iddoc", idscelto);
-                                i.putExtra("idcat", idcat);
-                                i.putExtra("titolo", titolo);
-                                i.putExtra("descrizione", descrizione);
-                                i.putExtra("data", data);
-                                i.putExtra("dimensione", dimensione);
-                                i.putExtra("estensione", estensione);
-                                i.putExtra("link", link);
-                                startActivity(i);
-
-                            }
-                        });
-
-
-                        cerca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                            @Override
-                            public boolean onQueryTextSubmit(String s) {
-                                return false;
-                            }
-
-
-                            @Override
-                            public boolean onQueryTextChange(String s) {
-                                ArrayList<String> temp = new ArrayList<String>();
-                                ArrayList<Doc> tempSingolo = new ArrayList<Doc>();
-                                int textlength = cerca.getQuery().length();
-                                temp.clear();
-                                for (int i = 0; i < documenti.size(); i++) {
-                                    if (textlength <= documenti.get(i).length()) {
-                                        if (documenti.get(i).toString().toUpperCase().trim().contains(cerca.getQuery().toString().trim().toUpperCase())) {
-                                            temp.add(documenti.get(i));
-                                            tempSingolo.add(singolo.get(i));
-                                        }
-                                    }
-                                }
-                                lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
-
-
-                                return false;
-                            }
-                        });*/
                         lista.setAdapter(adapter);
 
                     }
-
-                    }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-// Add the request to the RequestQueue.
-        stringRequest2.setRetryPolicy(new DefaultRetryPolicy(
-                30000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue2.add(stringRequest2);
-
-    }
 
     public void snipper(){
         final ListView lista = (ListView) findViewById(R.id.listview_docu);
@@ -631,11 +512,21 @@ public class Documenti extends AppCompatActivity
         //get the spinner from the xml.
         Spinner dropdown = findViewById(R.id.spinner1);
         //create a list of items for the spinner.
+        ArrayList<String> ListaCorsi=new ArrayList<String>();
+        Corsi.add(null);
+        ListaCorsi.add("Seleziona il Corso");
+        for (int i=0;i<corsi.size();i++){
+            if(corsi.get(i).getId_gruppo()==corsi_dipartimento) {
+                ListaCorsi.add(corsi.get(i).getNome());
+                Corsi.add(corsi.get(i));
+            }
+        }
+        String[] items = ListaCorsi.toArray(new String[ListaCorsi.size()]);
         //String[] items = new String[]{"CLEA", "CLEC", "CLEII","CLEA/M","CLEC/M"};
         //create an adapter to describe how the items are displayed, adapters are used in several places in android.
         //There are multiple variations of this, but this is the basic variant.
-        ArrayAdapter<CharSequence> adapter2=ArrayAdapter.createFromResource(Documenti.this,R.array.corsi,android.R.layout.simple_spinner_item)  ;
-        //ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(Documenti.this, android.R.layout.simple_spinner_dropdown_item, items);
+        //ArrayAdapter<CharSequence> adapter2=ArrayAdapter.createFromResource(Documenti.this,R.array.corsi,android.R.layout.simple_spinner_item)  ;
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(Documenti.this, android.R.layout.simple_spinner_dropdown_item,items);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //set the spinners adapter to the previously created one.
         dropdown.setAdapter(adapter2);
@@ -643,88 +534,50 @@ public class Documenti extends AppCompatActivity
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                ArrayList<String> temp = new ArrayList<String>();
-                ArrayList<Doc> tempSingolo=new ArrayList<Doc>();
-                temp.clear();
+                pos_spinner=position;
+                temp.clear();tempSingolo.clear();
+                    if (searchView==null) {
+                        if (position != 0) {
 
-                switch (position) {
-                    case 0:
-                        return;
+                            for (int i = 0; i < singolo.size(); i++) {
+                                if (singolo.get(i).getId_gruppo() == Corsi.get(position).getId() ||
+                                        singolo.get(i).getId_gruppo_padre() == Corsi.get(position).getId()) {
+                                    temp.add(singolo.get(i).getTitolo());
+                                    tempSingolo.add(singolo.get(i));
 
-                    case 1:
-                        for (int n = 0; n < singolo2.size(); n++)
-                        {
-                            for(int i=0;i<categorie.size();i++){
-                                if (categorie.get(i).getCorso()==74){
-                                    if (categorie.get(i).getId()==singolo2.get(n).getId_categoria()){
-                                        temp.add(singolo2.get(n).getTitolo());
-                                        tempSingolo.add(singolo2.get(n));
 
-                                    }
+                                }
+                            }
+                        } else {
+                            for (int i = 0; i < singolo.size(); i++) {
+                                temp.add(singolo.get(i).getTitolo());
+                                tempSingolo.add(singolo.get(i));
+                            }
+                        }
+                    }
+                    else{
+                        Log.d("query",searchView.getQuery()+"");
+                        if (position != 0) {
+
+                            for (int i = 0; i < singolo.size(); i++) {
+                                if ((singolo.get(i).getId_gruppo() == Corsi.get(position).getId() ||
+                                        singolo.get(i).getId_gruppo_padre() == Corsi.get(position).getId()) &&
+                                        singolo.get(i).getTitolo().contains(searchView.getQuery()+"")) {
+                                    temp.add(singolo.get(i).getTitolo());
+                                    tempSingolo.add(singolo.get(i));
+
+
+                                }
+                            }
+                        } else {
+                            for (int i = 0; i < singolo.size(); i++) {
+                                if (singolo.get(i).getTitolo().contains(searchView.getQuery()+"")) {
+                                    temp.add(singolo.get(i).getTitolo());
+                                    tempSingolo.add(singolo.get(i));
                                 }
                             }
                         }
-                        break;
-                    case 2:
-                        for (int n = 0; n < singolo2.size(); n++)
-                        {
-                            for(int i=0;i<categorie.size();i++){
-                                if (categorie.get(i).getCorso()==66){
-                                    if (categorie.get(i).getId()==singolo2.get(n).getId_categoria()){
-                                        temp.add(singolo2.get(n).getTitolo());
-                                        tempSingolo.add(singolo2.get(n));
-
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case 3:
-                        for (int n = 0; n < singolo2.size(); n++)
-                        {
-                            for(int i=0;i<categorie.size();i++){
-                                if (categorie.get(i).getCorso()==59){
-                                    if (categorie.get(i).getId()==singolo2.get(n).getId_categoria()){
-                                        temp.add(singolo2.get(n).getTitolo());
-                                        tempSingolo.add(singolo2.get(n));
-
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case 4:
-                        for (int n = 0; n < singolo2.size(); n++)
-                        {
-                            for(int i=0;i<categorie.size();i++){
-                                if (categorie.get(i).getCorso()==75){
-                                    if (categorie.get(i).getId()==singolo2.get(n).getId_categoria()){
-                                        temp.add(singolo2.get(n).getTitolo());
-                                        tempSingolo.add(singolo2.get(n));
-
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case 5:
-                        for (int n = 0; n < singolo2.size(); n++)
-                        {
-                            for(int i=0;i<categorie.size();i++){
-                                if (categorie.get(i).getCorso()==73){
-                                    if (categorie.get(i).getId()==singolo2.get(n).getId_categoria()){
-                                        temp.add(singolo2.get(n).getTitolo());
-                                        tempSingolo.add(singolo2.get(n));
-
-                                    }
-                                }
-                            }
-                        }
-                        break;
-
-                }
-
-
+                    }
                 lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
             }
 
@@ -780,6 +633,8 @@ public class Documenti extends AppCompatActivity
                 searchView.clearFocus();
                 searchView.setQuery("",false);
                 adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
+                Spinner s=(Spinner) findViewById(R.id.spinner1);
+                s.setSelection(0);
                 lista.setAdapter(adapter);
                 return true; // OR FALSE IF YOU DIDN'T WANT IT TO CLOSE!
             }
@@ -814,7 +669,6 @@ public class Documenti extends AppCompatActivity
             }
         });
 
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -824,18 +678,34 @@ public class Documenti extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String s) {
-                ArrayList<String> temp = new ArrayList<String>();
-                ArrayList<Doc> tempSingolo = new ArrayList<Doc>();
-                int textlength = searchView.getQuery().length();
-                temp.clear();
-                for (int i = 0; i < documenti.size(); i++) {
-                    if (textlength <= documenti.get(i).length()) {
-                        if (documenti.get(i).toString().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
-                            temp.add(documenti.get(i));
-                            tempSingolo.add(singolo.get(i));
+                    if (pos_spinner==0) {
+                        int textlength = searchView.getQuery().length();
+                        temp.clear();
+                        tempSingolo.clear();
+                        for (int i = 0; i < documenti.size(); i++) {
+                            if (textlength <= documenti.get(i).length()) {
+                                if (documenti.get(i).toString().toUpperCase().trim().contains(s.trim().toUpperCase())) {
+                                    temp.add(documenti.get(i));
+                                    tempSingolo.add(singolo.get(i));
+                                }
+                            }
                         }
                     }
-                }
+                    else{
+                        int textlength = searchView.getQuery().length();
+                        temp.clear();
+                        tempSingolo.clear();
+                        for (int i = 0; i < singolo.size(); i++) {
+                            if (textlength <= singolo.size()) {
+                                if (singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())&&
+                                        (singolo.get(i).getId_gruppo() == Corsi.get(pos_spinner).getId() ||
+                                        singolo.get(i).getId_gruppo_padre() == Corsi.get(pos_spinner).getId())) {
+                                    temp.add(singolo.get(i).getTitolo());
+                                    tempSingolo.add(singolo.get(i));
+                                }
+                            }
+                        }
+                    }
                 lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
 
 
@@ -969,7 +839,8 @@ class Doc{
     private String nome_cat;
     private String nome_gruppo;
     private int id_gruppo;
-    public Doc(int id, String titolo, int id_categoria,String descrizione,String data,int dimensione,String estensione,String link,String nome_cat,String nome_gruppo, int id_gruppo) {
+    private int id_gruppo_padre;
+    public Doc(int id, String titolo, int id_categoria,String descrizione,String data,int dimensione,String estensione,String link,String nome_cat,String nome_gruppo, int id_gruppo,int id_gruppo_padre) {
         this.id = id;
         this.titolo = titolo;
         this.id_categoria = id_categoria;
@@ -981,6 +852,7 @@ class Doc{
         this.nome_cat=nome_cat;
         this.nome_gruppo=nome_gruppo;
         this.id_gruppo=id_gruppo;
+        this.id_gruppo_padre=id_gruppo_padre;
 
     }
     public int getId(){return id;}
@@ -994,6 +866,9 @@ class Doc{
     public String getNome_gruppo(){return nome_gruppo;}
     public int getDimensione(){return dimensione;}
     public String getDescrizione(){return descrizione;}
+    public int getId_gruppo_padre() {
+        return id_gruppo_padre;
+    }
 }
 class Categoria{
     private int id;

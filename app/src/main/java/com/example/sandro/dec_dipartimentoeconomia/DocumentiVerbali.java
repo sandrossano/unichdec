@@ -126,7 +126,7 @@ public class DocumentiVerbali extends AppCompatActivity
                                                         id_gruppo = categorie.get(j).getId_gruppo();
                                                     }
                                                 }
-                                                singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getInt("id_categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, nome_cat, nome_gruppo, id_gruppo));
+                                                //singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getInt("id_categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, nome_cat, nome_gruppo, id_gruppo));
 
                                             }
 

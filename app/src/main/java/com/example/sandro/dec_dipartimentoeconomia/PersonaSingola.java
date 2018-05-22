@@ -37,19 +37,19 @@ public class PersonaSingola extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dipartimento);
 
-        findViewById(R.id.include_avv).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_pers).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_avv).setVisibility(View.GONE);
+        findViewById(R.id.include).setVisibility(View.GONE);
+        findViewById(R.id.include_pers).setVisibility(View.GONE);
         findViewById(R.id.include_sing).setVisibility(View.VISIBLE);
-        findViewById(R.id.include_org).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_cons).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_gruppo).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_didattica).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_ricerca).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_doc).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_apridoc).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_doc_verbali).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_doc_atti).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_org).setVisibility(View.GONE);
+        findViewById(R.id.include_cons).setVisibility(View.GONE);
+        findViewById(R.id.include_gruppo).setVisibility(View.GONE);
+        findViewById(R.id.include_didattica).setVisibility(View.GONE);
+        findViewById(R.id.include_ricerca).setVisibility(View.GONE);
+        findViewById(R.id.include_doc).setVisibility(View.GONE);
+        findViewById(R.id.include_apridoc).setVisibility(View.GONE);
+        findViewById(R.id.include_doc_verbali).setVisibility(View.GONE);
+        findViewById(R.id.include_doc_atti).setVisibility(View.GONE);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setEnabled(false);
