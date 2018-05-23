@@ -1,5 +1,7 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +24,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import static com.example.sandro.dec_dipartimentoeconomia.Persona.singolo;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.singolo_splash;
@@ -54,6 +58,10 @@ public class PersonaSingola extends AppCompatActivity
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setEnabled(false);
 
+        ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+        ComponentName componentInfo = taskInfo.get(0).topActivity;
+        MainActivity.activity=componentInfo.getShortClassName();
 
         ImageView imm=(ImageView) findViewById(R.id.immagineSingolo);
         int idsing = getIntent().getIntExtra("idsing",0);

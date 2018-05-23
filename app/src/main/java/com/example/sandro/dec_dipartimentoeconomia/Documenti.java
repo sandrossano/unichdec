@@ -1,6 +1,8 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
+import android.app.ActivityManager;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -47,6 +49,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -63,6 +67,7 @@ import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.finishd
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.localhost2;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.tutti_gruppi;
 
 
 public class Documenti extends AppCompatActivity
@@ -83,6 +88,9 @@ public class Documenti extends AppCompatActivity
     static ArrayList<Doc> tempSingolo=new ArrayList<Doc>();
     static int pos_spinner=0;
     static ArrayList<SplashActivity.Corso> Corsi=new ArrayList<SplashActivity.Corso>();
+    static ArrayList<String> ListaCorsi=new ArrayList<String>();
+    static ArrayList<SplashActivity.Gruppi> Insegnamenti=new ArrayList<SplashActivity.Gruppi>();
+    static ArrayList<String> ListaIns=new ArrayList<String>();
     ProgressBar p;
 
     private void refreshContent() {
@@ -101,6 +109,11 @@ public class Documenti extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dipartimento);
 
+        ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+        ComponentName componentInfo = taskInfo.get(0).topActivity;
+        MainActivity.activity=componentInfo.getShortClassName();
+
         p=(ProgressBar) findViewById(R.id.progressBarDocu);
         DrawableCompat.setTint(p.getIndeterminateDrawable(),Color.DKGRAY);
         findViewById(R.id.include).setVisibility(View.GONE);
@@ -117,7 +130,13 @@ public class Documenti extends AppCompatActivity
         findViewById(R.id.include_doc_atti).setVisibility(View.GONE);
         findViewById(R.id.include_avv).setVisibility(View.GONE);
 
+        Corsi.clear();
+        ListaCorsi.clear();
+        Insegnamenti.clear();
+        ListaIns.clear();
 
+        Spinner s2=(Spinner) findViewById(R.id.spinner2);
+        s2.setEnabled(false);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -173,6 +192,7 @@ public class Documenti extends AppCompatActivity
         CaricaLista();
         caricato();
         snipper();
+
 
         if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
         if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
@@ -512,13 +532,21 @@ public class Documenti extends AppCompatActivity
         //get the spinner from the xml.
         Spinner dropdown = findViewById(R.id.spinner1);
         //create a list of items for the spinner.
-        ArrayList<String> ListaCorsi=new ArrayList<String>();
         Corsi.add(null);
         ListaCorsi.add("Seleziona il Corso");
-        for (int i=0;i<corsi.size();i++){
-            if(corsi.get(i).getId_gruppo()==corsi_dipartimento) {
-                ListaCorsi.add(corsi.get(i).getNome());
-                Corsi.add(corsi.get(i));
+        if (!booleanoscuola) {
+            for (int i = 0; i < corsi.size(); i++) {
+                if (corsi.get(i).getId_gruppo() == corsi_dipartimento) {
+                    ListaCorsi.add(corsi.get(i).getNome());
+                    Corsi.add(corsi.get(i));
+                }
+            }
+        }else{
+            for (int i = 0; i < corsi.size(); i++) {
+                if (corsi.get(i).getTipo_gruppo().equals("CS")) {
+                    ListaCorsi.add(corsi.get(i).getNome());
+                    Corsi.add(corsi.get(i));
+                }
             }
         }
         String[] items = ListaCorsi.toArray(new String[ListaCorsi.size()]);
@@ -536,49 +564,41 @@ public class Documenti extends AppCompatActivity
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 pos_spinner=position;
                 temp.clear();tempSingolo.clear();
-                    if (searchView==null) {
+                        Log.d("query",searchView.getQuery()+","+position);
+                        if (searchView != null) {
                         if (position != 0) {
 
                             for (int i = 0; i < singolo.size(); i++) {
-                                if (singolo.get(i).getId_gruppo() == Corsi.get(position).getId() ||
-                                        singolo.get(i).getId_gruppo_padre() == Corsi.get(position).getId()) {
-                                    temp.add(singolo.get(i).getTitolo());
-                                    tempSingolo.add(singolo.get(i));
+                                    if ((singolo.get(i).getId_gruppo() == Corsi.get(position).getId() ||
+                                            singolo.get(i).getId_gruppo_padre() == Corsi.get(position).getId()) &&
+                                            singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+                                        Log.d("corso", Corsi.get(position).getId() + "");
+                                        temp.add(singolo.get(i).getTitolo());
+                                        tempSingolo.add(singolo.get(i));
 
 
+                                    }
                                 }
-                            }
-                        } else {
-                            for (int i = 0; i < singolo.size(); i++) {
-                                temp.add(singolo.get(i).getTitolo());
-                                tempSingolo.add(singolo.get(i));
-                            }
+                            ListaIns.clear();
+                            Insegnamenti.clear();
+                            snipper2();
+                            } else{
+                            Spinner dropdown = findViewById(R.id.spinner2);
+                            dropdown.setEnabled(false);
+                                for (int i = 0; i < singolo.size(); i++) {
+                                    if (singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+                                        temp.add(singolo.get(i).getTitolo());
+                                        tempSingolo.add(singolo.get(i));
+                                    }
+                                }
+                            ListaIns.clear();
+                            Insegnamenti.clear();
                         }
-                    }
-                    else{
-                        Log.d("query",searchView.getQuery()+"");
-                        if (position != 0) {
-
-                            for (int i = 0; i < singolo.size(); i++) {
-                                if ((singolo.get(i).getId_gruppo() == Corsi.get(position).getId() ||
-                                        singolo.get(i).getId_gruppo_padre() == Corsi.get(position).getId()) &&
-                                        singolo.get(i).getTitolo().contains(searchView.getQuery()+"")) {
-                                    temp.add(singolo.get(i).getTitolo());
-                                    tempSingolo.add(singolo.get(i));
-
-
-                                }
-                            }
-                        } else {
-                            for (int i = 0; i < singolo.size(); i++) {
-                                if (singolo.get(i).getTitolo().contains(searchView.getQuery()+"")) {
-                                    temp.add(singolo.get(i).getTitolo());
-                                    tempSingolo.add(singolo.get(i));
-                                }
-                            }
+                            searchView.clearFocus();
                         }
-                    }
+
                 lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
+
             }
 
             @Override
@@ -586,7 +606,96 @@ public class Documenti extends AppCompatActivity
 
             }
         });
+
     }
+
+
+    public void snipper2(){
+        final ListView lista = (ListView) findViewById(R.id.listview_docu);
+
+        //get the spinner from the xml.
+        Spinner dropdown = findViewById(R.id.spinner2);
+        dropdown.setEnabled(true);
+        //create a list of items for the spinner.
+
+        Log.d("ins",""+tutti_gruppi.size());
+        Log.d("pos",""+pos_spinner);
+        if(pos_spinner!=0) {
+        Log.d("ins",""+tutti_gruppi.size());
+                for (int i = 0; i < tutti_gruppi.size(); i++) {
+                    if (tutti_gruppi.get(i).getTipo_gruppo().equals("INS")&& tutti_gruppi.get(i).getId_gruppo()==Corsi.get(pos_spinner).getId()) {
+                        ListaIns.add(tutti_gruppi.get(i).getNome());
+                        Insegnamenti.add(tutti_gruppi.get(i));
+                    }
+                }
+
+        }
+        Collections.sort(ListaIns);
+        Collections.sort(Insegnamenti, new Comparator<SplashActivity.Gruppi>() {
+            @Override
+            public int compare(SplashActivity.Gruppi fruit2, SplashActivity.Gruppi fruit1)
+            {
+
+                return  fruit1.getNome().compareTo(fruit2.getNome());
+            }
+        });
+        ListaIns.add(0,"Scegli l'insegnamento");
+        Insegnamenti.add(0,null);
+        String[] items = ListaIns.toArray(new String[ListaIns.size()]);
+        //String[] items = new String[]{"CLEA", "CLEC", "CLEII","CLEA/M","CLEC/M"};
+        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
+        //There are multiple variations of this, but this is the basic variant.
+        //ArrayAdapter<CharSequence> adapter2=ArrayAdapter.createFromResource(Documenti.this,R.array.corsi,android.R.layout.simple_spinner_item)  ;
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(Documenti.this, android.R.layout.simple_spinner_dropdown_item,items);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //set the spinners adapter to the previously created one.
+        dropdown.setAdapter(adapter2);
+
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                //pos_spinner=position;
+                //temp.clear();tempSingolo.clear();
+                if (searchView != null) {
+                    if (position != 0) {
+
+                        /*for (int i = 0; i < singolo.size(); i++) {
+                            if ((singolo.get(i).getId_gruppo() == Corsi.get(position).getId() ||
+                                    singolo.get(i).getId_gruppo_padre() == Corsi.get(position).getId()) &&
+                                    singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+                                Log.d("corso", Corsi.get(position).getId() + "");
+                                //temp.add(singolo.get(i).getTitolo());
+                                //tempSingolo.add(singolo.get(i));
+
+
+                            }
+                        }*/
+                    } else{
+
+                        /*for (int i = 0; i < singolo.size(); i++) {
+                            if (singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+                                //temp.add(singolo.get(i).getTitolo());
+                                //tempSingolo.add(singolo.get(i));
+                            }
+                        }*/
+                    }
+                    searchView.clearFocus();
+                }
+                //lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+    }
+
+
+
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -1,6 +1,8 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,6 +30,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static android.content.Context.ACTIVITY_SERVICE;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
@@ -205,11 +208,11 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     }
 
                     if(terzo.size()==0) {
-                        if(second.get(i).getTitolo().equals("Home")&&mContext.getClass().getSimpleName().equals("MainActivity")){
+                        if(second.get(i).getTitolo().toUpperCase().equals("HOME")&&MainActivity.activity.equals(".MainActivity")){
                             drawerMain.closeDrawers();
                         }
                         else {
-                            if(second.get(i).getTitolo().equals("Home")){
+                            if(second.get(i).getTitolo().toUpperCase().equals("HOME")){
                                 Intent intent=new Intent(mContext, MainActivity.class);
                                 intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
                                 intent.putExtra("nome_dipartimento",dipartimenti.get(i).getSigla());
@@ -263,7 +266,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     }
                     Log.d("terzolivello", "Hai premuto: " + terzo.get(i1).getTitolo());
 
-                    if(!terzo.get(i1).getTitolo().toUpperCase().equals("PERSONE")) {
+                    if(!terzo.get(i1).getTitolo().toUpperCase().equals("PERSONE")&&!terzo.get(i1).getTitolo().toUpperCase().equals("DOCUMENTI")) {
                         Intent visualizza = new Intent(mContext, Visualizza.class);
                         visualizza.putExtra("id_dip", id_dipartimento);
                         visualizza.putExtra("secondolv", second.get(i).getTitolo());
@@ -274,7 +277,23 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
 
                         mContext.startActivity(visualizza);
                     }
-                    else{
+                    if(terzo.get(i1).getTitolo().toUpperCase().equals("HOME")&&MainActivity.activity.equals(".MainActivity")){
+                        drawerMain.closeDrawers();
+                    }
+                    if(terzo.get(i1).getTitolo().toUpperCase().equals("HOME")&&!MainActivity.activity.equals(".MainActivity")){
+                        Intent intent=new Intent(mContext, MainActivity.class);
+                        intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
+                        intent.putExtra("nome_dipartimento",dipartimenti.get(i).getSigla());
+                        mContext.startActivity(intent);
+                    }
+                    if(terzo.get(i1).getTitolo().toUpperCase().equals("DOCUMENTI")) {
+                        Intent persona = new Intent(mContext, Documenti.class);
+                        persona.putExtra("id_dip", id_dipartimento);
+                        persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        persona.putExtra("from_dipartimento",1);
+                        mContext.startActivity(persona);}
+
+                    if(terzo.get(i1).getTitolo().toUpperCase().equals("PERSONE")) {
                         Intent persona = new Intent(mContext, Persona.class);
                         persona.putExtra("id_dip", id_dipartimento);
                         persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

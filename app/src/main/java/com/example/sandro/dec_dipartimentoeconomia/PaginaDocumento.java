@@ -1,8 +1,10 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -41,6 +43,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 
 public class PaginaDocumento extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,6 +69,11 @@ public class PaginaDocumento extends AppCompatActivity
         findViewById(R.id.include_doc_verbali).setVisibility(View.GONE);
         findViewById(R.id.include_doc_atti).setVisibility(View.GONE);
         findViewById(R.id.include_avv).setVisibility(View.GONE);
+
+        ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+        ComponentName componentInfo = taskInfo.get(0).topActivity;
+        MainActivity.activity=componentInfo.getShortClassName();
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setEnabled(false);

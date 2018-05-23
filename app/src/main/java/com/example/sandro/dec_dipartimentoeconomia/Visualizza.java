@@ -2,6 +2,8 @@ package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -100,6 +102,11 @@ public class Visualizza extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualizza);
 
+        ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+        ComponentName componentInfo = taskInfo.get(0).topActivity;
+        MainActivity.activity=componentInfo.getShortClassName();
+
         mContext=this;
         id_dipartimento=getIntent().getIntExtra("id_dip",0);
         secondolv=getIntent().getStringExtra("secondolv");
@@ -183,30 +190,31 @@ public class Visualizza extends AppCompatActivity {
                     }
                 }
                 //a="gruppo: "+gruppo+" - ruolo: "+ruolo+";";
-                if(ruolo!=-250) {                                   //paginatore persona
-                    for (int k = 0; k < ruoli.size(); k++) {
-                        if (ruoli.get(k).getId() == ruolo) {
-                            if (ruoli.get(k).getFoto() != "null") {
-                                a+="<div>\n";
-                                a+= "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona="+ruoli.get(k).getId_persona()+"\">"+
-                                        "<div class=\"card container\">\n"+
-                                        "  <img src=\"https://economia.unich.it/fototessera/"+ruoli.get(k).getFoto()+"\" alt=\"Avatar\"   style=\"width:70px; height:70px; float:right;\">\n" +
-                                        "  <p>"+ruoli.get(k).getNome() +"  "+ ruoli.get(k).getCognome()+"</p> \n" +
-                                        "</div>" +
-                                        "</a></div><br>";
-                            } else {
-                                a+="<div>\n";
-                                a+= "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona="+ruoli.get(k).getId_persona()+"\">";
-                                a+="<div class=\"card container\">\n" +
-                                        "  <img src=\"https://economia.unich.it/fototessera/persona_generica.jpg\" alt=\"Avatar\"   style=\"width:70px; height:70px; float:right;\">\n" +
-                                        "  <p>"+ruoli.get(k).getNome() +"  "+ ruoli.get(k).getCognome()+"</p> \n" +
-                                        "</div>";
-                                a+="</a></div><br>";
+                if (ruolo!=-250) {               //paginatore persona
+                        for (int k = 0; k < ruoli.size(); k++) {
+                            if (ruoli.get(k).getId() == ruolo) {
+                                if (ruoli.get(k).getFoto() != "null") {
+                                    a += "<div>\n";
+                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona=" + ruoli.get(k).getId_persona() + "\">" +
+                                            "<div class=\"card container\">\n" +
+                                            "  <img src=\"https://economia.unich.it/fototessera/" + ruoli.get(k).getFoto() + "\" alt=\"Avatar\"   style=\"width:70px; height:70px; float:right;\">\n" +
+                                            "  <p>" + ruoli.get(k).getNome() + "  " + ruoli.get(k).getCognome() + "</p> \n" +
+                                            "</div>" +
+                                            "</a></div><br>";
+                                } else {
+                                    a += "<div>\n";
+                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona=" + ruoli.get(k).getId_persona() + "\">";
+                                    a += "<div class=\"card container\">\n" +
+                                            "  <img src=\"https://economia.unich.it/fototessera/persona_generica.jpg\" alt=\"Avatar\"   style=\"width:70px; height:70px; float:right;\">\n" +
+                                            "  <p>" + ruoli.get(k).getNome() + "  " + ruoli.get(k).getCognome() + "</p> \n" +
+                                            "</div>";
+                                    a += "</a></div><br>";
+                                }
                             }
                         }
-                    }
-                    completa = completa.replace("[[[" + pulita + "]]]", a);
-                    a = "";
+                        completa = completa.replace("[[[" + pulita + "]]]", a);
+                        a = "";
+
                 }
                 int numero=gruppo;
                 if(modulo.equals("pag_sezioni")){

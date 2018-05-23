@@ -1,5 +1,7 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity
     WebView mWebView;
     private int currentPage = 0;
     private ArrayList<Integer> XMENArray = new ArrayList<Integer>();
-
+    static String activity="";
 
     private ExpandableListView expandableListView;
     static int id_dipartimento=1;
@@ -168,6 +170,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+        ComponentName componentInfo = taskInfo.get(0).topActivity;
+        activity=componentInfo.getShortClassName();
 
 
         /*
