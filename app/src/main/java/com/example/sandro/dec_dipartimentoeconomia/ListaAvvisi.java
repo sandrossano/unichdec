@@ -117,6 +117,7 @@ public class ListaAvvisi extends AppCompatActivity
         findViewById(R.id.include_apridoc).setVisibility(View.GONE);
         findViewById(R.id.include_doc_verbali).setVisibility(View.GONE);
         findViewById(R.id.include_doc_atti).setVisibility(View.GONE);
+        findViewById(R.id.include_apriavv).setVisibility(View.GONE);
 
         ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
@@ -733,7 +734,8 @@ public class ListaAvvisi extends AppCompatActivity
                 String data = t.singoli.get(position).getData_inizio();
 
 
-                Intent i = new Intent(getApplicationContext(), PaginaDocumento.class);
+                Intent i = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i.putExtra("id",t.singoli.get(position).getId());
                 i.putExtra("titolo", titolo);
                 i.putExtra("data", data);
                 startActivity(i);

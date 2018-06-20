@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +33,10 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 
@@ -76,7 +81,38 @@ public class MainActivityMultiDipartimento extends AppCompatActivity {
             }
         });
 
+        RelativeLayout u=findViewById(R.id.multi_dip);
+        for (int i=dipartimenti.size()-1;i>=0;i--) {
+            View child = getLayoutInflater().inflate(R.layout.single_row_multi, null);
 
+            RelativeLayout.LayoutParams layoutParams =new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int width = size.x;
+            int height = size.y;
+            layoutParams.setMargins((width/8), (i+1)*(height/6)+(i*70), (width/8), 0);
+
+            child.setLayoutParams(layoutParams);
+            final int finalI = i;
+            child.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("id_dipartimento",dipartimenti.get(finalI).getId());
+                    intent.putExtra("nome_dipartimento",dipartimenti.get(finalI).getSigla());
+                    startActivity(intent);
+                }
+            });
+            TextView t= child.findViewById(R.id.nome_dip);
+            t.setText(dipartimenti.get(i).getSigla());
+            t.setTextColor(Color.BLACK);
+            ImageView n=(ImageView)child.findViewById(R.id.logo_dip);
+            Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+dipartimenti.get(i).getSigla()+".png").into(n);
+            u.addView(child);
+        }
         setUpAdapter();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -90,6 +126,8 @@ public class MainActivityMultiDipartimento extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        fab.setVisibility(View.GONE);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

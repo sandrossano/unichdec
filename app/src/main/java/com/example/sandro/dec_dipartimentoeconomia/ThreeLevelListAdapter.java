@@ -214,9 +214,11 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                         else {
                             if(second.get(i).getTitolo().toUpperCase().equals("HOME")){
                                 Intent intent=new Intent(mContext, MainActivity.class);
-                                intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
-                                intent.putExtra("nome_dipartimento",dipartimenti.get(i).getSigla());
-                                mContext.startActivity(intent);
+                                intent.putExtra("id_dipartimento",id_dipartimento);
+                                intent.putExtra("nome_dipartimento",nome_dipartimento);
+                                drawerMain.closeDrawers();
+                                drawer.closeDrawers();
+                                //mContext.startActivity(intent);
                             }
                             else {
                                 Intent visualizza = new Intent(mContext, Visualizza.class);

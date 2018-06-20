@@ -228,8 +228,8 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                         else {
                             if(second.get(i).getTitolo().equals("Home")){
                                 Intent intent=new Intent(mContext, Corso.class);
-                                intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
-                                intent.putExtra("nome_dipartimento",dipartimenti.get(i).getSigla());
+                                intent.putExtra("id_dipartimento",id_dipartimento);
+                                intent.putExtra("nome_dipartimento",nome_dipartimento);
                                 mContext.startActivity(intent);
                             }
                             else {
@@ -305,6 +305,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                     if(terzo.get(i1).getTitolo().toUpperCase().equals("DOCUMENTI")) {
                         Intent persona = new Intent(mContext, Documenti.class);
                         persona.putExtra("id_dip", id_dipartimento);
+                        persona.putExtra("id_corso", id_corso);
                         persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         persona.putExtra("from_corso",1);
                         mContext.startActivity(persona);}

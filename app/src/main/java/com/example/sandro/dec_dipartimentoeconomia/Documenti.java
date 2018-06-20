@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static android.view.View.GONE;
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.categorie;
@@ -92,6 +94,7 @@ public class Documenti extends AppCompatActivity
     static ArrayList<SplashActivity.Gruppi> Insegnamenti=new ArrayList<SplashActivity.Gruppi>();
     static ArrayList<String> ListaIns=new ArrayList<String>();
     ProgressBar p;
+    int id_corso=0;
 
     private void refreshContent() {
         if(mSwipeRefreshLayout.isEnabled() && finito) {
@@ -116,20 +119,23 @@ public class Documenti extends AppCompatActivity
 
         p=(ProgressBar) findViewById(R.id.progressBarDocu);
         DrawableCompat.setTint(p.getIndeterminateDrawable(),Color.DKGRAY);
-        findViewById(R.id.include).setVisibility(View.GONE);
-        findViewById(R.id.include_pers).setVisibility(View.GONE);
-        findViewById(R.id.include_sing).setVisibility(View.GONE);
-        findViewById(R.id.include_org).setVisibility(View.GONE);
-        findViewById(R.id.include_cons).setVisibility(View.GONE);
-        findViewById(R.id.include_gruppo).setVisibility(View.GONE);
-        findViewById(R.id.include_didattica).setVisibility(View.GONE);
-        findViewById(R.id.include_ricerca).setVisibility(View.GONE);
+        findViewById(R.id.include).setVisibility(GONE);
+        findViewById(R.id.include_pers).setVisibility(GONE);
+        findViewById(R.id.include_sing).setVisibility(GONE);
+        findViewById(R.id.include_org).setVisibility(GONE);
+        findViewById(R.id.include_cons).setVisibility(GONE);
+        findViewById(R.id.include_gruppo).setVisibility(GONE);
+        findViewById(R.id.include_didattica).setVisibility(GONE);
+        findViewById(R.id.include_ricerca).setVisibility(GONE);
         findViewById(R.id.include_doc).setVisibility(View.VISIBLE);
-        findViewById(R.id.include_apridoc).setVisibility(View.GONE);
-        findViewById(R.id.include_doc_verbali).setVisibility(View.GONE);
-        findViewById(R.id.include_doc_atti).setVisibility(View.GONE);
-        findViewById(R.id.include_avv).setVisibility(View.GONE);
+        findViewById(R.id.include_apridoc).setVisibility(GONE);
+        findViewById(R.id.include_doc_verbali).setVisibility(GONE);
+        findViewById(R.id.include_doc_atti).setVisibility(GONE);
+        findViewById(R.id.include_avv).setVisibility(GONE);
 
+        if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
+        if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
+        id_corso=getIntent().getIntExtra("id_corso",0);
         Corsi.clear();
         ListaCorsi.clear();
         Insegnamenti.clear();
@@ -194,8 +200,7 @@ public class Documenti extends AppCompatActivity
         snipper();
 
 
-        if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
-        if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
+
 
     }
 
@@ -203,7 +208,7 @@ public class Documenti extends AppCompatActivity
         if (finishdocu) {
             ListView lista = (ListView) findViewById(R.id.listview_docu);
             lista.setVisibility(View.VISIBLE);
-            p.setVisibility(View.GONE);
+            p.setVisibility(GONE);
         }
 
     }
@@ -519,7 +524,8 @@ public class Documenti extends AppCompatActivity
                         cerca = (SearchView) findViewById(R.id.cerca_docu);
 
                         singolo2=singolo;
-                        adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
+
+            adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
 
                         lista.setAdapter(adapter);
                         lista.setAdapter(adapter);
@@ -572,7 +578,7 @@ public class Documenti extends AppCompatActivity
                                     if ((singolo.get(i).getId_gruppo() == Corsi.get(position).getId() ||
                                             singolo.get(i).getId_gruppo_padre() == Corsi.get(position).getId()) &&
                                             singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
-                                        Log.d("corso", Corsi.get(position).getId() + "");
+
                                         temp.add(singolo.get(i).getTitolo());
                                         tempSingolo.add(singolo.get(i));
 
@@ -586,9 +592,23 @@ public class Documenti extends AppCompatActivity
                             Spinner dropdown = findViewById(R.id.spinner2);
                             dropdown.setEnabled(false);
                                 for (int i = 0; i < singolo.size(); i++) {
-                                    if (singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
-                                        temp.add(singolo.get(i).getTitolo());
-                                        tempSingolo.add(singolo.get(i));
+                                    if(id_corso==0){
+                                        if (singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+                                            temp.add(singolo.get(i).getTitolo());
+                                            tempSingolo.add(singolo.get(i));
+                                        }
+                                    }else {
+                                        RelativeLayout corso_laurea=(RelativeLayout)findViewById(R.id.corso_laurea);
+                                        corso_laurea.setVisibility(GONE);
+                                        if ((singolo.get(i).getId_gruppo() == id_corso ||
+                                                singolo.get(i).getId_gruppo_padre() == id_corso) &&
+                                                singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+
+                                            temp.add(singolo.get(i).getTitolo());
+                                            tempSingolo.add(singolo.get(i));
+
+
+                                        }
                                     }
                                 }
                             ListaIns.clear();
@@ -692,7 +712,6 @@ public class Documenti extends AppCompatActivity
         });
 
     }
-
 
 
 

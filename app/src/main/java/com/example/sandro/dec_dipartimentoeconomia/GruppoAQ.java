@@ -40,6 +40,7 @@ public class GruppoAQ extends AppCompatActivity
         findViewById(R.id.include_apridoc).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_verbali).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_atti).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_apriavv).setVisibility(View.GONE);
 
         int count=0;
         for(int i=0;i<ruoli.size();i++) {

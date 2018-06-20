@@ -79,6 +79,7 @@ public class DocumentiAtti extends AppCompatActivity
         findViewById(R.id.include_doc_verbali).setVisibility(View.INVISIBLE);
         findViewById(R.id.include_doc_atti).setVisibility(View.VISIBLE);
         findViewById(R.id.include_apridoc).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_apriavv).setVisibility(View.GONE);
 
         final TextView mTextView = (TextView) findViewById(R.id.text);
         final LinearLayout layout=(LinearLayout) findViewById(R.id.layout_persone);

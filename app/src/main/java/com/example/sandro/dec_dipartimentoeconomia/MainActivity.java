@@ -31,6 +31,7 @@ import android.webkit.WebViewClient;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -341,6 +342,56 @@ public class MainActivity extends AppCompatActivity
         TextView testo4=(TextView)findViewById(R.id.testoavviso4);
         testo4.setText(appuntamenti.get(3).getTitolo());
 
+        RelativeLayout avviso1=(RelativeLayout) findViewById(R.id.avviso1);
+        avviso1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i.putExtra("id",appuntamenti.get(0).getId());
+                i.putExtra("titolo", appuntamenti.get(0).getTitolo());
+                i.putExtra("data", appuntamenti.get(0).getData_inizio());
+                startActivity(i);
+            }
+        });
+
+
+        RelativeLayout avviso2=(RelativeLayout) findViewById(R.id.avviso2);
+        avviso2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i2 = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i2.putExtra("id",appuntamenti.get(1).getId());
+                i2.putExtra("titolo", appuntamenti.get(1).getTitolo());
+                i2.putExtra("data", appuntamenti.get(1).getData_inizio());
+                startActivity(i2);
+            }
+        });
+
+
+        RelativeLayout avviso3=(RelativeLayout) findViewById(R.id.avviso3);
+        avviso3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i3 = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i3.putExtra("id",appuntamenti.get(2).getId());
+                i3.putExtra("titolo", appuntamenti.get(2).getTitolo());
+                i3.putExtra("data", appuntamenti.get(2).getData_inizio());
+                startActivity(i3);
+            }
+        });
+
+
+        RelativeLayout avviso4=(RelativeLayout) findViewById(R.id.avviso4);
+        avviso4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i4 = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i4.putExtra("id",appuntamenti.get(3).getId());
+                i4.putExtra("titolo", appuntamenti.get(3).getTitolo());
+                i4.putExtra("data", appuntamenti.get(3).getData_inizio());
+                startActivity(i4);
+            }
+        });
 
 
     }

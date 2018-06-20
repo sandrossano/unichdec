@@ -107,6 +107,11 @@
             android:label=""
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".PaginaAvviso"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

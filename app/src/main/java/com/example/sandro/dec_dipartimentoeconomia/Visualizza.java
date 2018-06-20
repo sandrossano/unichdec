@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ExpandableListView;
@@ -141,8 +143,10 @@ public class Visualizza extends AppCompatActivity {
             data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+terzolv+"</h2>"+
                 contenuti.get(pos).getTesto_contenuto()+
                 "</body>" + "</html>";
-        data=data.replace("href=","");
-        if(terzolv.equals("Esami")){data=data.replace("</body>","vai alla app Uda + intent</body>");}
+        //data=data.replace("href=","");        rimuovi link
+            data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
+            data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
+            if(terzolv.equals("Esami")){data=data.replace("</body>","vai alla app Uda + intent</body>");}
         }
 
         else{
@@ -250,8 +254,12 @@ public class Visualizza extends AppCompatActivity {
                 if(modulo.equals("pag_documenti")){
                     for (int d =0;d<singolo.size();d++){
                         if(singolo.get(d).getId_gruppo()==gruppo&& singolo.get(d).getId_categoria()==categoria){
-                            a+= "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_doc="+singolo.get(d).getId()+"&"+singolo.get(d).getTitolo()+"&"+singolo.get(d).getId_categoria()+"\">"+singolo.get(d).getTitolo()+"</a><br><br>";
-
+                            a += "<div>\n";
+                            a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_doc="+singolo.get(d).getId()+"&"+singolo.get(d).getTitolo()+"&"+singolo.get(d).getId_categoria()+"\">"+
+                                    "<div class=\"card container\">\n" +
+                                    "  <p>" + singolo.get(d).getTitolo()+ "</p> \n" +
+                                    "</div>" +
+                                    "</a></div><br>";
                         }
                     }
 
@@ -259,7 +267,7 @@ public class Visualizza extends AppCompatActivity {
                     a = "";
                 }
             }
-            
+
                data="<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
                        "<style>\n" +
                        ".card {\n" +
@@ -297,17 +305,26 @@ public class Visualizza extends AppCompatActivity {
                        "</style></head><body style=\"background:#d8e5f0\">" +completa+"</body>" + "</html>";
             //data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+terzolv+"</h2>"+
               //  completa+"</body>" + "</html>";
-            //data=data.replace("href=","");
+            //<img style="display: block; margin-left: auto; margin-right: auto;" src="documenti/FOTO/IMG_20150729_151450.jpg" alt="" width="600" height="333">
+            data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
+            //data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
+
+            data=data.replace("href=\"","href=\"https://economia.unich.it/");
             };
         //TextView textView = (TextView) findViewById(R.id.html);
         //textView.setText(Html.fromHtml(Html.fromHtml(data).toString()));
 
 
 
+        engine.getSettings().setBuiltInZoomControls(true);
+        engine.getSettings().setSupportZoom(true);
+        engine.getSettings().setDisplayZoomControls(false);
 
         engine.getSettings().setJavaScriptEnabled(true);
+        engine.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         engine.getSettings().setAppCacheEnabled(false);
         engine.getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
+
         engine.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -333,6 +350,11 @@ public class Visualizza extends AppCompatActivity {
                     mContext.startActivity(intent);
                     return true;
                 }
+
+                if(!url.startsWith("http")){url="https://economia.unich.it/"+url;}
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
                 return true;
             }
         });

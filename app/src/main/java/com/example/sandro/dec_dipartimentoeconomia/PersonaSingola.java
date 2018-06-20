@@ -54,6 +54,7 @@ public class PersonaSingola extends AppCompatActivity
         findViewById(R.id.include_apridoc).setVisibility(View.GONE);
         findViewById(R.id.include_doc_verbali).setVisibility(View.GONE);
         findViewById(R.id.include_doc_atti).setVisibility(View.GONE);
+        findViewById(R.id.include_apriavv).setVisibility(View.GONE);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setEnabled(false);

@@ -69,6 +69,7 @@ public class PaginaDocumento extends AppCompatActivity
         findViewById(R.id.include_doc_verbali).setVisibility(View.GONE);
         findViewById(R.id.include_doc_atti).setVisibility(View.GONE);
         findViewById(R.id.include_avv).setVisibility(View.GONE);
+        findViewById(R.id.include_apriavv).setVisibility(View.GONE);
 
         ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
@@ -298,6 +299,8 @@ public class PaginaDocumento extends AppCompatActivity
             request.allowScanningByMediaScanner();
             request.setMimeType("application/" + getIntent().getStringExtra("estensione"));
             request.setDestinationInExternalPublicDir("/Download", getIntent().getStringExtra("link"));
+            Log.d("estensione",getIntent().getStringExtra("estensione"));
+            Log.d("link",getIntent().getStringExtra("link"));
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             Long reference = downloadManager.enqueue(request);
         }

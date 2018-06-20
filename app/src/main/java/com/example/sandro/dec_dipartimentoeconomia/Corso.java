@@ -1,5 +1,6 @@
 package com.example.sandro.dec_dipartimentoeconomia;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -19,13 +20,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
@@ -35,6 +42,7 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawerMai
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
@@ -65,6 +73,7 @@ public class Corso extends AppCompatActivity {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +91,16 @@ public class Corso extends AppCompatActivity {
                 refreshContent();
             }
         });
+
+        ScrollView scroll=(ScrollView)findViewById(R.id.scrollmain);
+        scroll.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                if(view.canScrollVertically(-1)==true)mSwipeRefreshLayout.setEnabled(false);
+                else{mSwipeRefreshLayout.setEnabled(true);}
+            }
+        });
+
         position=getIntent().getStringExtra("position");
 
         String str = position.replace("/", "");
@@ -109,9 +128,9 @@ public class Corso extends AppCompatActivity {
                 listacorsiDipartimento.add(corsi.get(i));
             }
         }
-        TextView text=(TextView)findViewById(R.id.testocorso);
+        //TextView text=(TextView)findViewById(R.id.testocorso);
 
-        text.setText("Dipartimento: "+id_dipartimento+"\n"+"Id_Corso: "+id_corso+"\n"+"Nome_Corso: "+position);
+        //text.setText("Dipartimento: "+id_dipartimento+"\n"+"Id_Corso: "+id_corso+"\n"+"Nome_Corso: "+position);
 
         if(drawerCorso!=null)drawerCorso.closeDrawer(GravityCompat.START);
         drawerMain.closeDrawer(GravityCompat.START);
@@ -139,6 +158,103 @@ public class Corso extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        //SETTO GLI APPUNTAMENTI
+
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy", Locale.ITALY);
+        Date date = null;
+
+
+        TextView data1=(TextView)findViewById(R.id.data1);
+        try {
+            date = format1.parse(appuntamenti.get(0).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data1.setText(format2.format(date));
+        TextView testo1=(TextView)findViewById(R.id.testoavviso);
+        testo1.setText(appuntamenti.get(0).getTitolo());
+
+        TextView data2=(TextView)findViewById(R.id.data2);
+        try {
+            date = format1.parse(appuntamenti.get(1).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data2.setText(format2.format(date));
+        TextView testo2=(TextView)findViewById(R.id.testoavviso2);
+        testo2.setText(appuntamenti.get(1).getTitolo());
+
+        TextView data3=(TextView)findViewById(R.id.data3);
+        try {
+            date = format1.parse(appuntamenti.get(2).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data3.setText(format2.format(date));
+        TextView testo3=(TextView)findViewById(R.id.testoavviso3);
+        testo3.setText(appuntamenti.get(2).getTitolo());
+
+        TextView data4=(TextView)findViewById(R.id.data4);
+        try {
+            date = format1.parse(appuntamenti.get(3).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data4.setText(format2.format(date));
+        TextView testo4=(TextView)findViewById(R.id.testoavviso4);
+        testo4.setText(appuntamenti.get(3).getTitolo());
+
+        RelativeLayout avviso1=(RelativeLayout) findViewById(R.id.avviso1);
+        avviso1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i.putExtra("id",appuntamenti.get(0).getId());
+                i.putExtra("titolo", appuntamenti.get(0).getTitolo());
+                i.putExtra("data", appuntamenti.get(0).getData_inizio());
+                startActivity(i);
+            }
+        });
+
+
+        RelativeLayout avviso2=(RelativeLayout) findViewById(R.id.avviso2);
+        avviso2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i2 = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i2.putExtra("id",appuntamenti.get(1).getId());
+                i2.putExtra("titolo", appuntamenti.get(1).getTitolo());
+                i2.putExtra("data", appuntamenti.get(1).getData_inizio());
+                startActivity(i2);
+            }
+        });
+
+
+        RelativeLayout avviso3=(RelativeLayout) findViewById(R.id.avviso3);
+        avviso3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i3 = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i3.putExtra("id",appuntamenti.get(2).getId());
+                i3.putExtra("titolo", appuntamenti.get(2).getTitolo());
+                i3.putExtra("data", appuntamenti.get(2).getData_inizio());
+                startActivity(i3);
+            }
+        });
+
+
+        RelativeLayout avviso4=(RelativeLayout) findViewById(R.id.avviso4);
+        avviso4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i4 = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i4.putExtra("id",appuntamenti.get(3).getId());
+                i4.putExtra("titolo", appuntamenti.get(3).getTitolo());
+                i4.putExtra("data", appuntamenti.get(3).getData_inizio());
+                startActivity(i4);
+            }
+        });
     }
 
     private void setUpAdapter() {
@@ -326,6 +442,8 @@ public class Corso extends AppCompatActivity {
             return true;
         }else if (id == R.id.main_doc) {
             Intent i=new Intent(getApplicationContext(), Documenti.class);
+            i.putExtra("id_corso", id_corso);
+            i.putExtra("id_dip", id_dipartimento);
             i.putExtra("from_corso",1);
             startActivity(i);
         }else if (id == R.id.item_persone) {
@@ -346,5 +464,11 @@ public class Corso extends AppCompatActivity {
             super.onBackPressed();
             finish();
         }
+    }
+    public void apriAvvisi(View v)
+    {
+        Intent i=new Intent(getApplicationContext(), ListaAvvisi.class);
+        i.putExtra("from_corso",1);
+        startActivity(i);
     }
 }

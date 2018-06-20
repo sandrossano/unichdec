@@ -54,6 +54,14 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <include
+            android:id="@+id/include_apriavv"
+            layout="@layout/content_apriavv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <include
             android:id="@+id/include_pers"
             layout="@layout/content_pers"
             android:layout_width="match_parent"

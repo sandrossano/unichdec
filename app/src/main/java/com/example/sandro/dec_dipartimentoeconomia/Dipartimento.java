@@ -56,6 +56,7 @@ public class Dipartimento extends AppCompatActivity
         findViewById(R.id.include_doc_verbali).setVisibility(View.GONE);
         findViewById(R.id.include_doc_atti).setVisibility(View.GONE);
         findViewById(R.id.include_avv).setVisibility(View.GONE);
+        findViewById(R.id.include_apriavv).setVisibility(View.VISIBLE);
 
         ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
