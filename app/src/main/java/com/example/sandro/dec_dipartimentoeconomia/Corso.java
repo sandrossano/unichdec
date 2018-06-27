@@ -103,11 +103,16 @@ public class Corso extends AppCompatActivity {
 
         position=getIntent().getStringExtra("position");
 
+
+
         String str = position.replace("/", "");
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
         ImageView logo = (ImageView)hView.findViewById(R.id.logo_dipartimento);
         ImageView logo_prec = (ImageView)hView.findViewById(R.id.logo_precedente);
+        ImageView corso = (ImageView)findViewById(R.id.image_corso);
+
+        Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+str+".png").into(corso);
 
         Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+str+".png").into(logo);
 

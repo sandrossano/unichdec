@@ -84,7 +84,11 @@ public class PaginaDocumento extends AppCompatActivity
         setTitle(titolo);
 
         TextView wow = (TextView) findViewById(R.id.testodocumento);
-        wow.setText("ID: " + iddoc + " , TITOLO:" + titolo + " , ID_CAT:" + idcat);
+        wow.setText("ID: " + iddoc + ", ID_CAT:" + idcat);
+
+        TextView wow2 = (TextView) findViewById(R.id.testodocumento2);
+        wow2.setText(titolo );
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

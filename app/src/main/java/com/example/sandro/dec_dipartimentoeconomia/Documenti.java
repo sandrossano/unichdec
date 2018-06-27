@@ -598,8 +598,13 @@ public class Documenti extends AppCompatActivity
                                             tempSingolo.add(singolo.get(i));
                                         }
                                     }else {
-                                        RelativeLayout corso_laurea=(RelativeLayout)findViewById(R.id.corso_laurea);
-                                        corso_laurea.setVisibility(GONE);
+                                        Spinner spinner1=(Spinner) findViewById(R.id.spinner1);
+                                        spinner1.setVisibility(GONE);
+                                        TextView t=(TextView) findViewById(R.id.textView11);
+                                        t.setVisibility(View.VISIBLE);
+                                        for(int h=0;h<corsi.size();h++){
+                                            if(corsi.get(h).getId()==id_corso){t.setText(corsi.get(h).getNome());}
+                                        }
                                         if ((singolo.get(i).getId_gruppo() == id_corso ||
                                                 singolo.get(i).getId_gruppo_padre() == id_corso) &&
                                                 singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {

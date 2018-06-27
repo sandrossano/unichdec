@@ -6,12 +6,23 @@
     android:id="@+id/scrollmain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="56dp"
     tools:context="com.example.sandro.dec_dipartimentoeconomia.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#d8e5f0">
+
+        <ImageView
+            android:id="@+id/image_corso"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/white"
+            app:srcCompat="@drawable/declogo" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
@@ -22,6 +33,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
+            android:visibility="invisible"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="92dp"
             tools:layout_editor_absoluteY="99dp" />
@@ -31,7 +43,8 @@
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_alignBottom="@+id/pager"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible">
 
         </me.relex.circleindicator.CircleIndicator>
 
@@ -255,5 +268,6 @@
 
 
     </RelativeLayout>
+
 
 </ScrollView>
