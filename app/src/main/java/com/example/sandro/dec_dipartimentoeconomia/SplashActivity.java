@@ -108,7 +108,7 @@ public class SplashActivity extends AppCompatActivity{
         }
     }
 
-    public class SottoLivelli {
+    public static class SottoLivelli {
         private int i;
         private String titolo;
         private int id_gruppo;
@@ -140,6 +140,11 @@ public class SplashActivity extends AppCompatActivity{
 
         public int getLivello() {
             return livello;
+        }
+
+        public String setTitolo(String titolo) {
+            this.titolo = titolo;
+            return this.titolo;
         }
     }
 
@@ -638,7 +643,7 @@ public class SplashActivity extends AppCompatActivity{
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    ruoli.add(new Ruoli(expl.getInt("idRuolo"), expl.getString("nomeRuolo"), expl.getInt("idPersonaAppartenenza"), expl.getString("nomePersona"), expl.getString("cognomePersona"), expl.getString("fotoPersona")));
+                                    ruoli.add(new Ruoli(expl.getInt("idRuolo"), expl.getString("nomeRuolo"), expl.getInt("idPersonaAppartenenza"), expl.getString("nomePersona"), expl.getString("cognomePersona"), expl.getString("fotoPersona"),expl.getInt("id_gruppo")));
 
                                 }
                                 finish2 = true;
@@ -993,7 +998,7 @@ public class SplashActivity extends AppCompatActivity{
 
 
     public void fine() {
-        if(finish3 &&finish7&& finish_imm) { //finish1 && finish_cont&&finishdocu&& finish_pers&&finish2&&finishapp&&
+        if(finish3 &&finish7&& finish_imm&&finish_cont_all) { //finish1 && finish_cont&&finishdocu&& finish_pers&&finish2&&finishapp&&
             Intent i = new Intent(getApplicationContext(), MainActivityMultiDipartimento.class);
             startActivity(i);
         }

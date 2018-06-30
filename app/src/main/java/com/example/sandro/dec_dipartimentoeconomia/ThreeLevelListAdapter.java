@@ -185,25 +185,19 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
 
                     ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
                     for (int j = 0; j < livello2dec.size(); j++) {
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(j).getI(),livello2dec.get(j).getTitolo(),livello2dec.get(j).getId_gruppo(),livello2dec.get(j).getId_pagina(),livello2dec.get(j).getLivello());
                         if(i==0 && second.size()==1){
-                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
-                                terzo.add(livello2dec.get(j));
+                            {terzo.add(livello2);
                             }
                         }
                         if(i==0 && second.size()>1) {
-                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
-                                terzo.add(livello2dec.get(j));
-                            }
+                            {terzo.add(livello2);}
                         }
                         if(i!=0 && i!=second.size()-1){
-                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
-                                terzo.add(livello2dec.get(j));
-                            }
+                            {terzo.add(livello2);}
                         }
                         if(i==second.size()-1){
-                            if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
-                                terzo.add(livello2dec.get(j));
-                            }
+                            {terzo.add(livello2);}
                         }
                     }
 
@@ -262,13 +256,16 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
 
                     ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
                     for (int j = 0; j < livello2dec.size(); j++) {
-                        if (livello2dec.get(j).getLivello() == 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
-                            terzo.add(livello2dec.get(j));
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(j).getI(),livello2dec.get(j).getTitolo(),livello2dec.get(j).getId_gruppo(),livello2dec.get(j).getId_pagina(),livello2dec.get(j).getLivello());
+
+                        if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                           {terzo.add(livello2);}
                         }
                     }
-                    Log.d("terzolivello", "Hai premuto: " + terzo.get(i1).getTitolo());
+                    String[] titolo= terzo.get(i1).getTitolo().split("-> ");
+                    Log.d("terzolivello", "Hai premuto: " + titolo[titolo.length-1]);
 
-                    if(!terzo.get(i1).getTitolo().toUpperCase().equals("PERSONE")&&!terzo.get(i1).getTitolo().toUpperCase().equals("DOCUMENTI")) {
+                    if(!titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE")&& !titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")&&terzo.get(i1).getId_pagina()!=0&&terzo.get(i1).getId_pagina()!=-1) {
                         Intent visualizza = new Intent(mContext, Visualizza.class);
                         visualizza.putExtra("id_dip", id_dipartimento);
                         visualizza.putExtra("secondolv", second.get(i).getTitolo());
@@ -279,23 +276,23 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
 
                         mContext.startActivity(visualizza);
                     }
-                    if(terzo.get(i1).getTitolo().toUpperCase().equals("HOME")&&MainActivity.activity.equals(".MainActivity")){
+                    if(titolo[titolo.length-1].toUpperCase().equals("HOME")&&MainActivity.activity.equals(".MainActivity")){
                         drawerMain.closeDrawers();
                     }
-                    if(terzo.get(i1).getTitolo().toUpperCase().equals("HOME")&&!MainActivity.activity.equals(".MainActivity")){
+                    if(titolo[titolo.length-1].toUpperCase().equals("HOME")&&!MainActivity.activity.equals(".MainActivity")){
                         Intent intent=new Intent(mContext, MainActivity.class);
                         intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
                         intent.putExtra("nome_dipartimento",dipartimenti.get(i).getSigla());
                         mContext.startActivity(intent);
                     }
-                    if(terzo.get(i1).getTitolo().toUpperCase().equals("DOCUMENTI")) {
+                    if(titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")) {
                         Intent persona = new Intent(mContext, Documenti.class);
                         persona.putExtra("id_dip", id_dipartimento);
                         persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         persona.putExtra("from_dipartimento",1);
                         mContext.startActivity(persona);}
 
-                    if(terzo.get(i1).getTitolo().toUpperCase().equals("PERSONE")) {
+                    if(titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE") ) {
                         Intent persona = new Intent(mContext, Persona.class);
                         persona.putExtra("id_dip", id_dipartimento);
                         persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -638,9 +638,14 @@ class Ruoli{
     private String cognome;
     private String foto;
     private int id_persona;
-    public Ruoli(int id, String nome, int id_persona, String nome_pers, String cognome,String foto){
-        this.nome=nome;this.id=id;this.nome_pers=nome_pers;this.id_persona=id_persona;this.cognome=cognome;this.foto=foto;
+    private int id_gruppo;
+    public Ruoli(int id, String nome, int id_persona, String nome_pers, String cognome,String foto,int id_gruppo){
+        this.nome=nome;this.id=id;this.nome_pers=nome_pers;this.id_persona=id_persona;this.cognome=cognome;this.foto=foto;this.id_gruppo=id_gruppo;
         }
+
+    public int getId_gruppo() {
+        return id_gruppo;
+    }
 
     public String getFoto() {return foto;}
     public int getId(){return id;}

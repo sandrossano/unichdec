@@ -139,12 +139,15 @@ public class Visualizza extends AppCompatActivity {
             if(contenuti.get(i).getId_pagine()==terzolvpag){pos=i;break;}
         }
         String data="";
+        String[] titolo= terzolv.split("->");
         if(!contenuti.get(pos).getTesto_contenuto().contains("[[[")){
-            data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+terzolv+"</h2>"+
+            data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+titolo[titolo.length-1]+"</h2>"+
                 contenuti.get(pos).getTesto_contenuto()+
                 "</body>" + "</html>";
         //data=data.replace("href=","");        rimuovi link
             data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
+            if(data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")){data=data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;","<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");}
+
             //data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
             if(terzolv.equals("Esami")){data=data.replace("</body>","vai alla app Uda + intent</body>");}
         }
@@ -197,22 +200,24 @@ public class Visualizza extends AppCompatActivity {
                 if (ruolo!=-250) {               //paginatore persona
                         for (int k = 0; k < ruoli.size(); k++) {
                             if (ruoli.get(k).getId() == ruolo) {
-                                if (ruoli.get(k).getFoto() != "null") {
-                                    a += "<div>\n";
-                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona=" + ruoli.get(k).getId_persona() + "\">" +
-                                            "<div class=\"card container\">\n" +
-                                            "  <img src=\"https://economia.unich.it/fototessera/" + ruoli.get(k).getFoto() + "\" alt=\"Avatar\"   style=\"width:70px; height:70px; float:right;\">\n" +
-                                            "  <p>" + ruoli.get(k).getNome() + "  " + ruoli.get(k).getCognome() + "</p> \n" +
-                                            "</div>" +
-                                            "</a></div><br>";
-                                } else {
-                                    a += "<div>\n";
-                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona=" + ruoli.get(k).getId_persona() + "\">";
-                                    a += "<div class=\"card container\">\n" +
-                                            "  <img src=\"https://economia.unich.it/fototessera/persona_generica.jpg\" alt=\"Avatar\"   style=\"width:70px; height:70px; float:right;\">\n" +
-                                            "  <p>" + ruoli.get(k).getNome() + "  " + ruoli.get(k).getCognome() + "</p> \n" +
-                                            "</div>";
-                                    a += "</a></div><br>";
+                                if(ruoli.get(k).getId_gruppo()==gruppo) {
+                                    if (ruoli.get(k).getFoto() != "null") {
+                                        a += "<div>\n";
+                                        a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona=" + ruoli.get(k).getId_persona() + "\">" +
+                                                "<div class=\"card container\">\n" +
+                                                "  <img src=\"https://economia.unich.it/fototessera/" + ruoli.get(k).getFoto() + "\" alt=\"Avatar\"   style=\"width:70px; height:70px; float:right;\">\n" +
+                                                "  <p>" + ruoli.get(k).getNome() + "  " + ruoli.get(k).getCognome() + "</p> \n" +
+                                                "</div>" +
+                                                "</a></div><br>";
+                                    } else {
+                                        a += "<div>\n";
+                                        a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona=" + ruoli.get(k).getId_persona() + "\">";
+                                        a += "<div class=\"card container\">\n" +
+                                                "  <img src=\"https://economia.unich.it/fototessera/persona_generica.jpg\" alt=\"Avatar\"   style=\"width:70px; height:70px; float:right;\">\n" +
+                                                "  <p>" + ruoli.get(k).getNome() + "  " + ruoli.get(k).getCognome() + "</p> \n" +
+                                                "</div>";
+                                        a += "</a></div><br>";
+                                    }
                                 }
                             }
                         }
@@ -306,11 +311,13 @@ public class Visualizza extends AppCompatActivity {
             //data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+terzolv+"</h2>"+
               //  completa+"</body>" + "</html>";
             //<img style="display: block; margin-left: auto; margin-right: auto;" src="documenti/FOTO/IMG_20150729_151450.jpg" alt="" width="600" height="333">
+            if(data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")){data=data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;","<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");}
+
             data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
             //data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
 
             data=data.replace("href=\"","href=\"https://economia.unich.it/");
-            };
+            }
         //TextView textView = (TextView) findViewById(R.id.html);
         //textView.setText(Html.fromHtml(Html.fromHtml(data).toString()));
 
@@ -542,24 +549,29 @@ public class Visualizza extends AppCompatActivity {
                 for (int j = 0; j < a.size(); j++) {
                     ArrayList<String> lista = new ArrayList<>();
                     for (int k = 0; k < livello2dec.size(); k++) {
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello());
                         if (j == 0 && a.size() == 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == 0 && a.size() > 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j != 0 && j != a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
 
@@ -682,24 +694,29 @@ public class Visualizza extends AppCompatActivity {
                 for (int j = 0; j < a.size(); j++) {
                     ArrayList<String> lista = new ArrayList<>();
                     for (int k = 0; k < livello2dec.size(); k++) {
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello());
                         if (j == 0 && a.size() == 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == 0 && a.size() > 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j != 0 && j != a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
 
