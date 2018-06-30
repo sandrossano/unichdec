@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -407,11 +409,100 @@ public class Visualizza extends AppCompatActivity {
         }
         setTitle(secondolv);
 
-        if(corso==-1)setUpAdapter();
-        else setUpAdapterCorso();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if(corso==-1)setUpAdapter();
+        else {setUpAdapterCorso();
+            for (int i =0;i<corsi.size();i++) {
+                if (corsi.get(i).getId()==id_corso) {
+                    NavigationView navigationView1=(NavigationView) findViewById(R.id.nav_view);
+                    if(corsi.get(i).getColor()==0) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#0e185a"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==1) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#b30000"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==2) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#e6b800"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==3) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#00cc7a"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==4) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#00663d"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==5) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#b30077"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==6) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#804000"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==7) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#808080"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==8) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#600080"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==9) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#b38f00"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==10) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#ff704d"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if(corsi.get(i).getColor()==11) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#33bbff"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                }
+            }
+        }
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -754,6 +845,8 @@ public class Visualizza extends AppCompatActivity {
 
         expandableListView.expandGroup(0);
     }
+
+
 
     @Override
     public void onBackPressed() {
