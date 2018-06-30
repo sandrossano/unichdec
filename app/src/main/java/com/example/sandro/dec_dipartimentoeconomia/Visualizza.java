@@ -145,7 +145,7 @@ public class Visualizza extends AppCompatActivity {
                 "</body>" + "</html>";
         //data=data.replace("href=","");        rimuovi link
             data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
-            data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
+            //data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
             if(terzolv.equals("Esami")){data=data.replace("</body>","vai alla app Uda + intent</body>");}
         }
 

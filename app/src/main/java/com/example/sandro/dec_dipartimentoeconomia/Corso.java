@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -43,10 +45,13 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipart
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.contenuti;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.contenuti_all;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.tutti_gruppi;
 import static com.example.sandro.dec_dipartimentoeconomia.Visualizza.drawerVisual;
 
 /**
@@ -110,9 +115,12 @@ public class Corso extends AppCompatActivity {
         View hView =  navigationView.getHeaderView(0);
         ImageView logo = (ImageView)hView.findViewById(R.id.logo_dipartimento);
         ImageView logo_prec = (ImageView)hView.findViewById(R.id.logo_precedente);
+
+        /*
         ImageView corso = (ImageView)findViewById(R.id.image_corso);
 
         Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+str+".png").into(corso);
+*/
 
         Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+str+".png").into(logo);
 
@@ -133,6 +141,30 @@ public class Corso extends AppCompatActivity {
                 listacorsiDipartimento.add(corsi.get(i));
             }
         }
+
+        int id_cont=0;
+        for (int k=0;k<tutti_gruppi.size();k++){
+            if(tutti_gruppi.get(k).getId()==id_corso){id_cont=tutti_gruppi.get(k).getId_contenuto();break;}
+        }
+        int pos=0;
+        for(int i=0;i<contenuti_all.size();i++){
+            if(contenuti_all.get(i).getId_contenuto()==id_cont){pos=i;break;}
+        }
+        String data="";
+        data = "<html>" + "<body>"+
+                    contenuti_all.get(pos).getTesto_contenuto()+
+                    "</body>" + "</html>";
+            //data=data.replace("href=","");        rimuovi link
+            data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
+            if(data.contains("<iframe")){data=data.replace("<p><iframe ","<p style=\"display=none;\"><iframe ");}
+            //data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
+            //if(terzolv.equals("Esami")){data=data.replace("</body>","vai alla app Uda + intent</body>");}
+        WebView image_top= (WebView) findViewById(R.id.image_top);
+        image_top.getSettings().setJavaScriptEnabled(true);
+        image_top.loadData(data, "text/html", "UTF-8");
+
+
+
         //TextView text=(TextView)findViewById(R.id.testocorso);
 
         //text.setText("Dipartimento: "+id_dipartimento+"\n"+"Id_Corso: "+id_corso+"\n"+"Nome_Corso: "+position);

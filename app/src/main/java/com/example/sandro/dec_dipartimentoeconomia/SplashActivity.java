@@ -82,8 +82,13 @@ public class SplashActivity extends AppCompatActivity{
         private String nome;
         private int id_gruppo;
         private String tipo_gruppo;
-        public Gruppi(int i, String n, int i_g, String t_g){
-            id=i;nome=n; id_gruppo=i_g; tipo_gruppo=t_g;
+        private int id_contenuto;
+        public Gruppi(int i, String n, int i_g, String t_g,int id_contenuto){
+            id=i;nome=n; id_gruppo=i_g; tipo_gruppo=t_g; this.id_contenuto=id_contenuto;
+        }
+
+        public int getId_contenuto() {
+            return id_contenuto;
         }
 
         public int getId_gruppo() {
@@ -335,6 +340,7 @@ public class SplashActivity extends AppCompatActivity{
     public static ArrayList<Appuntamento> appuntamenti = new ArrayList<>();
     public static ArrayList<Immagini> immagini_dec = new ArrayList<>();
     public static ArrayList<Contenuto> contenuti = new ArrayList<>();
+    public static ArrayList<Contenuto> contenuti_all = new ArrayList<>();
     public static ArrayList<Singolo> singolo_splash=new ArrayList<>();
     public static ArrayList<Gruppi> tutti_gruppi=new ArrayList<>();
 
@@ -371,6 +377,7 @@ public class SplashActivity extends AppCompatActivity{
     boolean finish_cont=false;
     static boolean finishdocu=false;
     boolean finish_pers=false;
+    boolean finish_cont_all=false;
 
 
     @SuppressLint("ResourceAsColor")
@@ -480,6 +487,51 @@ public class SplashActivity extends AppCompatActivity{
 
 
 //CONTENUTO
+            RequestQueue queue_cont_all = Volley.newRequestQueue(this);
+            String url_cont_all = localhost2 + "contenuto/index_all.php";
+
+// Request a string response from the provided URL.
+            StringRequest stringRequest_cont_all = new StringRequest(Request.Method.GET, url_cont_all,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Display the first 500 characters of the response string.
+                            try {
+
+                                JSONObject c = new JSONObject(response);
+                                JSONArray cacca = c.getJSONArray("records");
+
+                                for (int i = 0; i < cacca.length(); i++) {
+                                    JSONObject expl = cacca.getJSONObject(i);
+                                    //livello2dec.add(new SottoLivelli(expl.getInt("ordine"), expl.getString("titolo"), expl.getInt("id_gruppo"), expl.getInt("id_pagina"),expl.getInt("livello")));
+                                    //immagini_dec.add(new Immagini(expl.getString("path"),expl.getString("titolo"),expl.getString("link"),expl.getString("data_fine")));
+                                    contenuti_all.add(new Contenuto(expl.getInt("idcontenuto"), expl.getString("testocontenuto"), 0, ""));
+                                }
+                                Log.d("res_cont_all", "ok");
+                                finish_cont_all = true;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+
+// Add the request to the RequestQueue.
+            stringRequest_cont_all.setRetryPolicy(new DefaultRetryPolicy(
+                    300000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue_cont_all.add(stringRequest_cont_all);
+            queue_cont_all.getCache().clear();
+
+            //CONTENUTO + PAGINE
             RequestQueue queue_cont = Volley.newRequestQueue(this);
             String url_cont = localhost2 + "contenuto/";
 
@@ -630,7 +682,7 @@ public class SplashActivity extends AppCompatActivity{
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    tutti_gruppi.add(new Gruppi(expl.getInt("id"), expl.getString("nome"), expl.getInt("id_gruppo"), expl.getString("tipo_gruppo")));
+                                    tutti_gruppi.add(new Gruppi(expl.getInt("id"), expl.getString("nome"), expl.getInt("id_gruppo"), expl.getString("tipo_gruppo"), expl.getInt("id_contenuto")));
 
                                     if (!expl.isNull("id_gruppo_scuola") && !expl.isNull("semestre")) {
                                         scuola.add(new Scuola(expl.getInt("id"), expl.getString("sigla"), expl.getInt("id_gruppo"), expl.getInt("id_gruppo_scuola"), expl.getString("tipo_gruppo")));
