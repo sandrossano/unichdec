@@ -253,7 +253,10 @@ public class Visualizza extends AppCompatActivity {
                     }
                     for (int l=0;l<tutti_gruppi.size();l++){
                         if (tutti_gruppi.get(l).getTipo_gruppo().equals(tipo_gr) && tutti_gruppi.get(l).getId_gruppo()==numero){
-                            a+=tutti_gruppi.get(l).getNome()+"<br>";
+                            a += "<div>\n";
+                            a += "<a style=\"text-decoration: none;color:black;\" href=\"visualizza.php?type=gruppo&id=" + tutti_gruppi.get(l).getId() + "\">";
+                            a += "  <p style=\"color:red;\">" + tutti_gruppi.get(l).getNome() + "</p> \n";
+                            a += "</a></div><br>";
                         }
                     }
 
@@ -316,7 +319,7 @@ public class Visualizza extends AppCompatActivity {
               //  completa+"</body>" + "</html>";
             //<img style="display: block; margin-left: auto; margin-right: auto;" src="documenti/FOTO/IMG_20150729_151450.jpg" alt="" width="600" height="333">
             if(data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")){data=data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;","<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");}
-            data=data.replace("href=\"documenti/","href=\"https://economia.unich.it/documenti/");
+            //data=data.replace("href=\"documenti/","href=\"https://economia.unich.it/documenti/");
             data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
             //data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
 

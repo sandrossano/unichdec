@@ -31,6 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static android.content.Context.ACTIVITY_SERVICE;
+import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawer;
@@ -258,7 +259,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     String[] titolo= terzo.get(i1).getTitolo().split("-> ");
                     Log.d("terzolivello", "Hai premuto: " + titolo[titolo.length-1]);
 
-                    if(!titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE")&& !titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")&&terzo.get(i1).getId_pagina()!=0&&terzo.get(i1).getId_pagina()!=-1) {
+                    if(!titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI, NOTIZIE, EVENTI")&&!titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI")&&!titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE")&& !titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")&&terzo.get(i1).getId_pagina()!=0&&terzo.get(i1).getId_pagina()!=-1) {
                         Intent visualizza = new Intent(mContext, Visualizza.class);
                         visualizza.putExtra("id_dip", id_dipartimento);
                         visualizza.putExtra("secondolv", second.get(i).getTitolo());
@@ -269,6 +270,14 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
 
                         mContext.startActivity(visualizza);
                     }
+                    if(titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI, NOTIZIE, EVENTI")||titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI")) {
+                        Intent persona = new Intent(mContext, ListaAvvisi.class);
+                        persona.putExtra("id_dip", id_dipartimento);
+                        persona.putExtra("id_corso", id_corso);
+                        persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        persona.putExtra("from_dipartimento",1);
+                        mContext.startActivity(persona);}
+
                     if(titolo[titolo.length-1].toUpperCase().equals("HOME")&&MainActivity.activity.equals(".MainActivity")){
                         drawerMain.closeDrawers();
                     }

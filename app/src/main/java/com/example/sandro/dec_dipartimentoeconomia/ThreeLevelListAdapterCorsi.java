@@ -201,25 +201,25 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                     for (int j = 0; j < livello2dec.size(); j++) {
                         if(i==0 && second.size()==1){
                             if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
-                                if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo("  - "+livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
+                                if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo(livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
                                 else{terzo.add(livello2dec.get(j));}
                             }
                         }
                         if(i==0 && second.size()>1) {
                             if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
-                                if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo("  - "+livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
+                                if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo(livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
                                 else{terzo.add(livello2dec.get(j));}
                             }
                         }
                         if(i!=0 && i!=second.size()-1){
                             if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
-                                if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo("  - "+livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
+                                if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo(livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
                                 else{terzo.add(livello2dec.get(j));}
                             }
                         }
                         if(i==second.size()-1){
                             if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
-                                if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo("  - "+livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
+                                if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo(livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
                                 else{terzo.add(livello2dec.get(j));}
                             }
                         }
@@ -247,7 +247,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                                 visualizza.putExtra("secondolv",second.get(i).getTitolo());
                                 visualizza.putExtra("position", parentHeaders.get(groupPosition));
                                 visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(visualizza);
+                                //mContext.startActivity(visualizza);
                             }
                         }
 
@@ -283,13 +283,14 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                     ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
                     for (int j = 0; j < livello2dec.size(); j++) {
                         if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
-                            if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo("  - "+livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
+                            if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo(livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
                             else{terzo.add(livello2dec.get(j));}
                         }
                     }
+
                     Log.d("terzolivello", "Hai premuto: " + terzo.get(i1).getTitolo());
                     String[] titolo= terzo.get(i1).getTitolo().split("-> ");
-                    if(!titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI")&&!titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE")&&!titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")&&!titolo[titolo.length-1].toUpperCase().equals("HOME")) {
+                    if(!titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI, NOTIZIE, EVENTI")&&!titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI")&&!titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE")&&!titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")&&!titolo[titolo.length-1].toUpperCase().equals("HOME")) {
                         Intent visualizza = new Intent(mContext, Visualizza.class);
                         visualizza.putExtra("id_dip", id_dipartimento);
                         visualizza.putExtra("id_corso", id_corso);
@@ -319,7 +320,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                         persona.putExtra("from_corso",1);
                         mContext.startActivity(persona);}
 
-                    if(titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI")) {
+                    if(titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI, NOTIZIE, EVENTI")||titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI")) {
                         Intent persona = new Intent(mContext, ListaAvvisi.class);
                         persona.putExtra("id_dip", id_dipartimento);
                         persona.putExtra("id_corso", id_corso);
