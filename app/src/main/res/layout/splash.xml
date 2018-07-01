@@ -32,5 +32,16 @@
             android:layout_centerInParent="false"
             android:layout_marginTop="107dp"
             android:src="@drawable/logo_unich" />
+
+        <TextView
+            android:id="@+id/text_splash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/progressBar4"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp"
+            android:textStyle="bold|italic" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

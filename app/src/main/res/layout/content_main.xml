@@ -109,12 +109,26 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/testo_ambito_1"
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/testoavviso"
+                        android:text="TextView"
+                        android:textAlignment="textEnd"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="11sp"
+                        android:textStyle="italic" />
+
+                    <TextView
                         android:id="@+id/testoavviso"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/data1"
+                        android:paddingBottom="15dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="10dp"
                         android:text="TESTO AVVISO"
@@ -146,12 +160,26 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/testo_ambito_2"
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/testoavviso2"
+                        android:text="TextView"
+                        android:textAlignment="textEnd"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="11sp"
+                        android:textStyle="italic" />
+
+                    <TextView
                         android:id="@+id/testoavviso2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/data2"
+                        android:paddingBottom="15dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="10dp"
                         android:text="TESTO AVVISO"
@@ -183,12 +211,26 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/testo_ambito_3"
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/testoavviso3"
+                        android:text="TextView"
+                        android:textAlignment="textEnd"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="11sp"
+                        android:textStyle="italic" />
+
+                    <TextView
                         android:id="@+id/testoavviso3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/data3"
+                        android:paddingBottom="15dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="10dp"
                         android:text="TESTO AVVISO"
@@ -220,12 +262,26 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/testo_ambito_4"
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/testoavviso4"
+                        android:text="TextView"
+                        android:textAlignment="textEnd"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="11sp"
+                        android:textStyle="italic" />
+
+                    <TextView
                         android:id="@+id/testoavviso4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/data4"
+                        android:paddingBottom="15dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="10dp"
                         android:text="TESTO AVVISO"

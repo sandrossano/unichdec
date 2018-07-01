@@ -959,7 +959,14 @@ class DocuAdapter extends ArrayAdapter<String>{
         TextView d= (TextView) row.findViewById(R.id.testodim);
         TextView e= (TextView) row.findViewById(R.id.testocat);
         TextView f= (TextView) row.findViewById(R.id.testoamb);
-        f.setText(singoli.get(position).getNome_gruppo());
+        String nome="";
+        for(int i=0;i<tutti_gruppi.size();i++){
+            if(singoli.get(position).getId_gruppo()==tutti_gruppi.get(i).getId()){nome=tutti_gruppi.get(i).getNome();break;}
+        }
+        for(int i=0;i<dipartimenti.size();i++){
+            if(singoli.get(position).getId_gruppo()==dipartimenti.get(i).getId()){nome=dipartimenti.get(i).getNome();break;}
+        }
+        f.setText(nome);
         e.setText(singoli.get(position).getNome_cat());
         d.setText(""+singoli.get(position).getDimensione());
         c.setText(singoli.get(position).getData());

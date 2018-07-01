@@ -148,6 +148,8 @@ public class Visualizza extends AppCompatActivity {
                 "</body>" + "</html>";
         //data=data.replace("href=","");        rimuovi link
             data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
+            data=data.replace("href=\"documenti/","href=\"https://economia.unich.it/documenti/");
+
             if(data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")){data=data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;","<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");}
 
             //data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
@@ -314,7 +316,7 @@ public class Visualizza extends AppCompatActivity {
               //  completa+"</body>" + "</html>";
             //<img style="display: block; margin-left: auto; margin-right: auto;" src="documenti/FOTO/IMG_20150729_151450.jpg" alt="" width="600" height="333">
             if(data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")){data=data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;","<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");}
-
+            data=data.replace("href=\"documenti/","href=\"https://economia.unich.it/documenti/");
             data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
             //data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
 
@@ -442,6 +444,7 @@ public class Visualizza extends AppCompatActivity {
                         ColorDrawable colorDrawable = new ColorDrawable(
                                 Color.parseColor("#00cc7a"));
                         getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
                     }
                     if(corsi.get(i).getColor()==4) {
 

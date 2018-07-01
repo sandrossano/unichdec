@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -225,9 +226,10 @@ public class SplashActivity extends AppCompatActivity{
         private String data_inizio_pubb;
         private String data_fine_pubb;
         private String descrizione;
-        private int id_categoria;
+        private int id_gruppo;
+        private int id_contenuto;
 
-        public Appuntamento(int i, String t,String d_i,String d_f,String d_i_p,String d_f_p,String desc){
+        public Appuntamento(int i, String t,String d_i,String d_f,String d_i_p,String d_f_p,String desc,int id_g,int id_cont){
             this.id=i;
             titolo=t;
             data_inizio=d_i;
@@ -235,7 +237,12 @@ public class SplashActivity extends AppCompatActivity{
             data_inizio_pubb=d_i_p;
             data_fine_pubb=d_f_p;
             descrizione=desc;
+            id_gruppo=id_g;
+            id_contenuto=id_cont;
+        }
 
+        public int getId_contenuto() {
+            return id_contenuto;
         }
 
         public String getTitolo() {
@@ -251,6 +258,10 @@ public class SplashActivity extends AppCompatActivity{
         }
 
         public String getData_fine() {return data_fine;}
+
+        public int getId_gruppo() {
+            return id_gruppo;
+        }
 
         public String getData_inizio_pubb() {
             return data_inizio_pubb;
@@ -396,6 +407,7 @@ public class SplashActivity extends AppCompatActivity{
         DrawableCompat.setTint(progressBar.getIndeterminateDrawable(), Color.DKGRAY);
         haveStoragePermission();
 
+        final TextView textView= findViewById(R.id.text_splash);
 
         if (count == 0) {
 
@@ -502,7 +514,7 @@ public class SplashActivity extends AppCompatActivity{
                         public void onResponse(String response) {
                             // Display the first 500 characters of the response string.
                             try {
-
+                                textView.setText("Carico i Contenuti dei Docenti...");
                                 JSONObject c = new JSONObject(response);
                                 JSONArray cacca = c.getJSONArray("records");
 
@@ -592,7 +604,7 @@ public class SplashActivity extends AppCompatActivity{
                         public void onResponse(String response) {
                             // Display the first 500 characters of the response string.
                             try {
-
+                                textView.setText("Carico le Immagini...");
                                 JSONObject c = new JSONObject(response);
                                 JSONArray cacca = c.getJSONArray("records");
 
@@ -681,7 +693,7 @@ public class SplashActivity extends AppCompatActivity{
                         public void onResponse(String response) {
                             // Display the first 500 characters of the response string.
                             try {
-
+                                textView.setText("Carico i Corsi di Laurea...");
                                 JSONObject c = new JSONObject(response);
                                 JSONArray cacca = c.getJSONArray("records");
 
@@ -739,7 +751,7 @@ public class SplashActivity extends AppCompatActivity{
                         public void onResponse(String response) {
                             // Display the first 500 characters of the response string.
                             try {
-
+                                textView.setText("Carico il menù...");
                                 JSONObject c = new JSONObject(response);
                                 JSONArray cacca = c.getJSONArray("records");
 
@@ -912,13 +924,12 @@ public class SplashActivity extends AppCompatActivity{
                         public void onResponse(String response) {
                             // Display the first 500 characters of the response string.
                             try {
-
                                 JSONObject c = new JSONObject(response);
                                 JSONArray cacca = c.getJSONArray("records");
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    appuntamenti.add(new Appuntamento(expl.getInt("id"), expl.getString("titolo"), expl.getString("data_inizio"), expl.getString("data_fine"), expl.getString("data_inizio_pubb"), expl.getString("data_fine_pubb"), expl.getString("descrizione_breve")));
+                                    appuntamenti.add(new Appuntamento(expl.getInt("id"), expl.getString("titolo"), expl.getString("data_inizio"), expl.getString("data_fine"), expl.getString("data_inizio_pubb"), expl.getString("data_fine_pubb"), expl.getString("descrizione_breve"), expl.getInt("id_gruppo"),expl.getInt("id_contenuto")));
                                 }
                                 Log.d("app", "ok");
                                 finishapp = true;

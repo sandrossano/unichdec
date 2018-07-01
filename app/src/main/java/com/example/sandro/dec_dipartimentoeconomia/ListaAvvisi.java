@@ -67,7 +67,9 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.tutti_gruppi;
 
 
 public class ListaAvvisi extends AppCompatActivity
@@ -90,8 +92,7 @@ public class ListaAvvisi extends AppCompatActivity
         if(mSwipeRefreshLayout.isEnabled() && finito) {
             adapter = new AvvAdapter(getApplicationContext(), documenti, singolo);
             lista.setAdapter(adapter);
-            cerca.setQuery("", false);
-            cerca.setQueryHint("Cerca... ");
+
             mSwipeRefreshLayout.setRefreshing(false);
         }
         if(!finito)mSwipeRefreshLayout.setRefreshing(false);
@@ -176,12 +177,14 @@ public class ListaAvvisi extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
+        if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
+
+
         CaricaLista();
         caricato();
         //snipper();
 
-        if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
-        if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
 
     }
 
@@ -281,26 +284,32 @@ public class ListaAvvisi extends AppCompatActivity
                 };
                 thirdLevelq1 = new LinkedHashMap<>();
                 for (int j = 0; j < a.size(); j++) {
+
                     ArrayList<String> lista = new ArrayList<>();
                     for (int k = 0; k < livello2dec.size(); k++) {
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello());
                         if (j == 0 && a.size() == 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == 0 && a.size() > 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j != 0 && j != a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
 
@@ -448,24 +457,29 @@ public class ListaAvvisi extends AppCompatActivity
                 for (int j = 0; j < a.size(); j++) {
                     ArrayList<String> lista = new ArrayList<>();
                     for (int k = 0; k < livello2dec.size(); k++) {
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello());
                         if (j == 0 && a.size() == 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == 0 && a.size() > 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j != 0 && j != a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
-                                lista.add(livello2dec.get(k).getTitolo());
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                                if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
+                                else{lista.add(livello2.getTitolo());}
                             }
                         }
 
@@ -510,19 +524,51 @@ public class ListaAvvisi extends AppCompatActivity
 
     public void CaricaLista() {
 
-        //AVVISI
-        for (int i = 0; i < appuntamenti.size(); i++) {
+        if (from_dipartimento==1) {
+            //AVVISI
+            for (int i=0;i<appuntamenti.size();i++){
+                if(appuntamenti.get(i).getId_gruppo()==id_dipartimento){
+                    singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
+                    documenti.add(appuntamenti.get(i).getTitolo());
+                    continue;}
+                for (int j=0;j<r_corsi.size();j++){
+                    if (r_corsi.get(j).getId_gruppo()==id_dipartimento && r_corsi.get(j).getId()==appuntamenti.get(i).getId_gruppo()){
+                        singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
+                        documenti.add(appuntamenti.get(i).getTitolo());}
+                }
+            }
 
-            singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione()));
-            documenti.add(appuntamenti.get(i).getTitolo());
+            caricati = true;
+
+            singolo2 = singolo;
+            adapter = new AvvAdapter(getApplicationContext(), documenti, singolo);
+
+            lista.setAdapter(adapter);
         }
-        caricati = true;
+        else {
+            for (int i=0;i<appuntamenti.size();i++){
+                if(appuntamenti.get(i).getId_gruppo()==id_corso){
+                    singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
+                    documenti.add(appuntamenti.get(i).getTitolo());
+                    continue;}
+                for (int j=0;j<tutti_gruppi.size();j++){
+                    if (tutti_gruppi.get(j).getId()==appuntamenti.get(i).getId_gruppo() && tutti_gruppi.get(j).getId_gruppo()==id_corso){
+                        singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
+                        documenti.add(appuntamenti.get(i).getTitolo());}
+                }
+                if(appuntamenti.get(i).getId_gruppo()==1270){
+                    singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
+                    documenti.add(appuntamenti.get(i).getTitolo());
+                    continue;}
+            }
 
-        singolo2 = singolo;
-        adapter = new AvvAdapter(getApplicationContext(), documenti, singolo);
+            caricati = true;
 
-        lista.setAdapter(adapter);
+            singolo2 = singolo;
+            adapter = new AvvAdapter(getApplicationContext(), documenti, singolo);
 
+            lista.setAdapter(adapter);
+        }
     }
     class AvvAdapter extends ArrayAdapter<String>{
         Context context;
@@ -544,6 +590,7 @@ public class ListaAvvisi extends AppCompatActivity
             View row=inflater.inflate(R.layout.single_row_avviso,parent,false);
             TextView b= (TextView) row.findViewById(R.id.data1);
             TextView a= (TextView) row.findViewById(R.id.testoavviso);
+            TextView t_a=(TextView)row.findViewById(R.id.testo_ambito_row);
 
             SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy", Locale.ITALY);
@@ -558,6 +605,18 @@ public class ListaAvvisi extends AppCompatActivity
             }
             b.setText(format2.format(date));
             a.setText(singoli.get(position).getTitolo());
+
+
+            String nome4="";
+            for(int i=0;i<tutti_gruppi.size();i++){
+                if(singoli.get(position).getId_gruppo()==tutti_gruppi.get(i).getId()){nome4=tutti_gruppi.get(i).getNome();break;}
+            }
+            for(int i=0;i<dipartimenti.size();i++){
+                if(singoli.get(position).getId_gruppo()==dipartimenti.get(i).getId()){nome4=dipartimenti.get(i).getNome();break;}
+            }
+            t_a.setText(nome4);
+
+
             return row;
         }
 
@@ -732,12 +791,21 @@ public class ListaAvvisi extends AppCompatActivity
                 AvvAdapter t = (AvvAdapter) lista.getAdapter();
                 String titolo = t.singoli.get(position).getTitolo();
                 String data = t.singoli.get(position).getData_inizio();
-
+                int id_cont=t.singoli.get(position).getId_contenuto();
+                String nome4="";
+                for(int i=0;i<tutti_gruppi.size();i++){
+                    if(t.singoli.get(position).getId_gruppo()==tutti_gruppi.get(i).getId()){nome4=tutti_gruppi.get(i).getNome();break;}
+                }
+                for(int i=0;i<dipartimenti.size();i++){
+                    if(t.singoli.get(position).getId_gruppo()==dipartimenti.get(i).getId()){nome4=dipartimenti.get(i).getNome();break;}
+                }
 
                 Intent i = new Intent(getApplicationContext(), PaginaAvviso.class);
                 i.putExtra("id",t.singoli.get(position).getId());
                 i.putExtra("titolo", titolo);
                 i.putExtra("data", data);
+                i.putExtra("id_cont", id_cont);
+                i.putExtra("ambito", nome4);
                 startActivity(i);
 
             }
