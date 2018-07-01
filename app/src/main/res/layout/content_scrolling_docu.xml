@@ -16,6 +16,8 @@
         android:layout_marginTop="15dp"
         android:orientation="vertical">
 
+
+
         <RelativeLayout
             android:id="@+id/doc2"
             android:layout_width="match_parent"
@@ -55,7 +57,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/DocItem2"
                 android:layout_toRightOf="@id/DocItem2"
-                android:text="Titolo"
+                android:text="Descrizione"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
 
@@ -76,7 +78,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_assignment_black_24dp" />
+                android:src="@drawable/ic_folder_black_24dp" />
 
             <TextView
                 android:id="@+id/testodocumento"
@@ -100,13 +102,101 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/DocItem1"
                 android:layout_toRightOf="@id/DocItem1"
-                android:text="Descrizione"
+                android:text="Ambito"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/doc4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
 
+            <ImageView
+                android:id="@+id/DocItem4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_date_range_black_24dp" />
+
+            <TextView
+                android:id="@+id/testodocumento4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@+id/DocItem4"
+                android:layout_toRightOf="@+id/DocItem4"
+                android:text="320 0000 000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+            <TextView
+                android:id="@+id/idcacca4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/testodocumento4"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@+id/DocItem4"
+                android:layout_toRightOf="@+id/DocItem4"
+                android:text="Data"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#727272" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/doc3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/DocItem3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_insert_drive_file_black_24dp" />
+
+            <TextView
+                android:id="@+id/testodocumento3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@+id/DocItem3"
+                android:layout_toRightOf="@+id/DocItem3"
+                android:text="320 0000 000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+            <TextView
+                android:id="@+id/idcacca3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/testodocumento3"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@+id/DocItem3"
+                android:layout_toRightOf="@+id/DocItem3"
+                android:text="Dimensione"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#727272" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 

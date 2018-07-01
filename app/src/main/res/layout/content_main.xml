@@ -115,7 +115,6 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/testoavviso"
-                        android:text="TextView"
                         android:textAlignment="textEnd"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="11sp"
@@ -131,7 +130,6 @@
                         android:paddingBottom="15dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="10dp"
-                        android:text="TESTO AVVISO"
                         android:textColor="@android:color/black"
                         android:textSize="12sp"
                         android:textStyle="italic" />
@@ -166,7 +164,6 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/testoavviso2"
-                        android:text="TextView"
                         android:textAlignment="textEnd"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="11sp"
@@ -182,7 +179,6 @@
                         android:paddingBottom="15dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="10dp"
-                        android:text="TESTO AVVISO"
                         android:textColor="@android:color/black"
                         android:textSize="12sp"
                         android:textStyle="italic" />
@@ -217,7 +213,6 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/testoavviso3"
-                        android:text="TextView"
                         android:textAlignment="textEnd"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="11sp"
@@ -233,7 +228,6 @@
                         android:paddingBottom="15dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="10dp"
-                        android:text="TESTO AVVISO"
                         android:textColor="@android:color/black"
                         android:textSize="12sp"
                         android:textStyle="italic" />
@@ -268,7 +262,6 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/testoavviso4"
-                        android:text="TextView"
                         android:textAlignment="textEnd"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="11sp"
@@ -284,7 +277,6 @@
                         android:paddingBottom="15dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="10dp"
-                        android:text="TESTO AVVISO"
                         android:textColor="@android:color/black"
                         android:textSize="12sp"
                         android:textStyle="italic" />

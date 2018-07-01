@@ -201,29 +201,22 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                         }
                     }
 
-                    if(terzo.size()==0) {
+
                         if(second.get(i).getTitolo().toUpperCase().equals("HOME")&&MainActivity.activity.equals(".MainActivity")){
                             drawerMain.closeDrawers();
+                            drawer.closeDrawers();
                         }
                         else {
+
                             if(second.get(i).getTitolo().toUpperCase().equals("HOME")){
                                 Intent intent=new Intent(mContext, MainActivity.class);
                                 intent.putExtra("id_dipartimento",id_dipartimento);
                                 intent.putExtra("nome_dipartimento",nome_dipartimento);
                                 drawerMain.closeDrawers();
                                 drawer.closeDrawers();
-                                //mContext.startActivity(intent);
+                                mContext.startActivity(intent);
                             }
-                            else {
-                                Intent visualizza = new Intent(mContext, Visualizza.class);
-                                visualizza.putExtra("id_dip", id_dipartimento);
-                                visualizza.putExtra("secondolv", second.get(i).getTitolo());
-                                visualizza.putExtra("position", parentHeaders.get(groupPosition));
-                                visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                mContext.startActivity(visualizza);
-                            }
-                        }
                         //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo(), Toast.LENGTH_SHORT).show();
                     }
                     return false;

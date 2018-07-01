@@ -799,6 +799,14 @@ public class Documenti extends AppCompatActivity
                 String estensione = t.singoli.get(position).getEstensione();
                 String link = t.singoli.get(position).getLink();
 
+                String ambito="";
+                for(int i=0;i<tutti_gruppi.size();i++){
+                    if(t.singoli.get(position).getId_gruppo()==tutti_gruppi.get(i).getId()){ambito=tutti_gruppi.get(i).getNome();break;}
+                }
+                for(int i=0;i<dipartimenti.size();i++){
+                    if(t.singoli.get(position).getId_gruppo()==dipartimenti.get(i).getId()){ambito=dipartimenti.get(i).getNome();break;}
+                }
+
                 Intent i = new Intent(getApplicationContext(), PaginaDocumento.class);
                 i.putExtra("iddoc", idscelto);
                 i.putExtra("idcat", idcat);
@@ -807,6 +815,7 @@ public class Documenti extends AppCompatActivity
                 i.putExtra("data", data);
                 i.putExtra("dimensione", dimensione);
                 i.putExtra("estensione", estensione);
+                i.putExtra("ambito", ambito);
                 i.putExtra("link", link);
                 startActivity(i);
 

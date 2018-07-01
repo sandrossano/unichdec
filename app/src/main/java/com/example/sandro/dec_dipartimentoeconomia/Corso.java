@@ -86,6 +86,12 @@ public class Corso extends AppCompatActivity {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainActivity.activity=".Corso";
+    }
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +101,7 @@ public class Corso extends AppCompatActivity {
         ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
         ComponentName componentInfo = taskInfo.get(0).topActivity;
-        MainActivity.activity=componentInfo.getShortClassName();
+        MainActivity.activity=".Corso";
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -677,6 +683,9 @@ public class Corso extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.avvisi) {
+            Intent i=new Intent(getApplicationContext(), ListaAvvisi.class);
+            i.putExtra("from_corso",1);
+            startActivity(i);
             return true;
         }else if (id == R.id.main_doc) {
             Intent i=new Intent(getApplicationContext(), Documenti.class);

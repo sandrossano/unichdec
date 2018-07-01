@@ -109,7 +109,7 @@ public class Visualizza extends AppCompatActivity {
         ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
         ComponentName componentInfo = taskInfo.get(0).topActivity;
-        MainActivity.activity=componentInfo.getShortClassName();
+        MainActivity.activity=".Visualizza";
 
         mContext=this;
         id_dipartimento=getIntent().getIntExtra("id_dip",0);
@@ -850,6 +850,11 @@ public class Visualizza extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainActivity.activity=".Visualizza";
+    }
 
     @Override
     public void onBackPressed() {

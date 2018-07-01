@@ -167,6 +167,12 @@ public class MainActivity extends AppCompatActivity
         },500,6000);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainActivity.activity=".MainActivity";
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +183,7 @@ public class MainActivity extends AppCompatActivity
         ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
         ComponentName componentInfo = taskInfo.get(0).topActivity;
-        activity=componentInfo.getShortClassName();
+        activity=".MainActivity";
 
 
         /*
@@ -652,6 +658,9 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.avvisi) {
+            Intent i=new Intent(getApplicationContext(), ListaAvvisi.class);
+            i.putExtra("from_dipartimento",1);
+            startActivity(i);
             return true;
         }else if (id == R.id.main_doc) {
             Intent i=new Intent(getApplicationContext(), Documenti.class);

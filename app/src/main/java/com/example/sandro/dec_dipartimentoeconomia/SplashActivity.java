@@ -471,7 +471,7 @@ public class SplashActivity extends AppCompatActivity{
 
                             JSONObject expl = null;
                             try {
-
+                                textView.setText("Carico i Documenti...");
                                 JSONObject c = new JSONObject(response);
                                 listaDocumenti = c.getJSONArray("records");
                                 for (int i = 0; i < listaDocumenti.length(); i++) {
@@ -514,7 +514,7 @@ public class SplashActivity extends AppCompatActivity{
                         public void onResponse(String response) {
                             // Display the first 500 characters of the response string.
                             try {
-                                textView.setText("Carico i Contenuti dei Docenti...");
+
                                 JSONObject c = new JSONObject(response);
                                 JSONArray cacca = c.getJSONArray("records");
 
@@ -559,7 +559,7 @@ public class SplashActivity extends AppCompatActivity{
                         public void onResponse(String response) {
                             // Display the first 500 characters of the response string.
                             try {
-
+                                textView.setText("Carico i Contenuti dei Docenti...");
                                 JSONObject c = new JSONObject(response);
                                 JSONArray cacca = c.getJSONArray("records");
 

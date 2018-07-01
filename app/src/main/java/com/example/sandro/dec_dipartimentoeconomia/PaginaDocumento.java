@@ -80,15 +80,23 @@ public class PaginaDocumento extends AppCompatActivity
         mSwipeRefreshLayout.setEnabled(false);
         iddoc = getIntent().getIntExtra("iddoc", 0);
         String titolo = getIntent().getStringExtra("titolo");
+        int dimensione = getIntent().getIntExtra("dimensione",0);
+        String ambito = getIntent().getStringExtra("ambito");
+        String data = getIntent().getStringExtra("data");
         int idcat = getIntent().getIntExtra("idcat", 0);
-        setTitle(titolo);
+        setTitle("Documento");
 
         TextView wow = (TextView) findViewById(R.id.testodocumento);
-        wow.setText("ID: " + iddoc + ", ID_CAT:" + idcat);
+        wow.setText(ambito);
 
         TextView wow2 = (TextView) findViewById(R.id.testodocumento2);
         wow2.setText(titolo );
 
+        TextView wow3 = (TextView) findViewById(R.id.testodocumento3);
+        wow3.setText((dimensione/1024)+" Kb");
+
+        TextView wow4 = (TextView) findViewById(R.id.testodocumento4);
+        wow4.setText(data );
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
