@@ -115,13 +115,15 @@ public class SplashActivity extends AppCompatActivity{
         private int id_gruppo;
         private int id_pagina;
         private int livello;
+        private String link="";
 
-        public SottoLivelli(int i, String a, int g, int p, int l) {
+        public SottoLivelli(int i, String a, int g, int p, int l,String s) {
             this.i = i;
             titolo = a;
             id_gruppo = g;
             id_pagina = p;
             livello = l;
+            link=s;
         }
 
         public int getI() {
@@ -146,6 +148,10 @@ public class SplashActivity extends AppCompatActivity{
         public String setTitolo(String titolo) {
             this.titolo = titolo;
             return this.titolo;
+        }
+
+        public String getLink() {
+            return link;
         }
     }
 
@@ -429,7 +435,7 @@ public class SplashActivity extends AppCompatActivity{
 
                                 for (int i = 0; i < cacca.length(); i++) {
                                     JSONObject expl = cacca.getJSONObject(i);
-                                    livello2dec.add(new SottoLivelli(expl.getInt("ordine"), expl.getString("titolo"), expl.getInt("id_gruppo"), expl.getInt("id_pagina"), expl.getInt("livello")));
+                                    livello2dec.add(new SottoLivelli(expl.getInt("ordine"), expl.getString("titolo"), expl.getInt("id_gruppo"), expl.getInt("id_pagina"), expl.getInt("livello"),expl.getString("link")));
                                 }
                                 Log.d("res1", "ok");
                                 finish1 = true;

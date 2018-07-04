@@ -57,9 +57,11 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaPers
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.contenuti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.ruoli;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.tutti_gruppi;
@@ -73,6 +75,7 @@ public class Visualizza extends AppCompatActivity {
     String secondolv;
     String terzolv;
     int terzolvpag;
+    String link;
     int corso;
     private ExpandableListView expandableListView;
     static DrawerLayout drawerVisual=null;
@@ -116,6 +119,7 @@ public class Visualizza extends AppCompatActivity {
         secondolv=getIntent().getStringExtra("secondolv");
         terzolv=getIntent().getStringExtra("terzolv");
         terzolvpag=getIntent().getIntExtra("terzolvpag",0);
+        link=getIntent().getStringExtra("link");
         corso=getIntent().getIntExtra("id_corso",-1);
         TextView text=(TextView)findViewById(R.id.testovisualizza);
 
@@ -140,71 +144,79 @@ public class Visualizza extends AppCompatActivity {
         for(int i=0;i<contenuti.size();i++){
             if(contenuti.get(i).getId_pagine()==terzolvpag){pos=i;break;}
         }
-        String data="";
-        String[] titolo= terzolv.split("->");
-        if(!contenuti.get(pos).getTesto_contenuto().contains("[[[")){
-            data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+titolo[titolo.length-1]+"</h2>"+
-                contenuti.get(pos).getTesto_contenuto()+
-                "</body>" + "</html>";
-        //data=data.replace("href=","");        rimuovi link
-            data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
-            data=data.replace("href=\"documenti/","href=\"https://economia.unich.it/documenti/");
+        String data = "";
 
-            if(data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")){data=data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;","<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");}
 
-            //data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
-            if(terzolv.equals("Esami")){data=data.replace("</body>","vai alla app Uda + intent</body>");}
-        }
+        if(link.contains("visualizza.php")) {
 
-        else{
-            int count = 0;
-            Pattern p = Pattern.compile("]]]");
-            Matcher m = p.matcher( contenuti.get(pos).getTesto_contenuto() );
-            while (m.find()) {
-                count++;
-            }
-            String a="";
-            String completa=contenuti.get(pos).getTesto_contenuto();
-            int start=0;
 
-            for (int i=0;i<count;i++) {
-                int primo = contenuti.get(pos).getTesto_contenuto().indexOf("[[[",start) + 3;
-                int ultimo = contenuti.get(pos).getTesto_contenuto().indexOf("]]]",start) - 1;
-                start=contenuti.get(pos).getTesto_contenuto().indexOf("]]]",start)+1;
-                String pulita = contenuti.get(pos).getTesto_contenuto().substring(primo, ultimo +1);
-                String[] array = pulita.split(";");
-                int gruppo = -250;
-                int ruolo = -250;
-                String tipo_gr="ciao";
-                String modulo="";
-                int categoria=0;
-                for (int j = 0; j < array.length; j++) {
-                    if (array[j].startsWith("modulo=")) {
-                        String[] subarray = array[j].split("=");
-                        modulo = subarray[1];
-                    }
-                    if (array[j].startsWith("gruppo=")) {
-                        String[] subarray = array[j].split("=");
-                        gruppo = Integer.parseInt(subarray[1]);
-                    }
-                    if (array[j].startsWith("ruolo=")) {
-                        String[] subarray = array[j].split("=");
-                        ruolo = Integer.parseInt(subarray[1]);
-                    }
-                    if (array[j].startsWith("tipo=")) {
-                        String[] subarray = array[j].split("=");
-                        tipo_gr = subarray[1];
-                    }
-                    if (array[j].startsWith("cat=")) {
-                        String[] subarray = array[j].split("=");
-                        categoria = Integer.parseInt(subarray[1]);
-                    }
+
+            String[] titolo = terzolv.split("->");
+            if (!contenuti.get(pos).getTesto_contenuto().contains("[[[")) {
+                data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">" + titolo[titolo.length - 1] + "</h2>" +
+                        contenuti.get(pos).getTesto_contenuto() +
+                        "</body>" + "</html>";
+                //data=data.replace("href=","");        rimuovi link
+                data = data.replace("src=\"documenti/", "src=\"https://economia.unich.it/documenti/");
+                data = data.replace("href=\"documenti/", "href=\"https://economia.unich.it/documenti/");
+
+                if (data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")) {
+                    data = data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;", "<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");
                 }
-                //a="gruppo: "+gruppo+" - ruolo: "+ruolo+";";
-                if (ruolo!=-250) {               //paginatore persona
+
+                //data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
+                if (terzolv.equals("Esami")) {
+                    data = data.replace("</body>", "vai alla app Uda + intent</body>");
+                }
+            } else {
+                int count = 0;
+                Pattern p = Pattern.compile("]]]");
+                Matcher m = p.matcher(contenuti.get(pos).getTesto_contenuto());
+                while (m.find()) {
+                    count++;
+                }
+                String a = "";
+                String completa = contenuti.get(pos).getTesto_contenuto();
+                int start = 0;
+
+                for (int i = 0; i < count; i++) {
+                    int primo = contenuti.get(pos).getTesto_contenuto().indexOf("[[[", start) + 3;
+                    int ultimo = contenuti.get(pos).getTesto_contenuto().indexOf("]]]", start) - 1;
+                    start = contenuti.get(pos).getTesto_contenuto().indexOf("]]]", start) + 1;
+                    String pulita = contenuti.get(pos).getTesto_contenuto().substring(primo, ultimo + 1);
+                    String[] array = pulita.split(";");
+                    int gruppo = -250;
+                    int ruolo = -250;
+                    String tipo_gr = "ciao";
+                    String modulo = "";
+                    int categoria = 0;
+                    for (int j = 0; j < array.length; j++) {
+                        if (array[j].startsWith("modulo=")) {
+                            String[] subarray = array[j].split("=");
+                            modulo = subarray[1];
+                        }
+                        if (array[j].startsWith("gruppo=")) {
+                            String[] subarray = array[j].split("=");
+                            gruppo = Integer.parseInt(subarray[1]);
+                        }
+                        if (array[j].startsWith("ruolo=")) {
+                            String[] subarray = array[j].split("=");
+                            ruolo = Integer.parseInt(subarray[1]);
+                        }
+                        if (array[j].startsWith("tipo=")) {
+                            String[] subarray = array[j].split("=");
+                            tipo_gr = subarray[1];
+                        }
+                        if (array[j].startsWith("cat=")) {
+                            String[] subarray = array[j].split("=");
+                            categoria = Integer.parseInt(subarray[1]);
+                        }
+                    }
+                    //a="gruppo: "+gruppo+" - ruolo: "+ruolo+";";
+                    if (ruolo != -250) {               //paginatore persona
                         for (int k = 0; k < ruoli.size(); k++) {
                             if (ruoli.get(k).getId() == ruolo) {
-                                if(ruoli.get(k).getId_gruppo()==gruppo) {
+                                if (ruoli.get(k).getId_gruppo() == gruppo) {
                                     if (ruoli.get(k).getFoto() != "null") {
                                         a += "<div>\n";
                                         a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/persone/id_persona=" + ruoli.get(k).getId_persona() + "\">" +
@@ -228,106 +240,162 @@ public class Visualizza extends AppCompatActivity {
                         completa = completa.replace("[[[" + pulita + "]]]", a);
                         a = "";
 
-                }
-                int numero=gruppo;
-                if(modulo.equals("pag_sezioni")){
-                    for (int n=0;n<tutti_gruppi.size();n++){
-                        if(tipo_gr.equals("GR")){
-                            if (tutti_gruppi.get(n).getTipo_gruppo().equals("R_GR")&&tutti_gruppi.get(n).getId_gruppo()==gruppo){
-                                numero=tutti_gruppi.get(n).getId();
-                                break;
-                            }
-                        }
-                        if(tipo_gr.equals("CS")) {
-                            if (tutti_gruppi.get(n).getTipo_gruppo().equals("R_CS") && tutti_gruppi.get(n).getId_gruppo() == gruppo) {
-                                numero = tutti_gruppi.get(n).getId();
-                                break;
-                            }
-                        }
-                        if(tipo_gr.equals("CD")) {
-                            if (tutti_gruppi.get(n).getTipo_gruppo().equals("R_CD") && tutti_gruppi.get(n).getId_gruppo() == gruppo) {
-                                numero = tutti_gruppi.get(n).getId();
-                                break;
-                            }
-                        }
                     }
-                    for (int l=0;l<tutti_gruppi.size();l++){
-                        if (tutti_gruppi.get(l).getTipo_gruppo().equals(tipo_gr) && tutti_gruppi.get(l).getId_gruppo()==numero){
-                            a += "<div>\n";
-                            a += "<a style=\"text-decoration: none;color:black;\" href=\"visualizza.php?type=gruppo&id=" + tutti_gruppi.get(l).getId() + "\">";
-                            a += "  <p style=\"color:red;\">" + tutti_gruppi.get(l).getNome() + "</p> \n";
-                            a += "</a></div><br>";
+                    int numero = gruppo;
+                    if (modulo.equals("pag_sezioni")) {
+                        for (int n = 0; n < tutti_gruppi.size(); n++) {
+                            if (tipo_gr.equals("GR")) {
+                                if (tutti_gruppi.get(n).getTipo_gruppo().equals("R_GR") && tutti_gruppi.get(n).getId_gruppo() == gruppo) {
+                                    numero = tutti_gruppi.get(n).getId();
+                                    break;
+                                }
+                            }
+                            if (tipo_gr.equals("CS")) {
+                                if (tutti_gruppi.get(n).getTipo_gruppo().equals("R_CS") && tutti_gruppi.get(n).getId_gruppo() == gruppo) {
+                                    numero = tutti_gruppi.get(n).getId();
+                                    break;
+                                }
+                            }
+                            if (tipo_gr.equals("CD")) {
+                                if (tutti_gruppi.get(n).getTipo_gruppo().equals("R_CD") && tutti_gruppi.get(n).getId_gruppo() == gruppo) {
+                                    numero = tutti_gruppi.get(n).getId();
+                                    break;
+                                }
+                            }
                         }
+                        for (int l = 0; l < tutti_gruppi.size(); l++) {
+                            if (tutti_gruppi.get(l).getTipo_gruppo().equals(tipo_gr) && tutti_gruppi.get(l).getId_gruppo() == numero) {
+                                a += "<div>\n";
+                                a += "<a style=\"text-decoration: none;color:black;\" href=\"visualizza.php?type=gruppo&id=" + tutti_gruppi.get(l).getId() + "\">";
+                                a += "  <p style=\"color:red;\">" + tutti_gruppi.get(l).getNome() + "</p> \n";
+                                a += "</a></div><br>";
+                            }
+                        }
+
+                        completa = completa.replace("[[[" + pulita + "]]]", a);
+                        a = "";
+                    }
+                    if (modulo.equals("pag_documenti")) {
+                        for (int d = 0; d < singolo.size(); d++) {
+                            if (singolo.get(d).getId_gruppo() == gruppo && singolo.get(d).getId_categoria() == categoria) {
+                                a += "<div>\n";
+                                a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_doc=" + singolo.get(d).getId() + "&" + singolo.get(d).getTitolo() + "&" + singolo.get(d).getId_categoria() + "\">" +
+                                        "<div class=\"card container\">\n" +
+                                        "  <p>" + singolo.get(d).getTitolo() + "</p> \n" +
+                                        "</div>" +
+                                        "</a></div><br>";
+                            }
+                        }
+
+                        completa = completa.replace("[[[" + pulita + "]]]", a);
+                        a = "";
+                    }
+                    if (modulo.equals("pag_appuntamenti")) {
+                        for (int d=0;d<appuntamenti.size();d++){
+                            if (corso!=-1){ //from_corsi
+                                if(appuntamenti.get(d).getId_gruppo()==corso){
+                                    a += "<div>\n";
+                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
+                                            "<div class=\"card container\">\n" +
+                                            "  <p>" + appuntamenti.get(d).getData_inizio()+" "+ appuntamenti.get(d).getTitolo() + "</p> \n" +
+                                            "</div>" +
+                                            "</a></div><br>";
+                                    continue;}
+                                for (int j=0;j<tutti_gruppi.size();j++){
+                                    if (tutti_gruppi.get(j).getId()==appuntamenti.get(d).getId_gruppo() && tutti_gruppi.get(j).getId_gruppo()==corso){
+                                        a += "<div>\n";
+                                        a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
+                                                "<div class=\"card container\">\n" +
+                                                "  <p>" + appuntamenti.get(d).getData_inizio()+" "+ appuntamenti.get(d).getTitolo() + "</p> \n" +
+                                                "</div>" +
+                                                "</a></div><br>";}
+                                }
+                                if(appuntamenti.get(d).getId_gruppo()==1270){
+                                    a += "<div>\n";
+                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
+                                            "<div class=\"card container\">\n" +
+                                            "  <p>" + appuntamenti.get(d).getData_inizio()+" "+ appuntamenti.get(d).getTitolo() + "</p> \n" +
+                                            "</div>" +
+                                            "</a></div><br>";}
+                            }
+                            else{
+                                if(appuntamenti.get(d).getId_gruppo() == gruppo && appuntamenti.get(d).getId_gruppo()==id_dipartimento){
+                                    a += "<div>\n";
+                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
+                                            "<div class=\"card container\">\n" +
+                                            "  <p>" + appuntamenti.get(d).getData_inizio()+" "+ appuntamenti.get(d).getTitolo() + "</p> \n" +
+                                            "</div>" +
+                                            "</a></div><br>";
+                                    continue;}
+                                for (int j=0;j<r_corsi.size();j++){
+                                    if (appuntamenti.get(d).getId_gruppo() == gruppo && r_corsi.get(j).getId_gruppo()==id_dipartimento && r_corsi.get(j).getId()==appuntamenti.get(d).getId_gruppo()){
+                                        a += "<div>\n";
+                                        a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
+                                                "<div class=\"card container\">\n" +
+                                                "  <p>" + appuntamenti.get(d).getData_inizio()+" "+ appuntamenti.get(d).getTitolo() + "</p> \n" +
+                                                "</div>" +
+                                                "</a></div><br>";}
+                                }
+                            }
+
+                        }
+
+                        completa = completa.replace("[[[" + pulita + "]]]", a);
+                        a = "";
                     }
 
-                    completa = completa.replace("[[[" + pulita + "]]]", a);
-                    a = "";
                 }
-                if(modulo.equals("pag_documenti")){
-                    for (int d =0;d<singolo.size();d++){
-                        if(singolo.get(d).getId_gruppo()==gruppo&& singolo.get(d).getId_categoria()==categoria){
-                            a += "<div>\n";
-                            a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_doc="+singolo.get(d).getId()+"&"+singolo.get(d).getTitolo()+"&"+singolo.get(d).getId_categoria()+"\">"+
-                                    "<div class=\"card container\">\n" +
-                                    "  <p>" + singolo.get(d).getTitolo()+ "</p> \n" +
-                                    "</div>" +
-                                    "</a></div><br>";
-                        }
-                    }
 
-                    completa = completa.replace("[[[" + pulita + "]]]", a);
-                    a = "";
+                data = "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+                        "<style>\n" +
+                        ".card {\n" +
+                        "    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);\n" +
+                        "    transition: 0.3s;\n" +
+                        "    border-radius: 25px;\n" +
+                        "    background-color:#FFF;" +
+                        "    width:90%;" +
+                        "   \n" +
+                        "}\n" +
+                        "\n" +
+                        ".card:hover {\n" +
+                        "    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);\n" +
+                        "}\n" +
+                        "\n" +
+                        "img {\n" +
+                        "\n" +
+                        "  margin:auto;  border-radius: 120px;\n" +
+                        "}\n" +
+                        "\n" +
+                        ".container {\n" +
+                        " font-family: Arial, Helvetica, sans-serif;\n" +
+                        "    padding: 15px;\n" +
+                        "}\n" +
+                        "p{\n" +
+                        "margin:17px 0px 17px 10px;\n" +
+                        "}\n" +
+                        "img{\n" +
+                        "margin:-9px 0px 25px 10px;\n" +
+                        "}\n" +
+                        "a,a:hover, a:active, a:focus {\n" +
+                        "    outline: none;\n" +
+                        "    color: inherit; border: 0;\n" +
+                        "}" +
+                        "</style></head><body style=\"background:#d8e5f0\">" + completa + "</body>" + "</html>";
+                //data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+terzolv+"</h2>"+
+                //  completa+"</body>" + "</html>";
+                //<img style="display: block; margin-left: auto; margin-right: auto;" src="documenti/FOTO/IMG_20150729_151450.jpg" alt="" width="600" height="333">
+                if (data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")) {
+                    data = data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;", "<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");
                 }
+                //data=data.replace("href=\"documenti/","href=\"https://economia.unich.it/documenti/");
+                data = data.replace("src=\"documenti/", "src=\"https://economia.unich.it/documenti/");
+                //data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
+
+                data = data.replace("href=\"", "href=\"https://economia.unich.it/");
             }
-
-               data="<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
-                       "<style>\n" +
-                       ".card {\n" +
-                       "    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);\n" +
-                       "    transition: 0.3s;\n" +
-                       "    border-radius: 25px;\n" +
-                       "    background-color:#FFF;"+
-                       "    width:90%;"+
-                       "   \n" +
-                       "}\n" +
-                       "\n" +
-                       ".card:hover {\n" +
-                       "    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);\n" +
-                       "}\n" +
-                       "\n" +
-                       "img {\n" +
-                       "\n" +
-                       "  margin:auto;  border-radius: 120px;\n" +
-                       "}\n" +
-                       "\n" +
-                       ".container {\n" +
-                       " font-family: Arial, Helvetica, sans-serif;\n" +
-                       "    padding: 15px;\n" +
-                       "}\n" +
-                       "p{\n" +
-                       "margin:17px 0px 17px 10px;\n" +
-                       "}\n" +
-                       "img{\n" +
-                       "margin:-9px 0px 25px 10px;\n" +
-                       "}\n" +
-                       "a,a:hover, a:active, a:focus {\n" +
-                       "    outline: none;\n" +
-                       "    color: inherit; border: 0;\n" +
-                       "}" +
-                       "</style></head><body style=\"background:#d8e5f0\">" +completa+"</body>" + "</html>";
-            //data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">"+terzolv+"</h2>"+
-              //  completa+"</body>" + "</html>";
-            //<img style="display: block; margin-left: auto; margin-right: auto;" src="documenti/FOTO/IMG_20150729_151450.jpg" alt="" width="600" height="333">
-            if(data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")){data=data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;","<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");}
-            //data=data.replace("href=\"documenti/","href=\"https://economia.unich.it/documenti/");
-            data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
-            //data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
-
-            data=data.replace("href=\"","href=\"https://economia.unich.it/");
-            }
-        //TextView textView = (TextView) findViewById(R.id.html);
-        //textView.setText(Html.fromHtml(Html.fromHtml(data).toString()));
-
+            //TextView textView = (TextView) findViewById(R.id.html);
+            //textView.setText(Html.fromHtml(Html.fromHtml(data).toString()));
+        }
 
 
         engine.getSettings().setBuiltInZoomControls(true);
@@ -646,7 +714,7 @@ public class Visualizza extends AppCompatActivity {
                 for (int j = 0; j < a.size(); j++) {
                     ArrayList<String> lista = new ArrayList<>();
                     for (int k = 0; k < livello2dec.size(); k++) {
-                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello());
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello(),livello2dec.get(k).getLink());
                         if (j == 0 && a.size() == 1) {
                             if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
@@ -791,7 +859,7 @@ public class Visualizza extends AppCompatActivity {
                 for (int j = 0; j < a.size(); j++) {
                     ArrayList<String> lista = new ArrayList<>();
                     for (int k = 0; k < livello2dec.size(); k++) {
-                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello());
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello(),livello2dec.get(k).getLink());
                         if (j == 0 && a.size() == 1) {
                             if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}

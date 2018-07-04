@@ -287,7 +287,7 @@ public class ListaAvvisi extends AppCompatActivity
 
                     ArrayList<String> lista = new ArrayList<>();
                     for (int k = 0; k < livello2dec.size(); k++) {
-                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello());
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello(),livello2dec.get(k).getLink());
                         if (j == 0 && a.size() == 1) {
                             if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
@@ -457,7 +457,7 @@ public class ListaAvvisi extends AppCompatActivity
                 for (int j = 0; j < a.size(); j++) {
                     ArrayList<String> lista = new ArrayList<>();
                     for (int k = 0; k < livello2dec.size(); k++) {
-                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello());
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello(),livello2dec.get(k).getLink());
                         if (j == 0 && a.size() == 1) {
                             if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
@@ -591,6 +591,7 @@ public class ListaAvvisi extends AppCompatActivity
             TextView b= (TextView) row.findViewById(R.id.data1);
             TextView a= (TextView) row.findViewById(R.id.testoavviso);
             TextView t_a=(TextView)row.findViewById(R.id.testo_ambito_row);
+            t_a.setTextColor(Color.GRAY);
 
             SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy", Locale.ITALY);
@@ -609,12 +610,12 @@ public class ListaAvvisi extends AppCompatActivity
 
             String nome4="";
             for(int i=0;i<tutti_gruppi.size();i++){
-                if(singoli.get(position).getId_gruppo()==tutti_gruppi.get(i).getId()){nome4=tutti_gruppi.get(i).getNome();break;}
+                if(singoli.get(position).getId_gruppo()==tutti_gruppi.get(i).getId()){nome4=tutti_gruppi.get(i).getNome();t_a.setText(nome4);;break;}
             }
             for(int i=0;i<dipartimenti.size();i++){
-                if(singoli.get(position).getId_gruppo()==dipartimenti.get(i).getId()){nome4=dipartimenti.get(i).getNome();break;}
+                if(singoli.get(position).getId_gruppo()==dipartimenti.get(i).getId()){nome4=dipartimenti.get(i).getNome();t_a.setText(nome4);;break;}
             }
-            t_a.setText(nome4);
+
 
 
             return row;

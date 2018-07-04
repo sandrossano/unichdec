@@ -186,7 +186,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
 
                     ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
                     for (int j = 0; j < livello2dec.size(); j++) {
-                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(j).getI(),livello2dec.get(j).getTitolo(),livello2dec.get(j).getId_gruppo(),livello2dec.get(j).getId_pagina(),livello2dec.get(j).getLivello());
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(j).getI(),livello2dec.get(j).getTitolo(),livello2dec.get(j).getId_gruppo(),livello2dec.get(j).getId_pagina(),livello2dec.get(j).getLivello(),livello2dec.get(j).getLink());
                         if(i==0 && second.size()==1){
                             {terzo.add(livello2);
                             }
@@ -250,7 +250,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
 
                     ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
                     for (int j = 0; j < livello2dec.size(); j++) {
-                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(j).getI(),livello2dec.get(j).getTitolo(),livello2dec.get(j).getId_gruppo(),livello2dec.get(j).getId_pagina(),livello2dec.get(j).getLivello());
+                        SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(j).getI(),livello2dec.get(j).getTitolo(),livello2dec.get(j).getId_gruppo(),livello2dec.get(j).getId_pagina(),livello2dec.get(j).getLivello(),livello2dec.get(j).getLink());
 
                         if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
                            {terzo.add(livello2);}
@@ -259,24 +259,18 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     String[] titolo= terzo.get(i1).getTitolo().split("-> ");
                     Log.d("terzolivello", "Hai premuto: " + titolo[titolo.length-1]);
 
-                    if(!titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI, NOTIZIE, EVENTI")&&!titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI")&&!titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE")&& !titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")&&terzo.get(i1).getId_pagina()!=0&&terzo.get(i1).getId_pagina()!=-1) {
+                    if(!titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE")&& !titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")&&terzo.get(i1).getId_pagina()!=0&&terzo.get(i1).getId_pagina()!=-1) {
                         Intent visualizza = new Intent(mContext, Visualizza.class);
                         visualizza.putExtra("id_dip", id_dipartimento);
                         visualizza.putExtra("secondolv", second.get(i).getTitolo());
                         visualizza.putExtra("terzolv", terzo.get(i1).getTitolo());
                         visualizza.putExtra("terzolvpag", terzo.get(i1).getId_pagina());
+                        visualizza.putExtra("link", terzo.get(i1).getLink());
                         visualizza.putExtra("position", parentHeaders.get(groupPosition));
                         visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                         mContext.startActivity(visualizza);
                     }
-                    if(titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI, NOTIZIE, EVENTI")||titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI")) {
-                        Intent persona = new Intent(mContext, ListaAvvisi.class);
-                        persona.putExtra("id_dip", id_dipartimento);
-                        persona.putExtra("id_corso", id_corso);
-                        persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        persona.putExtra("from_dipartimento",1);
-                        mContext.startActivity(persona);}
 
                     if(titolo[titolo.length-1].toUpperCase().equals("HOME")&&MainActivity.activity.equals(".MainActivity")){
                         drawerMain.closeDrawers();

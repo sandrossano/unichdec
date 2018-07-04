@@ -245,6 +245,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                                 visualizza.putExtra("id_dip", id_dipartimento);
                                 visualizza.putExtra("id_corso", id_corso);
                                 visualizza.putExtra("secondolv",second.get(i).getTitolo());
+                                visualizza.putExtra("link", second.get(i).getLink());
                                 visualizza.putExtra("position", parentHeaders.get(groupPosition));
                                 visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 //mContext.startActivity(visualizza);
@@ -290,12 +291,13 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
 
                     Log.d("terzolivello", "Hai premuto: " + terzo.get(i1).getTitolo());
                     String[] titolo= terzo.get(i1).getTitolo().split("-> ");
-                    if(!titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI, NOTIZIE, EVENTI")&&!titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI")&&!titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE")&&!titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")&&!titolo[titolo.length-1].toUpperCase().equals("HOME")) {
+                    if(!titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE")&&!titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")&&!titolo[titolo.length-1].toUpperCase().equals("HOME")) {
                         Intent visualizza = new Intent(mContext, Visualizza.class);
                         visualizza.putExtra("id_dip", id_dipartimento);
                         visualizza.putExtra("id_corso", id_corso);
                         visualizza.putExtra("secondolv", second.get(i).getTitolo());
                         visualizza.putExtra("terzolv", terzo.get(i1).getTitolo());
+                        visualizza.putExtra("link", terzo.get(i1).getLink());
                         visualizza.putExtra("terzolvpag", terzo.get(i1).getId_pagina());
                         visualizza.putExtra("position", parentHeaders.get(groupPosition));
                         visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -314,14 +316,6 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
 
                     if(titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")) {
                         Intent persona = new Intent(mContext, Documenti.class);
-                        persona.putExtra("id_dip", id_dipartimento);
-                        persona.putExtra("id_corso", id_corso);
-                        persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        persona.putExtra("from_corso",1);
-                        mContext.startActivity(persona);}
-
-                    if(titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI, NOTIZIE, EVENTI")||titolo[titolo.length-1].trim().toUpperCase().equals("AVVISI")) {
-                        Intent persona = new Intent(mContext, ListaAvvisi.class);
                         persona.putExtra("id_dip", id_dipartimento);
                         persona.putExtra("id_corso", id_corso);
                         persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
