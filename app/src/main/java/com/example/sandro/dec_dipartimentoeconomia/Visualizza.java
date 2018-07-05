@@ -37,9 +37,14 @@ import org.jsoup.helper.StringUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -145,8 +150,25 @@ public class Visualizza extends AppCompatActivity {
             if(contenuti.get(i).getId_pagine()==terzolvpag){pos=i;break;}
         }
         String data = "";
+        String completa="";
+        String a="";
+        if(link.contains("pag_appuntamenti.php")) {
 
-
+            if (corso!=-1){ //from corso
+                Intent i=new Intent(getApplicationContext(), ListaAvvisi.class);
+                i.putExtra("from_corso",1);
+                startActivity(i);
+                finish();
+                return;
+            }
+            else{
+                Intent i=new Intent(getApplicationContext(), ListaAvvisi.class);
+                i.putExtra("from_dipartimento",1);
+                startActivity(i);
+                finish();
+                return;
+            }
+        }
         if(link.contains("visualizza.php")) {
 
 
@@ -175,8 +197,8 @@ public class Visualizza extends AppCompatActivity {
                 while (m.find()) {
                     count++;
                 }
-                String a = "";
-                String completa = contenuti.get(pos).getTesto_contenuto();
+                 a = "";
+                 completa = contenuti.get(pos).getTesto_contenuto();
                 int start = 0;
 
                 for (int i = 0; i < count; i++) {
@@ -291,50 +313,60 @@ public class Visualizza extends AppCompatActivity {
                         a = "";
                     }
                     if (modulo.equals("pag_appuntamenti")) {
-                        for (int d=0;d<appuntamenti.size();d++){
-                            if (corso!=-1){ //from_corsi
-                                if(appuntamenti.get(d).getId_gruppo()==corso){
+                        for (int d = 0; d < appuntamenti.size(); d++) {
+                            if (corso != -1) { //from_corsi
+                                if (appuntamenti.get(d).getId_gruppo() == corso) {
                                     a += "<div>\n";
                                     a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
                                             "<div class=\"card container\">\n" +
-                                            "  <p>" + appuntamenti.get(d).getData_inizio()+" "+ appuntamenti.get(d).getTitolo() + "</p> \n" +
+                                            "  <p>" + appuntamenti.get(d).getData_inizio() + " " + appuntamenti.get(d).getTitolo() + "</p> \n" +
                                             "</div>" +
                                             "</a></div><br>";
-                                    continue;}
-                                for (int j=0;j<tutti_gruppi.size();j++){
-                                    if (tutti_gruppi.get(j).getId()==appuntamenti.get(d).getId_gruppo() && tutti_gruppi.get(j).getId_gruppo()==corso){
-                                        a += "<div>\n";
-                                        a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
-                                                "<div class=\"card container\">\n" +
-                                                "  <p>" + appuntamenti.get(d).getData_inizio()+" "+ appuntamenti.get(d).getTitolo() + "</p> \n" +
-                                                "</div>" +
-                                                "</a></div><br>";}
+                                    continue;
                                 }
-                                if(appuntamenti.get(d).getId_gruppo()==1270){
-                                    a += "<div>\n";
-                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
-                                            "<div class=\"card container\">\n" +
-                                            "  <p>" + appuntamenti.get(d).getData_inizio()+" "+ appuntamenti.get(d).getTitolo() + "</p> \n" +
-                                            "</div>" +
-                                            "</a></div><br>";}
-                            }
-                            else{
-                                if(appuntamenti.get(d).getId_gruppo() == gruppo && appuntamenti.get(d).getId_gruppo()==id_dipartimento){
-                                    a += "<div>\n";
-                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
-                                            "<div class=\"card container\">\n" +
-                                            "  <p>" + appuntamenti.get(d).getData_inizio()+" "+ appuntamenti.get(d).getTitolo() + "</p> \n" +
-                                            "</div>" +
-                                            "</a></div><br>";
-                                    continue;}
-                                for (int j=0;j<r_corsi.size();j++){
-                                    if (appuntamenti.get(d).getId_gruppo() == gruppo && r_corsi.get(j).getId_gruppo()==id_dipartimento && r_corsi.get(j).getId()==appuntamenti.get(d).getId_gruppo()){
+                                for (int j = 0; j < tutti_gruppi.size(); j++) {
+                                    if (tutti_gruppi.get(j).getId() == appuntamenti.get(d).getId_gruppo() && tutti_gruppi.get(j).getId_gruppo() == corso) {
                                         a += "<div>\n";
                                         a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
                                                 "<div class=\"card container\">\n" +
-                                                "  <p>" + appuntamenti.get(d).getData_inizio()+" "+ appuntamenti.get(d).getTitolo() + "</p> \n" +
+                                                "  <p>" + appuntamenti.get(d).getData_inizio() + " " + appuntamenti.get(d).getTitolo() + "</p> \n" +
                                                 "</div>" +
-                                                "</a></div><br>";}
+                                                "</a></div><br>";
+                                    }
+                                }
+                                if (appuntamenti.get(d).getId_gruppo() == 1270) {
+                                    a += "<div>\n";
+                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
+                                            "<div class=\"card container\">\n" +
+                                            "  <p>" + appuntamenti.get(d).getData_inizio() + " " + appuntamenti.get(d).getTitolo() + "</p> \n" +
+                                            "</div>" +
+                                            "</a></div><br>";
+                                }
+                            } else {
+                                if (appuntamenti.get(d).getId_gruppo() == gruppo && appuntamenti.get(d).getId_gruppo() == id_dipartimento) {
+                                    a += "<div>\n";
+                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
+                                            "<div class=\"card container\">\n" +
+                                            "  <p>" + appuntamenti.get(d).getData_inizio() + " " + appuntamenti.get(d).getTitolo() + "</p> \n" +
+                                            "</div>" +
+                                            "</a></div><br>";
+                                    continue;
+                                }
+                                for (int j = 0; j < corsi.size(); j++) {
+                                    for (int w=0;w<r_corsi.size();w++) {
+                                        if (appuntamenti.get(d).getId_gruppo() == corsi.get(j).getId() && corsi.get(j).getTipo_gruppo().equals("CS")&&corsi.get(j).getId_gruppo()==r_corsi.get(w).getId() && r_corsi.get(w).getId_gruppo()==id_dipartimento) {
+                                            a += "<div>\n";
+                                            try {
+                                                a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + URLEncoder.encode(appuntamenti.get(d).getTitolo(), "UTF-8") + "\">" +
+                                                        "<div class=\"card container\">\n" +
+                                                        "  <p>" + appuntamenti.get(d).getData_inizio() + " " + appuntamenti.get(d).getTitolo() + "</p> \n" +
+                                                        "</div>" +
+                                                        "</a></div><br>";
+                                            } catch (UnsupportedEncodingException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
                                 }
                             }
 
@@ -343,9 +375,9 @@ public class Visualizza extends AppCompatActivity {
                         completa = completa.replace("[[[" + pulita + "]]]", a);
                         a = "";
                     }
-
                 }
-
+                }
+            }
                 data = "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
                         "<style>\n" +
                         ".card {\n" +
@@ -356,6 +388,13 @@ public class Visualizza extends AppCompatActivity {
                         "    width:90%;" +
                         "   \n" +
                         "}\n" +
+                        ".card_avv {   \n" +
+                        "box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);  \n" +
+                        "transition: 0.3s;   \n" +
+                        " background-color:#FFF; width:90%;\n" +
+                        " }\n" +
+                        "                       \n" +
+                        ".card_avv:hover {box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);}" +
                         "\n" +
                         ".card:hover {\n" +
                         "    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);\n" +
@@ -392,10 +431,10 @@ public class Visualizza extends AppCompatActivity {
                 //data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
 
                 data = data.replace("href=\"", "href=\"https://economia.unich.it/");
-            }
+
             //TextView textView = (TextView) findViewById(R.id.html);
             //textView.setText(Html.fromHtml(Html.fromHtml(data).toString()));
-        }
+
 
 
         engine.getSettings().setBuiltInZoomControls(true);
@@ -716,25 +755,25 @@ public class Visualizza extends AppCompatActivity {
                     for (int k = 0; k < livello2dec.size(); k++) {
                         SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello(),livello2dec.get(k).getLink());
                         if (j == 0 && a.size() == 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == 0 && a.size() > 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j != 0 && j != a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
@@ -743,7 +782,6 @@ public class Visualizza extends AppCompatActivity {
                     }
 
                     des.add(lista.toArray(new String[0]));
-                    Log.d("des", des.toString());
                     thirdLevelq1.put(a.get(j), des.get(j));
                     lista.removeAll(lista);
 
@@ -861,25 +899,25 @@ public class Visualizza extends AppCompatActivity {
                     for (int k = 0; k < livello2dec.size(); k++) {
                         SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello(),livello2dec.get(k).getLink());
                         if (j == 0 && a.size() == 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == 0 && a.size() > 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j != 0 && j != a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }

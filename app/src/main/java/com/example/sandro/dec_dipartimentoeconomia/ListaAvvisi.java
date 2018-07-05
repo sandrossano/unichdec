@@ -48,6 +48,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -316,7 +318,7 @@ public class ListaAvvisi extends AppCompatActivity
                     }
 
                     des.add(lista.toArray(new String[0]));
-                    Log.d("des", des.toString());
+
                     thirdLevelq1.put(a.get(j), des.get(j));
                     lista.removeAll(lista);
 
@@ -459,25 +461,25 @@ public class ListaAvvisi extends AppCompatActivity
                     for (int k = 0; k < livello2dec.size(); k++) {
                         SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello(),livello2dec.get(k).getLink());
                         if (j == 0 && a.size() == 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == 0 && a.size() > 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j != 0 && j != a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
@@ -486,7 +488,7 @@ public class ListaAvvisi extends AppCompatActivity
                     }
 
                     des.add(lista.toArray(new String[0]));
-                    Log.d("des", des.toString());
+
                     thirdLevelq1.put(a.get(j), des.get(j));
                     lista.removeAll(lista);
 
@@ -546,6 +548,7 @@ public class ListaAvvisi extends AppCompatActivity
             lista.setAdapter(adapter);
         }
         else {
+
             for (int i=0;i<appuntamenti.size();i++){
                 if(appuntamenti.get(i).getId_gruppo()==id_corso){
                     singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
@@ -560,6 +563,7 @@ public class ListaAvvisi extends AppCompatActivity
                     singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
                     documenti.add(appuntamenti.get(i).getTitolo());
                     continue;}
+
             }
 
             caricati = true;

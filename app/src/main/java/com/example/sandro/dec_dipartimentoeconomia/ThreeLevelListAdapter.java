@@ -252,7 +252,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     for (int j = 0; j < livello2dec.size(); j++) {
                         SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(j).getI(),livello2dec.get(j).getTitolo(),livello2dec.get(j).getId_gruppo(),livello2dec.get(j).getId_pagina(),livello2dec.get(j).getLivello(),livello2dec.get(j).getLink());
 
-                        if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                        if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_gruppo() == id_dipartimento && livello2dec.get(j).getI() >= second.get(i).getI()) {
                            {terzo.add(livello2);}
                         }
                     }

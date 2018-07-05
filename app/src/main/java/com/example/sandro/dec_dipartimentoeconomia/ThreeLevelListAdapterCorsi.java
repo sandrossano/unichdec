@@ -200,25 +200,25 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                     ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
                     for (int j = 0; j < livello2dec.size(); j++) {
                         if(i==0 && second.size()==1){
-                            if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                            if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
                                 if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo(livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
                                 else{terzo.add(livello2dec.get(j));}
                             }
                         }
                         if(i==0 && second.size()>1) {
-                            if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
+                            if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
                                 if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo(livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
                                 else{terzo.add(livello2dec.get(j));}
                             }
                         }
                         if(i!=0 && i!=second.size()-1){
-                            if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
+                            if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI() && livello2dec.get(j).getI() < second.get(i+1).getI()) {
                                 if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo(livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
                                 else{terzo.add(livello2dec.get(j));}
                             }
                         }
                         if(i==second.size()-1){
-                            if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                            if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
                                 if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo(livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
                                 else{terzo.add(livello2dec.get(j));}
                             }
@@ -283,7 +283,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
 
                     ArrayList<SplashActivity.SottoLivelli> terzo = new ArrayList<SplashActivity.SottoLivelli>();
                     for (int j = 0; j < livello2dec.size(); j++) {
-                        if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_pagina() > -2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
+                        if (livello2dec.get(j).getLivello() >= 2 && livello2dec.get(j).getId_gruppo() == id_corso && livello2dec.get(j).getI() >= second.get(i).getI()) {
                             if(livello2dec.get(j).getLivello() > 2){livello2dec.get(j).setTitolo(livello2dec.get(j).getTitolo());terzo.add(livello2dec.get(j));}
                             else{terzo.add(livello2dec.get(j));}
                         }

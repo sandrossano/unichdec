@@ -687,7 +687,7 @@ public class SplashActivity extends AppCompatActivity{
             queue.add(stringRequest);
             queue.getCache().clear();
 
-//CorsiLaurea
+//TUTTI I GRUPPI
             // Instantiate the RequestQueue.
             RequestQueue queuecors = Volley.newRequestQueue(this);
             String urlcors = localhost2 + "corsidilaurea/";

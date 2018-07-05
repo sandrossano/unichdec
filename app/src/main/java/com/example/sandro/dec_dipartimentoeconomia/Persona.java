@@ -488,25 +488,25 @@ public class Persona extends AppCompatActivity
                     for (int k = 0; k < livello2dec.size(); k++) {
                         SplashActivity.SottoLivelli livello2=livello2dec.get(k);
                         if (j == 0 && a.size() == 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == 0 && a.size() > 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j != 0 && j != a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_dipartimento && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
@@ -658,25 +658,25 @@ public class Persona extends AppCompatActivity
                     for (int k = 0; k < livello2dec.size(); k++) {
                         SplashActivity.SottoLivelli livello2=livello2dec.get(k);
                         if (j == 0 && a.size() == 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == 0 && a.size() > 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j != 0 && j != a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue() && livello2dec.get(k).getI() < ordinidia.get(j + 1).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
                         }
                         if (j == a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_pagina() > -2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() == 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){livello2.setTitolo("-> "+livello2dec.get(k).getTitolo());lista.add(livello2.getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
