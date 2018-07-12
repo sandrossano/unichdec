@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -31,22 +32,51 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.HttpResponse;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Request;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.jsoup.helper.HttpConnection;
 import org.jsoup.helper.StringUtil;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.Headers;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.drawerCorso;
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
@@ -63,9 +93,9 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
-import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.contenuti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.pagine;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.ruoli;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
@@ -84,9 +114,13 @@ public class Visualizza extends AppCompatActivity {
     int corso;
     private ExpandableListView expandableListView;
     static DrawerLayout drawerVisual=null;
-
+    String contenuto="";
     SwipeRefreshLayout mSwipeRefreshLayout;
-
+    static int pos_pagina=4;
+    RequestQueue requestQueue;
+    StringRequest jsonObjRequest;
+    WebView engine ;
+    TextView text;
 
     private void refreshContent() {
         mSwipeRefreshLayout.setRefreshing(true);
@@ -102,6 +136,7 @@ public class Visualizza extends AppCompatActivity {
         i.putExtra("terzolv",terzolv);
         i.putExtra("terzolvpag",terzolvpag);
         i.putExtra("id_corso",corso);
+        i.putExtra("link",link);
         startActivity(i);
         overridePendingTransition(0, 0);
         Log.d("aggiorna","ok");
@@ -111,8 +146,38 @@ public class Visualizza extends AppCompatActivity {
     @SuppressLint({"ClickableViewAccessibility", "NewApi"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualizza);
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        fab.setVisibility(View.GONE);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (drawerVisual != null) drawerVisual.closeDrawer(GravityCompat.START);
+        drawerMain.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.START);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerVisual = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawerCorso != null) drawerCorso.closeDrawer(GravityCompat.START);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+
+        engine = (WebView) findViewById(R.id.web_engine);
+        text=(TextView)findViewById(R.id.testovisualizza);
 
         ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
@@ -126,7 +191,7 @@ public class Visualizza extends AppCompatActivity {
         terzolvpag=getIntent().getIntExtra("terzolvpag",0);
         link=getIntent().getStringExtra("link");
         corso=getIntent().getIntExtra("id_corso",-1);
-        TextView text=(TextView)findViewById(R.id.testovisualizza);
+
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -136,7 +201,7 @@ public class Visualizza extends AppCompatActivity {
             }
         });
 
-        final WebView engine = (WebView) findViewById(R.id.web_engine);
+
         engine.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View view, int i, int i1, int i2, int i3) {
@@ -145,38 +210,44 @@ public class Visualizza extends AppCompatActivity {
             }
         });
         Log.d("pagina",""+terzolvpag);
-        int pos=4;
-        for(int i=0;i<contenuti.size();i++){
-            if(contenuti.get(i).getId_pagine()==terzolvpag){pos=i;break;}
+
+        if (link.contains("pag_appuntamenti.php")) {
+
+            if (corso != -1) { //from corso
+                Intent i = new Intent(getApplicationContext(), ListaAvvisi.class);
+                i.putExtra("from_corso", 1);
+                startActivity(i);
+                finish();
+                return;
+            } else {
+                Intent i = new Intent(getApplicationContext(), ListaAvvisi.class);
+                i.putExtra("from_dipartimento", 1);
+                startActivity(i);
+                finish();
+                return;
+            }
         }
+
+        for(int i=0;i<pagine.size();i++){
+            if(pagine.get(i).getId()==terzolvpag){pos_pagina=i;break;}
+        }
+
+        makePost();
+
+    }
+
+    private void caricaDopoRequest(){
         String data = "";
-        String completa="";
-        String a="";
-        if(link.contains("pag_appuntamenti.php")) {
+        String completa = "";
+        String a = "";
 
-            if (corso!=-1){ //from corso
-                Intent i=new Intent(getApplicationContext(), ListaAvvisi.class);
-                i.putExtra("from_corso",1);
-                startActivity(i);
-                finish();
-                return;
-            }
-            else{
-                Intent i=new Intent(getApplicationContext(), ListaAvvisi.class);
-                i.putExtra("from_dipartimento",1);
-                startActivity(i);
-                finish();
-                return;
-            }
-        }
-        if(link.contains("visualizza.php")) {
-
+        if (link.contains("visualizza.php")) {
 
 
             String[] titolo = terzolv.split("->");
-            if (!contenuti.get(pos).getTesto_contenuto().contains("[[[")) {
+            if (!contenuto.contains("[[[")) {
                 data = "<html>" + "<body style=\"background:#d8e5f0\">" + "<h2 align=\"center\">" + titolo[titolo.length - 1] + "</h2>" +
-                        contenuti.get(pos).getTesto_contenuto() +
+                        contenuto +
                         "</body>" + "</html>";
                 //data=data.replace("href=","");        rimuovi link
                 data = data.replace("src=\"documenti/", "src=\"https://economia.unich.it/documenti/");
@@ -193,19 +264,19 @@ public class Visualizza extends AppCompatActivity {
             } else {
                 int count = 0;
                 Pattern p = Pattern.compile("]]]");
-                Matcher m = p.matcher(contenuti.get(pos).getTesto_contenuto());
+                Matcher m = p.matcher(contenuto);
                 while (m.find()) {
                     count++;
                 }
-                 a = "";
-                 completa = contenuti.get(pos).getTesto_contenuto();
+                a = "";
+                completa = contenuto;
                 int start = 0;
 
                 for (int i = 0; i < count; i++) {
-                    int primo = contenuti.get(pos).getTesto_contenuto().indexOf("[[[", start) + 3;
-                    int ultimo = contenuti.get(pos).getTesto_contenuto().indexOf("]]]", start) - 1;
-                    start = contenuti.get(pos).getTesto_contenuto().indexOf("]]]", start) + 1;
-                    String pulita = contenuti.get(pos).getTesto_contenuto().substring(primo, ultimo + 1);
+                    int primo = contenuto.indexOf("[[[", start) + 3;
+                    int ultimo = contenuto.indexOf("]]]", start) - 1;
+                    start = contenuto.indexOf("]]]", start) + 1;
+                    String pulita = contenuto.substring(primo, ultimo + 1);
                     String[] array = pulita.split(";");
                     int gruppo = -250;
                     int ruolo = -250;
@@ -313,6 +384,20 @@ public class Visualizza extends AppCompatActivity {
                         a = "";
                     }
                     if (modulo.equals("pag_appuntamenti")) {
+                        if (corso != -1) { //from corso
+                            Intent qq = new Intent(getApplicationContext(), ListaAvvisi.class);
+                            qq.putExtra("from_corso", 1);
+                            startActivity(qq);
+                            finish();
+                            return;
+                        } else {
+                            Intent qq = new Intent(getApplicationContext(), ListaAvvisi.class);
+                            qq.putExtra("from_dipartimento", 1);
+                            startActivity(qq);
+                            finish();
+                            return;
+                        }
+                        /*
                         for (int d = 0; d < appuntamenti.size(); d++) {
                             if (corso != -1) { //from_corsi
                                 if (appuntamenti.get(d).getId_gruppo() == corso) {
@@ -373,11 +458,11 @@ public class Visualizza extends AppCompatActivity {
                         }
 
                         completa = completa.replace("[[[" + pulita + "]]]", a);
-                        a = "";
+                        a = "";*/
                     }
                 }
-                }
-            }
+
+
                 data = "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
                         "<style>\n" +
                         ".card {\n" +
@@ -432,213 +517,196 @@ public class Visualizza extends AppCompatActivity {
 
                 data = data.replace("href=\"", "href=\"https://economia.unich.it/");
 
-            //TextView textView = (TextView) findViewById(R.id.html);
-            //textView.setText(Html.fromHtml(Html.fromHtml(data).toString()));
+                //TextView textView = (TextView) findViewById(R.id.html);
+                //textView.setText(Html.fromHtml(Html.fromHtml(data).toString()));
+            }
 
+            engine.getSettings().setBuiltInZoomControls(true);
+            engine.getSettings().setSupportZoom(true);
+            engine.getSettings().setDisplayZoomControls(false);
 
+            engine.getSettings().setJavaScriptEnabled(true);
+            engine.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+            engine.getSettings().setAppCacheEnabled(false);
+            engine.getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
 
-        engine.getSettings().setBuiltInZoomControls(true);
-        engine.getSettings().setSupportZoom(true);
-        engine.getSettings().setDisplayZoomControls(false);
+            engine.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    String[] a = url.split("id_persona=");
+                    String[] b = url.split("id_doc=");
+                    if (a.length != 1) {
+                        Log.d("id_persona", a[1]);
+                        Intent intent = new Intent(Visualizza.this, PersonaSingola.class);
+                        intent.putExtra("idsing", Integer.parseInt(a[1]));
+                        mContext.startActivity(intent);
+                        return true;
+                    }
+                    if (b.length != 1) {
+                        String[] valori = b[1].split("&");
+                        Intent intent = new Intent(Visualizza.this, PaginaDocumento.class);
+                        intent.putExtra("iddoc", Integer.parseInt(valori[0]));
+                        try {
+                            intent.putExtra("titolo", URLDecoder.decode(valori[1], "UTF-8"));
+                        } catch (UnsupportedEncodingException e) {
+                            intent.putExtra("titolo", valori[1]);
+                        }
+                        intent.putExtra("idcat", Integer.parseInt(valori[2]));
+                        mContext.startActivity(intent);
+                        return true;
+                    }
 
-        engine.getSettings().setJavaScriptEnabled(true);
-        engine.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        engine.getSettings().setAppCacheEnabled(false);
-        engine.getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
-
-        engine.setWebViewClient(new WebViewClient(){
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                String[] a=url.split("id_persona=");
-                String[] b=url.split("id_doc=");
-                if(a.length!=1) {
-                    Log.d("id_persona", a[1]);
-                    Intent intent = new Intent(Visualizza.this, PersonaSingola.class);
-                    intent.putExtra("idsing", Integer.parseInt(a[1]));
-                    mContext.startActivity(intent);
+                    if (!url.startsWith("http")) {
+                        url = "https://economia.unich.it/" + url;
+                    }
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
                     return true;
                 }
-                if(b.length!=1) {
-                    String[] valori=b[1].split("&");
-                    Intent intent = new Intent(Visualizza.this, PaginaDocumento.class);
-                    intent.putExtra("iddoc", Integer.parseInt(valori[0]));
-                    try {
-                        intent.putExtra("titolo", URLDecoder.decode(valori[1], "UTF-8"));
-                    } catch (UnsupportedEncodingException e) {
-                        intent.putExtra("titolo", valori[1]);
-                    }
-                    intent.putExtra("idcat", Integer.parseInt(valori[2]));
-                    mContext.startActivity(intent);
-                    return true;
+            });
+            engine.setClickable(false);
+
+            engine.loadData(data, "text/html", "UTF-8");
+
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    refreshContent();
                 }
+            });
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            View hView = navigationView.getHeaderView(0);
+            ImageView logo = (ImageView) hView.findViewById(R.id.logo_dipartimento);
+            ImageView logo_prec = (ImageView) hView.findViewById(R.id.logo_precedente);
 
-                if(!url.startsWith("http")){url="https://economia.unich.it/"+url;}
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-                return true;
+            String str = "";
+            String str2 = "";
+            if (position != null) {
+                str2 = nome_dipartimento;
+                str = position.replace("/", "");
+            } else {
+                str = nome_dipartimento;
             }
-        });
-        engine.setClickable(false);
 
-        engine.loadData(data, "text/html", "UTF-8");
+            Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/" + str + ".png").into(logo);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshContent();
-            }
-        });
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View hView =  navigationView.getHeaderView(0);
-        ImageView logo = (ImageView)hView.findViewById(R.id.logo_dipartimento);
-        ImageView logo_prec = (ImageView)hView.findViewById(R.id.logo_precedente);
-
-        String str=""; String str2="";
-        if(position!=null){str2=nome_dipartimento;str = position.replace("/", "");}
-        else{str=nome_dipartimento;}
-
-        Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+str+".png").into(logo);
-
-        if(position!=null)Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/"+str2+".png").into(logo_prec);
-        else{logo_prec.setImageResource(R.drawable.logo_unich); }
-
-
-        if(corso!=-1) {
-            if (terzolv == null)
-                text.setText("Dipartimento: " + id_dipartimento + "\n" + "Corso: " + corso + "\n" + "Secondo Livello: " + secondolv + "\n");
+            if (position != null)
+                Picasso.with(getApplicationContext()).load("https://economia.unich.it/html/images/categorie/" + str2 + ".png").into(logo_prec);
             else {
-                text.setText("Dipartimento: " + id_dipartimento + "\n" + "Corso: " + corso + "\n"  + "Secondo Livello: " + secondolv + "\n" + "Terzo Livello: " + terzolv);
+                logo_prec.setImageResource(R.drawable.logo_unich);
             }
-        }
-        else {
-            if (terzolv == null)
-                text.setText("Dipartimento: " + id_dipartimento + "\n" + "Secondo Livello: " + secondolv + "\n");
+
+
+            if (corso != -1) {
+                if (terzolv == null)
+                    text.setText("Dipartimento: " + id_dipartimento + "\n" + "Corso: " + corso + "\n" + "Secondo Livello: " + secondolv + "\n");
+                else {
+                    text.setText("Dipartimento: " + id_dipartimento + "\n" + "Corso: " + corso + "\n" + "Secondo Livello: " + secondolv + "\n" + "Terzo Livello: " + terzolv);
+                }
+            } else {
+                if (terzolv == null)
+                    text.setText("Dipartimento: " + id_dipartimento + "\n" + "Secondo Livello: " + secondolv + "\n");
+                else {
+                    text.setText("Dipartimento: " + id_dipartimento + "\n" + "Secondo Livello: " + secondolv + "\n" + "Terzo Livello: " + terzolv);
+                }
+            }
+            setTitle(secondolv);
+
+
+            if (corso == -1) setUpAdapter();
             else {
-                text.setText("Dipartimento: " + id_dipartimento + "\n" + "Secondo Livello: " + secondolv + "\n" + "Terzo Livello: " + terzolv);
-            }
-        }
-        setTitle(secondolv);
+                setUpAdapterCorso();
+                for (int i = 0; i < corsi.size(); i++) {
+                    if (corsi.get(i).getId() == id_corso) {
+                        NavigationView navigationView1 = (NavigationView) findViewById(R.id.nav_view);
+                        if (corsi.get(i).getColor() == 0) {
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#0e185a"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 1) {
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#b30000"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 2) {
 
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#e6b800"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 3) {
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#00cc7a"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 4) {
 
-        if(corso==-1)setUpAdapter();
-        else {setUpAdapterCorso();
-            for (int i =0;i<corsi.size();i++) {
-                if (corsi.get(i).getId()==id_corso) {
-                    NavigationView navigationView1=(NavigationView) findViewById(R.id.nav_view);
-                    if(corsi.get(i).getColor()==0) {
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#0e185a"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==1) {
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#b30000"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==2) {
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#00663d"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 5) {
 
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#e6b800"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==3) {
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#b30077"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 6) {
 
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#00cc7a"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==4) {
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#804000"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 7) {
 
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#00663d"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==5) {
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#808080"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 8) {
 
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#b30077"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==6) {
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#600080"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 9) {
 
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#804000"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==7) {
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#b38f00"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 10) {
 
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#808080"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==8) {
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#ff704d"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
+                        if (corsi.get(i).getColor() == 11) {
 
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#600080"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==9) {
-
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#b38f00"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==10) {
-
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#ff704d"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
-                    }
-                    if(corsi.get(i).getColor()==11) {
-
-                        ColorDrawable colorDrawable = new ColorDrawable(
-                                Color.parseColor("#33bbff"));
-                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                        navigationView1.setBackground(colorDrawable);
+                            ColorDrawable colorDrawable = new ColorDrawable(
+                                    Color.parseColor("#33bbff"));
+                            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                            navigationView1.setBackground(colorDrawable);
+                        }
                     }
                 }
             }
         }
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        fab.setVisibility(View.GONE);
-
-        if(drawerVisual!=null)drawerVisual.closeDrawer(GravityCompat.START);
-        drawerMain.closeDrawer(GravityCompat.START);
-        drawer.closeDrawer(GravityCompat.START);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerVisual = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(drawerCorso!=null)drawerCorso.closeDrawer(GravityCompat.START);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
     }
 
     private void setUpAdapterCorso() {
@@ -664,7 +732,7 @@ public class Visualizza extends AppCompatActivity {
                     for (int m = 0; m < scuola.size(); m++) {
                         if (scuola.get(m).getId_gruppo_scuola() == id_dipartimento) {
                             if (scuola.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS"));
+                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS",0));
                                 ParentString.add(scuola.get(m).getSigla());
                             }
                         }
@@ -674,7 +742,7 @@ public class Visualizza extends AppCompatActivity {
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -687,7 +755,7 @@ public class Visualizza extends AppCompatActivity {
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -698,7 +766,7 @@ public class Visualizza extends AppCompatActivity {
                         if (corsi.get(m).getId_gruppo() == corsi_dipartimento) {
                             if (corsi.get(m).getId() == id_corso) {
                                 //a.add(corsi.get(m).getNome());
-                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS"));
+                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS",0));
                                 ParentString.add(corsi.get(m).getNome());
                             }
                         }
@@ -708,7 +776,7 @@ public class Visualizza extends AppCompatActivity {
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -720,7 +788,7 @@ public class Visualizza extends AppCompatActivity {
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -838,7 +906,7 @@ public class Visualizza extends AppCompatActivity {
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             //a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
                             ParentString.add(dipartimenti.get(c).getSigla());
                         }
                     }
@@ -847,7 +915,7 @@ public class Visualizza extends AppCompatActivity {
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
                             ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -856,7 +924,7 @@ public class Visualizza extends AppCompatActivity {
                 if (i == 0) {
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
                             ParentString.add(dipartimenti.get(c).getSigla());
                         }
                     }
@@ -865,7 +933,7 @@ public class Visualizza extends AppCompatActivity {
                 if (i != 0) {
                     if (corsi.get(i - 1).getId_gruppo() == corsi_dipartimento) {
                         a.add(corsi.get(i - 1).getNome());
-                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS"));
+                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS",0));
                         ParentString.add(corsi.get(i - 1).getNome());
                     }
                 }
@@ -974,6 +1042,52 @@ public class Visualizza extends AppCompatActivity {
             super.onBackPressed();
             finish();
         }
+    }
+
+    private void makePost(){
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        jsonObjRequest = new StringRequest(com.android.volley.Request.Method.POST,
+                "https://economia.unich.it/decapp/contenuto/",
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject c = null;
+                        try {
+                            c = new JSONObject(response);
+                            JSONArray cacca = c.getJSONArray("records");
+                            JSONObject expl = cacca.getJSONObject(0);
+
+                            contenuto=expl.getString("testocontenuto");
+                            caricaDopoRequest();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> postParam = new HashMap<String, String>();
+
+                postParam.put("idcontenuto", ""+pagine.get(pos_pagina).getId_contenuto());
+
+                return postParam;
+            }
+
+        };
+
+        requestQueue.add(jsonObjRequest);
     }
 
 }

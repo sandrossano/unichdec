@@ -34,15 +34,26 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
@@ -53,10 +64,10 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipart
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
-import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.contenuti;
-import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.contenuti_all;
+
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.pagine;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.tutti_gruppi;
@@ -71,6 +82,12 @@ public class Corso extends AppCompatActivity {
     static int id_corso;
     private ExpandableListView expandableListView;
     static DrawerLayout drawerCorso=null;
+    RequestQueue requestQueue;
+    StringRequest jsonObjRequest;
+    WebView engine ;
+    TextView text;
+    int id_cont=0;
+    String contenuto="";
 
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -98,6 +115,28 @@ public class Corso extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_corso);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+
+        engine = (WebView) findViewById(R.id.web_engine);
+        text=(TextView)findViewById(R.id.testovisualizza);
+
         ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
         ComponentName componentInfo = taskInfo.get(0).topActivity;
@@ -123,7 +162,6 @@ public class Corso extends AppCompatActivity {
         position=getIntent().getStringExtra("position");
 
 
-
         String str = position.replace("/", "");
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
@@ -146,7 +184,9 @@ public class Corso extends AppCompatActivity {
         for(int i=0;i<corsi.size();i++) {
             if(position.equals(corsi.get(i).getNome())){
             id_corso = corsi.get(i).getId();
+            id_cont=corsi.get(i).getId_contenuto();
             setTitle(corsi.get(i).getNome());}
+
         }
 
         ArrayList<SplashActivity.Corso> listacorsiDipartimento=new ArrayList<>();
@@ -155,44 +195,6 @@ public class Corso extends AppCompatActivity {
                 listacorsiDipartimento.add(corsi.get(i));
             }
         }
-
-        int id_cont=0;
-        for (int k=0;k<tutti_gruppi.size();k++){
-            if(tutti_gruppi.get(k).getId()==id_corso){id_cont=tutti_gruppi.get(k).getId_contenuto();break;}
-        }
-        int pos=0;
-        for(int i=0;i<contenuti_all.size();i++){
-            if(contenuti_all.get(i).getId_contenuto()==id_cont){pos=i;break;}
-        }
-        String data="";
-        data = "<html>" + "<body>"+
-                    contenuti_all.get(pos).getTesto_contenuto()+
-                    "</body>" + "</html>";
-            //data=data.replace("href=","");        rimuovi link
-            data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
-            if(data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")){data=data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;","<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");}
-            //data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
-            //if(terzolv.equals("Esami")){data=data.replace("</body>","vai alla app Uda + intent</body>");}
-        WebView image_top= (WebView) findViewById(R.id.image_top);
-        image_top.getSettings().setJavaScriptEnabled(true);
-        image_top.loadData(data, "text/html", "UTF-8");
-
-
-
-        //TextView text=(TextView)findViewById(R.id.testocorso);
-
-        //text.setText("Dipartimento: "+id_dipartimento+"\n"+"Id_Corso: "+id_corso+"\n"+"Nome_Corso: "+position);
-
-        if(drawerCorso!=null)drawerCorso.closeDrawer(GravityCompat.START);
-        drawerMain.closeDrawer(GravityCompat.START);
-        drawer.closeDrawer(GravityCompat.START);
-        if(drawerVisual!=null)drawerVisual.closeDrawer(GravityCompat.START);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerCorso = (DrawerLayout) findViewById(R.id.drawer_layout);
-        setUpAdapter();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         for (int i =0;i<corsi.size();i++) {
             if (corsi.get(i).getId()==id_corso) {
@@ -283,23 +285,42 @@ public class Corso extends AppCompatActivity {
             }
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        makePost_contenuto();
+        makePost_avvisi();
+    }
 
+    public void caricaDopoRequest(){
+        String data="";
+        data = "<html>" + "<body>"+
+                contenuto+
+                "</body>" + "</html>";
+        //data=data.replace("href=","");        rimuovi link
+        data=data.replace("src=\"documenti/","src=\"https://economia.unich.it/documenti/");
+        if(data.contains("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;")){data=data.replace("<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: block;","<iframe style=\"border: 1px solid #cccccc; margin-bottom: 5px; max-width: 100%; display: none; ");}
+        //data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
+        //if(terzolv.equals("Esami")){data=data.replace("</body>","vai alla app Uda + intent</body>");}
+        WebView image_top= (WebView) findViewById(R.id.image_top);
+        image_top.getSettings().setJavaScriptEnabled(true);
+        image_top.loadData(data, "text/html", "UTF-8");
+
+        RelativeLayout corso=findViewById(R.id.relative_corso);
+        corso.setVisibility(View.VISIBLE);
+
+        //TextView text=(TextView)findViewById(R.id.testocorso);
+
+        //text.setText("Dipartimento: "+id_dipartimento+"\n"+"Id_Corso: "+id_corso+"\n"+"Nome_Corso: "+position);
+
+        if(drawerCorso!=null)drawerCorso.closeDrawer(GravityCompat.START);
+        drawerMain.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.START);
+        if(drawerVisual!=null)drawerVisual.closeDrawer(GravityCompat.START);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        drawerCorso = (DrawerLayout) findViewById(R.id.drawer_layout);
+        setUpAdapter();
 
-        //SETTO GLI APPUNTAMENTI
+    }
 
+    public void setAppuntamenti(){
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy", Locale.ITALY);
         Date date = null;
@@ -440,7 +461,7 @@ public class Corso extends AppCompatActivity {
                     i.putExtra("id", temp.get(0).getId());
                     i.putExtra("titolo", temp.get(0).getTitolo());
                     i.putExtra("data", temp.get(0).getData_inizio());
-                    i.putExtra("id_cont", temp.get(0).getId_contenuto());
+                    //i.putExtra("id_cont", temp.get(0).getId_contenuto());
                     i.putExtra("ambito", finalNome);
                     startActivity(i);
                 }
@@ -456,7 +477,7 @@ public class Corso extends AppCompatActivity {
                     i2.putExtra("id", temp.get(1).getId());
                     i2.putExtra("titolo", temp.get(1).getTitolo());
                     i2.putExtra("data", temp.get(1).getData_inizio());
-                    i2.putExtra("id_cont", temp.get(1).getId_contenuto());
+                    //i2.putExtra("id_cont", temp.get(1).getId_contenuto());
                     i2.putExtra("ambito", finalNome1);
                     startActivity(i2);
                 }
@@ -472,7 +493,7 @@ public class Corso extends AppCompatActivity {
                     i3.putExtra("id", temp.get(2).getId());
                     i3.putExtra("titolo", temp.get(2).getTitolo());
                     i3.putExtra("data", temp.get(2).getData_inizio());
-                    i3.putExtra("id_cont", temp.get(2).getId_contenuto());
+                    //i3.putExtra("id_cont", temp.get(2).getId_contenuto());
                     i3.putExtra("ambito", finalNome2);
                     startActivity(i3);
                 }
@@ -488,12 +509,61 @@ public class Corso extends AppCompatActivity {
                     i4.putExtra("id", temp.get(3).getId());
                     i4.putExtra("titolo", temp.get(3).getTitolo());
                     i4.putExtra("data", temp.get(3).getData_inizio());
-                    i4.putExtra("id_cont", temp.get(3).getId_contenuto());
+                    //i4.putExtra("id_cont", temp.get(3).getId_contenuto());
                     i4.putExtra("ambito", finalNome3);
                     startActivity(i4);
                 }
             });
         }
+    }
+
+    public void makePost_avvisi(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String url="";
+        url="https://economia.unich.it/pag_appuntamenti.php?JSON=on&gruppo="+id_corso;
+
+        StringRequest jsonObjRequest = new StringRequest(com.android.volley.Request.Method.GET,
+                url,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject c = null;
+                        try {
+                            c = new JSONObject(response);
+
+                            JSONArray prova = c.getJSONArray("records");
+
+                            if(appuntamenti!=null)appuntamenti.clear();
+
+                            for (int i = 0; i < prova.length(); i++) {
+                                JSONObject expl = prova.getJSONObject(i);
+                                appuntamenti.add(new SplashActivity.Appuntamento(expl.getInt("id"), expl.getString("titolo"), expl.getString("data_inizio"), expl.getString("data_fine"), expl.getString("descrizione"), expl.getInt("id_sezione")));
+                            }
+                            setAppuntamenti();
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> getParam = new HashMap<String, String>();
+
+                return getParam;
+            }
+
+        };
+
+        requestQueue.add(jsonObjRequest);
     }
 
     private void setUpAdapter() {
@@ -519,7 +589,7 @@ public class Corso extends AppCompatActivity {
                     for (int m = 0; m < scuola.size(); m++) {
                         if (scuola.get(m).getId_gruppo_scuola() == id_dipartimento) {
                             if (scuola.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS"));
+                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS",id_cont));
                                 ParentString.add(scuola.get(m).getSigla());
                             }
                         }
@@ -529,7 +599,7 @@ public class Corso extends AppCompatActivity {
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",id_cont));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -541,7 +611,7 @@ public class Corso extends AppCompatActivity {
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",id_cont));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -551,7 +621,7 @@ public class Corso extends AppCompatActivity {
                     for (int m = 0; m < corsi.size(); m++) {
                         if (corsi.get(m).getId_gruppo() == corsi_dipartimento) {
                             if (corsi.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS"));
+                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS",id_cont));
                                 ParentString.add(corsi.get(m).getNome());
                             }
                         }
@@ -561,7 +631,7 @@ public class Corso extends AppCompatActivity {
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",id_cont));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -573,7 +643,7 @@ public class Corso extends AppCompatActivity {
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",id_cont));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -718,4 +788,52 @@ public class Corso extends AppCompatActivity {
         i.putExtra("from_corso",1);
         startActivity(i);
     }
+
+    private void makePost_contenuto(){
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        jsonObjRequest = new StringRequest(com.android.volley.Request.Method.POST,
+                "https://economia.unich.it/decapp/contenuto/index_senzaPagina.php",
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject c = null;
+                        try {
+                            c = new JSONObject(response);
+                            JSONArray cacca = c.getJSONArray("records");
+                            JSONObject expl = cacca.getJSONObject(0);
+
+                            contenuto=expl.getString("testocontenuto");
+                            caricaDopoRequest();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> postParam = new HashMap<String, String>();
+
+                postParam.put("idcontenuto", ""+id_cont);
+
+                return postParam;
+            }
+
+        };
+
+        requestQueue.add(jsonObjRequest);
+    }
+
+
 }

@@ -37,6 +37,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -45,6 +46,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,9 +56,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
@@ -69,6 +73,8 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.localhost2;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.pagine;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.tutti_gruppi;
@@ -89,13 +95,14 @@ public class ListaAvvisi extends AppCompatActivity
     int from_dipartimento=0;
     int from_corso=0;
     boolean caricati=false;
+    RequestQueue requestQueue;
+    StringRequest jsonObjRequest;
+    ProgressBar p;
 
     private void refreshContent() {
         if(mSwipeRefreshLayout.isEnabled() && finito) {
-            adapter = new AvvAdapter(getApplicationContext(), documenti, singolo);
-            lista.setAdapter(adapter);
 
-            mSwipeRefreshLayout.setRefreshing(false);
+            makePost_avvisi();
         }
         if(!finito)mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -105,7 +112,7 @@ public class ListaAvvisi extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dipartimento);
 
-        ProgressBar p=(ProgressBar) findViewById(R.id.progressBar);
+        p=(ProgressBar) findViewById(R.id.progressBar);
         DrawableCompat.setTint(p.getIndeterminateDrawable(),Color.DKGRAY);
         findViewById(R.id.include).setVisibility(View.GONE);
         findViewById(R.id.include_avv).setVisibility(View.VISIBLE);
@@ -182,10 +189,8 @@ public class ListaAvvisi extends AppCompatActivity
         if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
         if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
 
-
-        CaricaLista();
+        makePost_avvisi();
         caricato();
-        //snipper();
 
 
     }
@@ -240,7 +245,7 @@ public class ListaAvvisi extends AppCompatActivity
             if (i == 0) {
                 for(int c=0;c<dipartimenti.size();c++) {
                     if(dipartimenti.get(c).getId()==id_dipartimento){
-                        parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento,"DIP"));
+                        parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento,"DIP",0));
                         ParentString.add(dipartimenti.get(c).getSigla());}
                 }
             }
@@ -249,13 +254,13 @@ public class ListaAvvisi extends AppCompatActivity
                 if(booleanoscuola==false) {
                     if (corsi.get(i - 1).getId_gruppo() == corsi_dipartimento) {
                         a.add(corsi.get(i - 1).getNome());
-                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS"));
+                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS",0));
                         ParentString.add(corsi.get(i - 1).getNome());
                     }
                 }
                 else{
                     a.add(SplashActivity.scuola.get(i - 1).getSigla());
-                    parent.add(new SplashActivity.Corso(SplashActivity.scuola.get(i - 1).getId(), SplashActivity.scuola.get(i - 1).getSigla(), 0, id_dipartimento, "CS"));
+                    parent.add(new SplashActivity.Corso(SplashActivity.scuola.get(i - 1).getId(), SplashActivity.scuola.get(i - 1).getSigla(), 0, id_dipartimento, "CS",0));
                     ParentString.add(SplashActivity.scuola.get(i - 1).getSigla());
 
                 }
@@ -372,7 +377,7 @@ public class ListaAvvisi extends AppCompatActivity
                     for (int m = 0; m < scuola.size(); m++) {
                         if (scuola.get(m).getId_gruppo_scuola() == id_dipartimento) {
                             if (scuola.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS"));
+                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS",0));
                                 ParentString.add(scuola.get(m).getSigla());
                             }
                         }
@@ -382,7 +387,7 @@ public class ListaAvvisi extends AppCompatActivity
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -394,7 +399,7 @@ public class ListaAvvisi extends AppCompatActivity
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -404,7 +409,7 @@ public class ListaAvvisi extends AppCompatActivity
                     for (int m = 0; m < corsi.size(); m++) {
                         if (corsi.get(m).getId_gruppo() == corsi_dipartimento) {
                             if (corsi.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS"));
+                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS",0));
                                 ParentString.add(corsi.get(m).getNome());
                             }
                         }
@@ -414,7 +419,7 @@ public class ListaAvvisi extends AppCompatActivity
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -426,7 +431,7 @@ public class ListaAvvisi extends AppCompatActivity
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -521,59 +526,6 @@ public class ListaAvvisi extends AppCompatActivity
 
     }
 
-
-
-
-    public void CaricaLista() {
-
-        if (from_dipartimento==1) {
-            //AVVISI
-            for (int i=0;i<appuntamenti.size();i++){
-                if(appuntamenti.get(i).getId_gruppo()==id_dipartimento){
-                    singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
-                    documenti.add(appuntamenti.get(i).getTitolo());
-                    continue;}
-                for (int j=0;j<r_corsi.size();j++){
-                    if (r_corsi.get(j).getId_gruppo()==id_dipartimento && r_corsi.get(j).getId()==appuntamenti.get(i).getId_gruppo()){
-                        singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
-                        documenti.add(appuntamenti.get(i).getTitolo());}
-                }
-            }
-
-            caricati = true;
-
-            singolo2 = singolo;
-            adapter = new AvvAdapter(getApplicationContext(), documenti, singolo);
-
-            lista.setAdapter(adapter);
-        }
-        else {
-
-            for (int i=0;i<appuntamenti.size();i++){
-                if(appuntamenti.get(i).getId_gruppo()==id_corso){
-                    singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
-                    documenti.add(appuntamenti.get(i).getTitolo());
-                    continue;}
-                for (int j=0;j<tutti_gruppi.size();j++){
-                    if (tutti_gruppi.get(j).getId()==appuntamenti.get(i).getId_gruppo() && tutti_gruppi.get(j).getId_gruppo()==id_corso){
-                        singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
-                        documenti.add(appuntamenti.get(i).getTitolo());}
-                }
-                if(appuntamenti.get(i).getId_gruppo()==1270){
-                    singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getData_inizio_pubb(), appuntamenti.get(i).getData_fine_pubb(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo(), appuntamenti.get(i).getId_contenuto()));
-                    documenti.add(appuntamenti.get(i).getTitolo());
-                    continue;}
-
-            }
-
-            caricati = true;
-
-            singolo2 = singolo;
-            adapter = new AvvAdapter(getApplicationContext(), documenti, singolo);
-
-            lista.setAdapter(adapter);
-        }
-    }
     class AvvAdapter extends ArrayAdapter<String>{
         Context context;
         ArrayList<String> documenti;
@@ -626,117 +578,7 @@ public class ListaAvvisi extends AppCompatActivity
         }
 
     }
-    /*
-    public void snipper(){
-        final ListView lista = (ListView) findViewById(R.id.listview_avv);
 
-        //get the spinner from the xml.
-        Spinner dropdown = findViewById(R.id.spinner1);
-        //create a list of items for the spinner.
-        //String[] items = new String[]{"CLEA", "CLEC", "CLEII","CLEA/M","CLEC/M"};
-        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
-        //There are multiple variations of this, but this is the basic variant.
-        ArrayAdapter<CharSequence> adapter2=ArrayAdapter.createFromResource(ListaAvvisi.this,R.array.corsi,android.R.layout.simple_spinner_item)  ;
-        //ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(Documenti.this, android.R.layout.simple_spinner_dropdown_item, items);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //set the spinners adapter to the previously created one.
-        dropdown.setAdapter(adapter2);
-
-        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                ArrayList<String> temp = new ArrayList<String>();
-                ArrayList<Doc> tempSingolo=new ArrayList<Doc>();
-                temp.clear();
-
-                switch (position) {
-                    case 0:
-                        return;
-
-                    case 1:
-                        for (int n = 0; n < singolo2.size(); n++)
-                        {
-                            for(int i=0;i<categorie.size();i++){
-                                if (categorie.get(i).getCorso()==74){
-                                    if (categorie.get(i).getId()==singolo2.get(n).getId_categoria()){
-                                        temp.add(singolo2.get(n).getTitolo());
-                                        tempSingolo.add(singolo2.get(n));
-
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case 2:
-                        for (int n = 0; n < singolo2.size(); n++)
-                        {
-                            for(int i=0;i<categorie.size();i++){
-                                if (categorie.get(i).getCorso()==66){
-                                    if (categorie.get(i).getId()==singolo2.get(n).getId_categoria()){
-                                        temp.add(singolo2.get(n).getTitolo());
-                                        tempSingolo.add(singolo2.get(n));
-
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case 3:
-                        for (int n = 0; n < singolo2.size(); n++)
-                        {
-                            for(int i=0;i<categorie.size();i++){
-                                if (categorie.get(i).getCorso()==59){
-                                    if (categorie.get(i).getId()==singolo2.get(n).getId_categoria()){
-                                        temp.add(singolo2.get(n).getTitolo());
-                                        tempSingolo.add(singolo2.get(n));
-
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case 4:
-                        for (int n = 0; n < singolo2.size(); n++)
-                        {
-                            for(int i=0;i<categorie.size();i++){
-                                if (categorie.get(i).getCorso()==75){
-                                    if (categorie.get(i).getId()==singolo2.get(n).getId_categoria()){
-                                        temp.add(singolo2.get(n).getTitolo());
-                                        tempSingolo.add(singolo2.get(n));
-
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case 5:
-                        for (int n = 0; n < singolo2.size(); n++)
-                        {
-                            for(int i=0;i<categorie.size();i++){
-                                if (categorie.get(i).getCorso()==73){
-                                    if (categorie.get(i).getId()==singolo2.get(n).getId_categoria()){
-                                        temp.add(singolo2.get(n).getTitolo());
-                                        tempSingolo.add(singolo2.get(n));
-
-                                    }
-                                }
-                            }
-                        }
-                        break;
-
-                }
-
-
-                lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
-    */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -796,7 +638,7 @@ public class ListaAvvisi extends AppCompatActivity
                 AvvAdapter t = (AvvAdapter) lista.getAdapter();
                 String titolo = t.singoli.get(position).getTitolo();
                 String data = t.singoli.get(position).getData_inizio();
-                int id_cont=t.singoli.get(position).getId_contenuto();
+                //int id_cont=t.singoli.get(position).getId_contenuto();
                 String nome4="";
                 for(int i=0;i<tutti_gruppi.size();i++){
                     if(t.singoli.get(position).getId_gruppo()==tutti_gruppi.get(i).getId()){nome4=tutti_gruppi.get(i).getNome();break;}
@@ -809,7 +651,7 @@ public class ListaAvvisi extends AppCompatActivity
                 i.putExtra("id",t.singoli.get(position).getId());
                 i.putExtra("titolo", titolo);
                 i.putExtra("data", data);
-                i.putExtra("id_cont", id_cont);
+                //i.putExtra("id_cont", id_cont);
                 i.putExtra("ambito", nome4);
                 startActivity(i);
 
@@ -921,5 +763,75 @@ public class ListaAvvisi extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-        }
+
+
+
+    public void makePost_avvisi(){
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String url="";
+        if(from_dipartimento==1){url="https://economia.unich.it/pag_appuntamenti.php?JSON=on&gruppo="+id_dipartimento;}
+        else{url="https://economia.unich.it/pag_appuntamenti.php?JSON=on&gruppo="+id_corso;}
+        jsonObjRequest = new StringRequest(com.android.volley.Request.Method.GET,
+                url,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject c = null;
+                        try {
+                            c = new JSONObject(response);
+
+                            JSONArray prova = c.getJSONArray("records");
+
+                            if(appuntamenti!=null)appuntamenti.clear();
+                            if(singolo!=null)singolo.clear();
+                            if(documenti!=null)documenti.clear();
+                            if(singolo2!=null)singolo2.clear();
+
+                            for (int i = 0; i < prova.length(); i++) {
+                                JSONObject expl = prova.getJSONObject(i);
+                                appuntamenti.add(new SplashActivity.Appuntamento(expl.getInt("id"), expl.getString("titolo"), expl.getString("data_inizio"), expl.getString("data_fine"), expl.getString("descrizione"), expl.getInt("id_sezione")));
+                            }
+
+
+                                //AVVISI
+                                for (int i=0;i<appuntamenti.size();i++){
+                                        singolo.add(new SplashActivity.Appuntamento(appuntamenti.get(i).getId(), appuntamenti.get(i).getTitolo(), appuntamenti.get(i).getData_inizio(), appuntamenti.get(i).getData_fine(), appuntamenti.get(i).getDescrizione(), appuntamenti.get(i).getId_gruppo()));
+                                        documenti.add(appuntamenti.get(i).getTitolo());
+                                }
+
+                                caricati = true;
+
+                                singolo2 = singolo;
+                                adapter = new AvvAdapter(getApplicationContext(), documenti, singolo);
+
+                                lista.setAdapter(adapter);
+                                p.setVisibility(View.GONE);
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> getParam = new HashMap<String, String>();
+
+                return getParam;
+            }
+
+        };
+
+        requestQueue.add(jsonObjRequest);
+    }
+
+
+}
 

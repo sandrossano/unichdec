@@ -438,7 +438,7 @@ public class Persona extends AppCompatActivity
             if (i == 0) {
                 for(int c=0;c<dipartimenti.size();c++) {
                     if(dipartimenti.get(c).getId()==id_dipartimento){
-                        parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento,"DIP"));
+                        parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento,"DIP",0));
                         ParentString.add(dipartimenti.get(c).getSigla());}
                 }
             }
@@ -447,13 +447,13 @@ public class Persona extends AppCompatActivity
                 if(booleanoscuola==false) {
                     if (corsi.get(i - 1).getId_gruppo() == corsi_dipartimento) {
                         a.add(corsi.get(i - 1).getNome());
-                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS"));
+                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS",0));
                         ParentString.add(corsi.get(i - 1).getNome());
                     }
                 }
                 else{
                     a.add(SplashActivity.scuola.get(i - 1).getSigla());
-                    parent.add(new SplashActivity.Corso(SplashActivity.scuola.get(i - 1).getId(), SplashActivity.scuola.get(i - 1).getSigla(), 0, id_dipartimento, "CS"));
+                    parent.add(new SplashActivity.Corso(SplashActivity.scuola.get(i - 1).getId(), SplashActivity.scuola.get(i - 1).getSigla(), 0, id_dipartimento, "CS",0));
                     ParentString.add(SplashActivity.scuola.get(i - 1).getSigla());
 
                 }
@@ -569,7 +569,7 @@ public class Persona extends AppCompatActivity
                     for (int m = 0; m < scuola.size(); m++) {
                         if (scuola.get(m).getId_gruppo_scuola() == id_dipartimento) {
                             if (scuola.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS"));
+                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS",0));
                                 ParentString.add(scuola.get(m).getSigla());
                             }
                         }
@@ -579,7 +579,7 @@ public class Persona extends AppCompatActivity
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -591,7 +591,7 @@ public class Persona extends AppCompatActivity
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -601,7 +601,7 @@ public class Persona extends AppCompatActivity
                     for (int m = 0; m < corsi.size(); m++) {
                         if (corsi.get(m).getId_gruppo() == corsi_dipartimento) {
                             if (corsi.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS"));
+                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS",0));
                                 ParentString.add(corsi.get(m).getNome());
                             }
                         }
@@ -611,7 +611,7 @@ public class Persona extends AppCompatActivity
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -623,7 +623,7 @@ public class Persona extends AppCompatActivity
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }

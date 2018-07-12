@@ -35,9 +35,17 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -50,14 +58,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import me.relex.circleindicator.CircleIndicator;
 
+import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.immagini_dec;
@@ -172,6 +183,54 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         MainActivity.activity=".MainActivity";
     }
+    public void makePost_avvisi(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String url="";
+        url="https://economia.unich.it/pag_appuntamenti.php?JSON=on&gruppo="+id_dipartimento;
+
+        StringRequest jsonObjRequest = new StringRequest(com.android.volley.Request.Method.GET,
+                url,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject c = null;
+                        try {
+                            c = new JSONObject(response);
+
+                            JSONArray prova = c.getJSONArray("records");
+
+                            if(appuntamenti!=null)appuntamenti.clear();
+
+                            for (int i = 0; i < prova.length(); i++) {
+                                JSONObject expl = prova.getJSONObject(i);
+                                appuntamenti.add(new SplashActivity.Appuntamento(expl.getInt("id"), expl.getString("titolo"), expl.getString("data_inizio"), expl.getString("data_fine"), expl.getString("descrizione"), expl.getInt("id_sezione")));
+                            }
+                            setAppuntamenti();
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> getParam = new HashMap<String, String>();
+
+                return getParam;
+            }
+
+        };
+
+        requestQueue.add(jsonObjRequest);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -179,6 +238,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        makePost_avvisi();
 
         ActivityManager am = (ActivityManager) this .getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
@@ -186,55 +246,7 @@ public class MainActivity extends AppCompatActivity
         activity=".MainActivity";
 
 
-        /*
-        mWebView=(WebView)findViewById(R.id.browser);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new WebViewClient() {
 
-            @Override
-            public void onPageFinished(WebView view, String url)
-            {
-                mWebView.loadUrl("javascript:(function() { " +
-                        "document.getElementById('section-header').style.display='none'; " +
-                        "document.getElementById('zone-postscript-wrapper').style.display='none'; " +
-                        "document.getElementById('section-footer').style.display='none'; " +
-                        "document.getElementById('region-preface-second').style.display='none'; " +
-                        "document.getElementsByClassName('col-md-4 padding-l-r-5')[0].style.display='none'; " +
-                        "document.getElementsByClassName('col-md-4 padding-l-r-5')[1].style.display='none'; " +
-                        "document.getElementsByClassName('col-md-4 padding-l-r-5')[2].style.display='none'; " +
-                        "})()");
-            }
-        });
-
-        mWebView.loadUrl("https://economia.unich.it/");
-        */
-        /*
-        final ProgressBar mProgressBar;
-        CountDownTimer mCountDownTimer;
-        final int[] lll = {0};
-
-        mProgressBar=(ProgressBar)findViewById(R.id.progressbar);
-        mProgressBar.setProgress(lll[0]);
-        mCountDownTimer=new CountDownTimer(4000,1) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                Log.v("Log_tag", "Tick of Progress"+ lll[0] + millisUntilFinished);
-                lll[0]++;
-                mProgressBar.setProgress(lll[0]*100/(4000));
-
-            }
-
-            @Override
-            public void onFinish() {
-                //Do what you want
-                lll[0]=0;
-                mProgressBar.setProgress(100);
-
-            }
-        };
-        mCountDownTimer.start();
-*/
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -303,205 +315,196 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        //SETTO GLI APPUNTAMENTI
-
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy", Locale.ITALY);
-        Date date = null;
-
-        final ArrayList<SplashActivity.Appuntamento> temp=new ArrayList<>();
-
-
-
-        for (int i=0;i<appuntamenti.size();i++){
-            if(appuntamenti.get(i).getId_gruppo()==id_dipartimento){temp.add(appuntamenti.get(i));continue;}
-            for (int j=0;j<r_corsi.size();j++){
-                if (r_corsi.get(j).getId_gruppo()==id_dipartimento && r_corsi.get(j).getId()==appuntamenti.get(i).getId_gruppo()){temp.add(appuntamenti.get(i));}
-            }
-        }
-        String nome="";
-        String nome2="";
-        String nome3="";
-        String nome4="";
-        if(temp.size()>=1) {
-            TextView data1 = (TextView) findViewById(R.id.data1);
-            try {
-                date = format1.parse(temp.get(0).getData_inizio());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            data1.setText(format2.format(date));
-            TextView testo1 = (TextView) findViewById(R.id.testoavviso);
-            testo1.setText(temp.get(0).getTitolo());
-
-            TextView testo_ambito = (TextView) findViewById(R.id.testo_ambito_1);
-            nome = "";
-            for (int i = 0; i < tutti_gruppi.size(); i++) {
-                if (temp.get(0).getId_gruppo() == tutti_gruppi.get(i).getId()) {
-                    nome = tutti_gruppi.get(i).getNome();
-                    break;
-                }
-            }
-            for (int i = 0; i < dipartimenti.size(); i++) {
-                if (temp.get(0).getId_gruppo() == dipartimenti.get(i).getId()) {
-                    nome = dipartimenti.get(i).getNome();
-                    break;
-                }
-            }
-            testo_ambito.setText(nome);
-        }
-        if(temp.size()>=2) {
-            TextView data2 = (TextView) findViewById(R.id.data2);
-            try {
-                date = format1.parse(temp.get(1).getData_inizio());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            data2.setText(format2.format(date));
-            TextView testo2 = (TextView) findViewById(R.id.testoavviso2);
-            testo2.setText(temp.get(1).getTitolo());
-
-            TextView testo_ambito2 = (TextView) findViewById(R.id.testo_ambito_2);
-             nome2 = "";
-            for (int i = 0; i < tutti_gruppi.size(); i++) {
-                if (temp.get(1).getId_gruppo() == tutti_gruppi.get(i).getId()) {
-                    nome2 = tutti_gruppi.get(i).getNome();
-                    break;
-                }
-            }
-            for (int i = 0; i < dipartimenti.size(); i++) {
-                if (temp.get(1).getId_gruppo() == dipartimenti.get(i).getId()) {
-                    nome2 = dipartimenti.get(i).getNome();
-                    break;
-                }
-            }
-            testo_ambito2.setText(nome2);
-        }
-
-        if(temp.size()>=3) {
-            TextView data3 = (TextView) findViewById(R.id.data3);
-            try {
-                date = format1.parse(temp.get(2).getData_inizio());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            data3.setText(format2.format(date));
-            TextView testo3 = (TextView) findViewById(R.id.testoavviso3);
-            testo3.setText(temp.get(2).getTitolo());
-
-            TextView testo_ambito3 = (TextView) findViewById(R.id.testo_ambito_3);
-             nome3 = "";
-            for (int i = 0; i < tutti_gruppi.size(); i++) {
-                if (temp.get(2).getId_gruppo() == tutti_gruppi.get(i).getId()) {
-                    nome3 = tutti_gruppi.get(i).getNome();
-                    break;
-                }
-            }
-            for (int i = 0; i < dipartimenti.size(); i++) {
-                if (temp.get(2).getId_gruppo() == dipartimenti.get(i).getId()) {
-                    nome3 = dipartimenti.get(i).getNome();
-                    break;
-                }
-            }
-            testo_ambito3.setText(nome3);
-        }
-
-        if(temp.size()>=4) {
-            TextView data4 = (TextView) findViewById(R.id.data4);
-            try {
-                date = format1.parse(temp.get(3).getData_inizio());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            data4.setText(format2.format(date));
-            TextView testo4 = (TextView) findViewById(R.id.testoavviso4);
-            testo4.setText(temp.get(3).getTitolo());
-
-            TextView testo_ambito4 = (TextView) findViewById(R.id.testo_ambito_4);
-             nome4 = "";
-            for (int i = 0; i < tutti_gruppi.size(); i++) {
-                if (temp.get(3).getId_gruppo() == tutti_gruppi.get(i).getId()) {
-                    nome4 = tutti_gruppi.get(i).getNome();
-                    break;
-                }
-            }
-            for (int i = 0; i < dipartimenti.size(); i++) {
-                if (temp.get(3).getId_gruppo() == dipartimenti.get(i).getId()) {
-                    nome4 = dipartimenti.get(i).getNome();
-                    break;
-                }
-            }
-            testo_ambito4.setText(nome4);
-        }
-
-        if(temp.size()>=1) {
-            RelativeLayout avviso1 = (RelativeLayout) findViewById(R.id.avviso1);
-            final String finalNome = nome;
-            avviso1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(getApplicationContext(), PaginaAvviso.class);
-                    i.putExtra("id", temp.get(0).getId());
-                    i.putExtra("titolo", temp.get(0).getTitolo());
-                    i.putExtra("data", temp.get(0).getData_inizio());
-                    i.putExtra("id_cont", temp.get(0).getId_contenuto());
-                    i.putExtra("ambito", finalNome);
-                    startActivity(i);
-                }
-            });
-        }
-        if(temp.size()>=2) {
-            RelativeLayout avviso2 = (RelativeLayout) findViewById(R.id.avviso2);
-            final String finalNome1 = nome2;
-            avviso2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i2 = new Intent(getApplicationContext(), PaginaAvviso.class);
-                    i2.putExtra("id", temp.get(1).getId());
-                    i2.putExtra("titolo", temp.get(1).getTitolo());
-                    i2.putExtra("data", temp.get(1).getData_inizio());
-                    i2.putExtra("id_cont", temp.get(1).getId_contenuto());
-                    i2.putExtra("ambito", finalNome1);
-                    startActivity(i2);
-                }
-            });
-        }
-        if(temp.size()>=3) {
-            RelativeLayout avviso3 = (RelativeLayout) findViewById(R.id.avviso3);
-            final String finalNome2 = nome3;
-            avviso3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i3 = new Intent(getApplicationContext(), PaginaAvviso.class);
-                    i3.putExtra("id", temp.get(2).getId());
-                    i3.putExtra("titolo", temp.get(2).getTitolo());
-                    i3.putExtra("data", temp.get(2).getData_inizio());
-                    i3.putExtra("id_cont", temp.get(2).getId_contenuto());
-                    i3.putExtra("ambito", finalNome2);
-                    startActivity(i3);
-                }
-            });
-        }
-        if(temp.size()>=4) {
-            RelativeLayout avviso4 = (RelativeLayout) findViewById(R.id.avviso4);
-            final String finalNome3 = nome4;
-            avviso4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i4 = new Intent(getApplicationContext(), PaginaAvviso.class);
-                    i4.putExtra("id", temp.get(3).getId());
-                    i4.putExtra("titolo", temp.get(3).getTitolo());
-                    i4.putExtra("data", temp.get(3).getData_inizio());
-                    i4.putExtra("id_cont", temp.get(3).getId_contenuto());
-                    i4.putExtra("ambito", finalNome3);
-                    startActivity(i4);
-                }
-            });
-        }
-
+        setAppuntamenti();
     }
 
+private void setAppuntamenti(){
+    SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy", Locale.ITALY);
+    Date date = null;
 
+    final ArrayList<SplashActivity.Appuntamento> temp=appuntamenti;
+
+    String nome="";
+    String nome2="";
+    String nome3="";
+    String nome4="";
+    if(temp.size()>=1) {
+        TextView data1 = (TextView) findViewById(R.id.data1);
+        try {
+            date = format1.parse(temp.get(0).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data1.setText(format2.format(date));
+        TextView testo1 = (TextView) findViewById(R.id.testoavviso);
+        testo1.setText(temp.get(0).getTitolo());
+
+        TextView testo_ambito = (TextView) findViewById(R.id.testo_ambito_1);
+        nome = "";
+        for (int i = 0; i < tutti_gruppi.size(); i++) {
+            if (temp.get(0).getId_gruppo() == tutti_gruppi.get(i).getId()) {
+                nome = tutti_gruppi.get(i).getNome();
+                break;
+            }
+        }
+        for (int i = 0; i < dipartimenti.size(); i++) {
+            if (temp.get(0).getId_gruppo() == dipartimenti.get(i).getId()) {
+                nome = dipartimenti.get(i).getNome();
+                break;
+            }
+        }
+        testo_ambito.setText(nome);
+    }
+    if(temp.size()>=2) {
+        TextView data2 = (TextView) findViewById(R.id.data2);
+        try {
+            date = format1.parse(temp.get(1).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data2.setText(format2.format(date));
+        TextView testo2 = (TextView) findViewById(R.id.testoavviso2);
+        testo2.setText(temp.get(1).getTitolo());
+
+        TextView testo_ambito2 = (TextView) findViewById(R.id.testo_ambito_2);
+        nome2 = "";
+        for (int i = 0; i < tutti_gruppi.size(); i++) {
+            if (temp.get(1).getId_gruppo() == tutti_gruppi.get(i).getId()) {
+                nome2 = tutti_gruppi.get(i).getNome();
+                break;
+            }
+        }
+        for (int i = 0; i < dipartimenti.size(); i++) {
+            if (temp.get(1).getId_gruppo() == dipartimenti.get(i).getId()) {
+                nome2 = dipartimenti.get(i).getNome();
+                break;
+            }
+        }
+        testo_ambito2.setText(nome2);
+    }
+
+    if(temp.size()>=3) {
+        TextView data3 = (TextView) findViewById(R.id.data3);
+        try {
+            date = format1.parse(temp.get(2).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data3.setText(format2.format(date));
+        TextView testo3 = (TextView) findViewById(R.id.testoavviso3);
+        testo3.setText(temp.get(2).getTitolo());
+
+        TextView testo_ambito3 = (TextView) findViewById(R.id.testo_ambito_3);
+        nome3 = "";
+        for (int i = 0; i < tutti_gruppi.size(); i++) {
+            if (temp.get(2).getId_gruppo() == tutti_gruppi.get(i).getId()) {
+                nome3 = tutti_gruppi.get(i).getNome();
+                break;
+            }
+        }
+        for (int i = 0; i < dipartimenti.size(); i++) {
+            if (temp.get(2).getId_gruppo() == dipartimenti.get(i).getId()) {
+                nome3 = dipartimenti.get(i).getNome();
+                break;
+            }
+        }
+        testo_ambito3.setText(nome3);
+    }
+
+    if(temp.size()>=4) {
+        TextView data4 = (TextView) findViewById(R.id.data4);
+        try {
+            date = format1.parse(temp.get(3).getData_inizio());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        data4.setText(format2.format(date));
+        TextView testo4 = (TextView) findViewById(R.id.testoavviso4);
+        testo4.setText(temp.get(3).getTitolo());
+
+        TextView testo_ambito4 = (TextView) findViewById(R.id.testo_ambito_4);
+        nome4 = "";
+        for (int i = 0; i < tutti_gruppi.size(); i++) {
+            if (temp.get(3).getId_gruppo() == tutti_gruppi.get(i).getId()) {
+                nome4 = tutti_gruppi.get(i).getNome();
+                break;
+            }
+        }
+        for (int i = 0; i < dipartimenti.size(); i++) {
+            if (temp.get(3).getId_gruppo() == dipartimenti.get(i).getId()) {
+                nome4 = dipartimenti.get(i).getNome();
+                break;
+            }
+        }
+        testo_ambito4.setText(nome4);
+    }
+
+    if(temp.size()>=1) {
+        RelativeLayout avviso1 = (RelativeLayout) findViewById(R.id.avviso1);
+        final String finalNome = nome;
+        avviso1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i.putExtra("id", temp.get(0).getId());
+                i.putExtra("titolo", temp.get(0).getTitolo());
+                i.putExtra("data", temp.get(0).getData_inizio());
+                //i.putExtra("id_cont", temp.get(0).getId_contenuto());
+                i.putExtra("ambito", finalNome);
+                startActivity(i);
+            }
+        });
+    }
+    if(temp.size()>=2) {
+        RelativeLayout avviso2 = (RelativeLayout) findViewById(R.id.avviso2);
+        final String finalNome1 = nome2;
+        avviso2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i2 = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i2.putExtra("id", temp.get(1).getId());
+                i2.putExtra("titolo", temp.get(1).getTitolo());
+                i2.putExtra("data", temp.get(1).getData_inizio());
+                //i2.putExtra("id_cont", temp.get(1).getId_contenuto());
+                i2.putExtra("ambito", finalNome1);
+                startActivity(i2);
+            }
+        });
+    }
+    if(temp.size()>=3) {
+        RelativeLayout avviso3 = (RelativeLayout) findViewById(R.id.avviso3);
+        final String finalNome2 = nome3;
+        avviso3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i3 = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i3.putExtra("id", temp.get(2).getId());
+                i3.putExtra("titolo", temp.get(2).getTitolo());
+                i3.putExtra("data", temp.get(2).getData_inizio());
+                //i3.putExtra("id_cont", temp.get(2).getId_contenuto());
+                i3.putExtra("ambito", finalNome2);
+                startActivity(i3);
+            }
+        });
+    }
+    if(temp.size()>=4) {
+        RelativeLayout avviso4 = (RelativeLayout) findViewById(R.id.avviso4);
+        final String finalNome3 = nome4;
+        avviso4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i4 = new Intent(getApplicationContext(), PaginaAvviso.class);
+                i4.putExtra("id", temp.get(3).getId());
+                i4.putExtra("titolo", temp.get(3).getTitolo());
+                i4.putExtra("data", temp.get(3).getData_inizio());
+                //i4.putExtra("id_cont", temp.get(3).getId_contenuto());
+                i4.putExtra("ambito", finalNome3);
+                startActivity(i4);
+            }
+        });
+    }
+}
     private void setUpAdapter() {
 
         LinkedHashMap<String, String[]> thirdLevelq1;
@@ -523,7 +526,7 @@ public class MainActivity extends AppCompatActivity
             if (i == 0) {
                 for(int c=0;c<dipartimenti.size();c++) {
                     if(dipartimenti.get(c).getId()==id_dipartimento){
-                    parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento,"DIP"));
+                    parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento,"DIP",0));
                     ParentString.add(dipartimenti.get(c).getSigla());}
                 }
             }
@@ -532,13 +535,13 @@ public class MainActivity extends AppCompatActivity
                 if(booleanoscuola==false) {
                     if (corsi.get(i - 1).getId_gruppo() == corsi_dipartimento) {
                         a.add(corsi.get(i - 1).getNome());
-                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS"));
+                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS",0));
                         ParentString.add(corsi.get(i - 1).getNome());
                     }
                 }
                 else{
                         a.add(SplashActivity.scuola.get(i - 1).getSigla());
-                        parent.add(new SplashActivity.Corso(SplashActivity.scuola.get(i - 1).getId(), SplashActivity.scuola.get(i - 1).getSigla(), 0, id_dipartimento, "CS"));
+                        parent.add(new SplashActivity.Corso(SplashActivity.scuola.get(i - 1).getId(), SplashActivity.scuola.get(i - 1).getSigla(), 0, id_dipartimento, "CS",0));
                         ParentString.add(SplashActivity.scuola.get(i - 1).getSigla());
 
                 }

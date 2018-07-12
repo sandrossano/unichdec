@@ -96,13 +96,74 @@ public class Documenti extends AppCompatActivity
     ProgressBar p;
     int id_corso=0;
 
+    public void aggiorna_doc(){
+        RequestQueue queue2 = Volley.newRequestQueue(getApplicationContext());
+        String url2 = localhost2 + "documenti/";
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                        JSONObject expl = null;
+                        try {
+
+                            documenti.clear();
+                            singolo.clear();
+                            singolo2.clear();
+
+                            JSONObject c = new JSONObject(response);
+                            listaDocumenti = c.getJSONArray("records");
+                            for (int i = 0; i < listaDocumenti.length(); i++) {
+                                expl = listaDocumenti.getJSONObject(i);
+                                String data = expl.getString("data_creazione").substring(0, 10);
+                                String link = expl.getString("link");
+                                String estensione = link.substring(link.length() - 3, link.length());
+                                documenti.add(expl.getString("titolo"));
+                                singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getInt("id_categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, expl.getString("nome"), "", expl.getInt("id_gruppo"), expl.getInt("id_gruppo_padre")));
+                            }
+
+                            lista = (ListView) findViewById(R.id.listview_docu);
+
+                            cerca = (SearchView) findViewById(R.id.cerca_docu);
+
+                            singolo2=singolo;
+
+                            adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
+
+                            lista.setAdapter(adapter);
+
+
+                            mSwipeRefreshLayout.setRefreshing(false);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+// Add the request to the RequestQueue.
+        stringRequest2.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue2.add(stringRequest2);
+        queue2.getCache().clear();
+    }
+
     private void refreshContent() {
         if(mSwipeRefreshLayout.isEnabled() && finito) {
-            adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
-            lista.setAdapter(adapter);
+            aggiorna_doc();
+
             cerca.setQuery("", false);
             cerca.setQueryHint("Cerca... ");
-            mSwipeRefreshLayout.setRefreshing(false);
         }
         if(!finito)mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -209,6 +270,7 @@ public class Documenti extends AppCompatActivity
             ListView lista = (ListView) findViewById(R.id.listview_docu);
             lista.setVisibility(View.VISIBLE);
             p.setVisibility(GONE);
+            finito=true;
         }
 
     }
@@ -243,7 +305,7 @@ public class Documenti extends AppCompatActivity
             if (i == 0) {
                 for(int c=0;c<dipartimenti.size();c++) {
                     if(dipartimenti.get(c).getId()==id_dipartimento){
-                        parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento,"DIP"));
+                        parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento,"DIP",0));
                         ParentString.add(dipartimenti.get(c).getSigla());}
                 }
             }
@@ -252,13 +314,13 @@ public class Documenti extends AppCompatActivity
                 if(booleanoscuola==false) {
                     if (corsi.get(i - 1).getId_gruppo() == corsi_dipartimento) {
                         a.add(corsi.get(i - 1).getNome());
-                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS"));
+                        parent.add(new SplashActivity.Corso(corsi.get(i - 1).getId(), corsi.get(i - 1).getNome(), corsi.get(i - 1).getColor(), corsi_dipartimento, "CS",0));
                         ParentString.add(corsi.get(i - 1).getNome());
                     }
                 }
                 else{
                     a.add(SplashActivity.scuola.get(i - 1).getSigla());
-                    parent.add(new SplashActivity.Corso(SplashActivity.scuola.get(i - 1).getId(), SplashActivity.scuola.get(i - 1).getSigla(), 0, id_dipartimento, "CS"));
+                    parent.add(new SplashActivity.Corso(SplashActivity.scuola.get(i - 1).getId(), SplashActivity.scuola.get(i - 1).getSigla(), 0, id_dipartimento, "CS",0));
                     ParentString.add(SplashActivity.scuola.get(i - 1).getSigla());
 
                 }
@@ -375,7 +437,7 @@ public class Documenti extends AppCompatActivity
                     for (int m = 0; m < scuola.size(); m++) {
                         if (scuola.get(m).getId_gruppo_scuola() == id_dipartimento) {
                             if (scuola.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS"));
+                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS",0));
                                 ParentString.add(scuola.get(m).getSigla());
                             }
                         }
@@ -385,7 +447,7 @@ public class Documenti extends AppCompatActivity
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -397,7 +459,7 @@ public class Documenti extends AppCompatActivity
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -407,7 +469,7 @@ public class Documenti extends AppCompatActivity
                     for (int m = 0; m < corsi.size(); m++) {
                         if (corsi.get(m).getId_gruppo() == corsi_dipartimento) {
                             if (corsi.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS"));
+                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS",0));
                                 ParentString.add(corsi.get(m).getNome());
                             }
                         }
@@ -417,7 +479,7 @@ public class Documenti extends AppCompatActivity
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP"));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -429,7 +491,7 @@ public class Documenti extends AppCompatActivity
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS"));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
