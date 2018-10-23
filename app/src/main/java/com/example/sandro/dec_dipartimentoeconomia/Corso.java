@@ -193,6 +193,7 @@ public class Corso extends AppCompatActivity {
                 if (position.equals(corsi.get(i).getNome())) {
                     id_corso = corsi.get(i).getId();
                     id_cont = corsi.get(i).getId_contenuto();
+                    titolo_sottocorso=corsi.get(i).getNome();
                     setTitle(corsi.get(i).getNome());
                 }
 
@@ -915,6 +916,8 @@ public class Corso extends AppCompatActivity {
         if (id == R.id.avvisi) {
             Intent i=new Intent(getApplicationContext(), ListaAvvisi.class);
             i.putExtra("from_corso",1);
+            i.putExtra("id_dip", id_dipartimento);
+            i.putExtra("id_corso", id_corso);
             startActivity(i);
             return true;
         }else if (id == R.id.main_doc) {
@@ -925,6 +928,8 @@ public class Corso extends AppCompatActivity {
             startActivity(i);
         }else if (id == R.id.item_persone) {
             Intent i=new Intent(getApplicationContext(), Persona.class);
+            i.putExtra("id_corso", id_corso);
+            i.putExtra("id_dip", id_dipartimento);
             i.putExtra("from_corso",1);
             startActivity(i);
         }

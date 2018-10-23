@@ -5,16 +5,4 @@
     <item
         android:id="@+id/person"
         android:title="Persone" />
-    <item
-        android:id="@+id/organig"
-        android:title="Organigramma" />
-    <item
-        android:id="@+id/main_doc"
-        android:title="Documenti" />
-    <item
-        android:id="@+id/atti"
-        android:title="Archivio Atti" />
-    <item
-        android:id="@+id/verbali"
-        android:title="Verbali" />
 </menu>

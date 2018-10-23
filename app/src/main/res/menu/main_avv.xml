@@ -3,21 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/person"
-        android:title="Persone" />
-    <item
-        android:id="@+id/organig"
-        android:title="Organigramma" />
-    <item
-        android:id="@+id/main_doc"
-        android:title="Documenti" />
-    <item
-        android:id="@+id/atti"
-        android:title="Archivio Atti" />
-    <item
-        android:id="@+id/verbali"
-        android:title="Verbali" />
-    <item
         android:id="@+id/action_search_avv"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"

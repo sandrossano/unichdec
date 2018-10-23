@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Path;
+import android.graphics.drawable.ColorDrawable;
 import android.icu.text.RelativeDateTimeFormatter;
 import android.net.Uri;
 import android.os.Bundle;
@@ -224,10 +225,119 @@ public class Persona extends AppCompatActivity
         if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
         if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
 
-        makePost_persona();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if(from_corso==1) {
+            for (int i = 0; i < corsi.size(); i++) {
+                if (corsi.get(i).getId() == id_corso) {
+                    Log.e("color", "" + corsi.get(i).getColor());
+                    if (corsi.get(i).getColor() == 0) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#0e185a"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 1) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#b30000"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 2) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#e6b800"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 3) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#00cc7a"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 4) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#00663d"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 5) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#b30077"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 6) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#804000"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 7) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#808080"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 8) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#600080"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 9) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#b38f00"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 10) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#ff704d"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 11) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#33bbff"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 12) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#855700"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 13) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#855700"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView.setBackground(colorDrawable);
+                    }
+                }
+            }
+        }else{
+            getSupportActionBar().setBackgroundDrawable(null);
+        }
+
+        makePost_persona();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -244,8 +354,6 @@ public class Persona extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     public void afterPost(){

@@ -173,8 +173,13 @@ public class Documenti extends AppCompatActivity
 
     private void refreshContent() {
         if(mSwipeRefreshLayout.isEnabled() && finito) {
+            if(from_corso==0){
             from_corso=0;
             from_dipartimento=1;
+        }else{
+            from_corso=1;
+            from_dipartimento=0;
+        }
             Spinner dropdown = findViewById(R.id.spinner1);
             dropdown.setSelection(0);
             aggiorna_doc();
@@ -213,12 +218,25 @@ public class Documenti extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_corso=0;from_dipartimento=1; setUpAdapter();}
-        if(getIntent().getIntExtra("from_corso",0)==1) {from_dipartimento=0;from_corso=1;
+        if(getIntent().getIntExtra("from_dipartimento",0)==1) {
+            from_corso=0;from_dipartimento=1; setUpAdapter();
+            Spinner spinner1=(Spinner) findViewById(R.id.spinner1);
+            spinner1.setVisibility(View.VISIBLE);
+            TextView t=(TextView) findViewById(R.id.textView11);
+            t.setVisibility(View.GONE);
+        }
+        if(getIntent().getIntExtra("from_corso",0)==1) {
+            from_dipartimento=0;from_corso=1;
             if(getActionBar()!=null)getActionBar().setDisplayHomeAsUpEnabled(true);
-            if(getSupportActionBar()!=null)getSupportActionBar().setDisplayHomeAsUpEnabled(true);}
+            if(getSupportActionBar()!=null)getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            Spinner spinner1=(Spinner) findViewById(R.id.spinner1);
+            spinner1.setVisibility(View.GONE);
+            TextView t=(TextView) findViewById(R.id.textView11);
+            t.setVisibility(View.VISIBLE);
+        }
         id_corso=getIntent().getIntExtra("id_corso",0);
-        if(id_corso==0){id_corso=Corso.id_corso;((TextView)findViewById(R.id.textView11)).setText(titolo_sottocorso);}
+
+        if(id_corso!=0){id_corso=Corso.id_corso;((TextView)findViewById(R.id.textView11)).setText(titolo_sottocorso);}
         NavigationView navigationView1 = (NavigationView) findViewById(R.id.nav_view);
 
         if(from_corso!=1) {
@@ -229,96 +247,111 @@ public class Documenti extends AppCompatActivity
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
+            getSupportActionBar().setBackgroundDrawable(null);
         }
+        if(from_corso==1) {
+            for (int i = 0; i < corsi.size(); i++) {
+                if (corsi.get(i).getId() == id_corso) {
+                    Log.e("color", "" + corsi.get(i).getColor());
+                    if (corsi.get(i).getColor() == 0) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#0e185a"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 1) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#b30000"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 2) {
 
-        for (int i =0;i<corsi.size();i++) {
-            if (corsi.get(i).getId()==id_corso) {
-                Log.e("color",""+corsi.get(i).getColor());
-                if(corsi.get(i).getColor()==0) {
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#0e185a"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==1) {
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#b30000"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==2) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#e6b800"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 3) {
 
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#e6b800"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==3) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#00cc7a"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 4) {
 
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#00cc7a"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==4) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#00663d"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 5) {
 
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#00663d"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==5) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#b30077"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 6) {
 
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#b30077"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==6) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#804000"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 7) {
 
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#804000"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==7) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#808080"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 8) {
 
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#808080"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==8) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#600080"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 9) {
 
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#600080"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==9) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#b38f00"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 10) {
 
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#b38f00"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==10) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#ff704d"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 11) {
 
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#ff704d"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
-                }
-                if(corsi.get(i).getColor()==11) {
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#33bbff"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 12) {
 
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            Color.parseColor("#33bbff"));
-                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
-                    navigationView1.setBackground(colorDrawable);
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#855700"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
+                    if (corsi.get(i).getColor() == 13) {
+
+                        ColorDrawable colorDrawable = new ColorDrawable(
+                                Color.parseColor("#855700"));
+                        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                        navigationView1.setBackground(colorDrawable);
+                    }
                 }
             }
         }
-
 
         Corsi.clear();
         ListaCorsi.clear();
@@ -367,7 +400,8 @@ public class Documenti extends AppCompatActivity
             }
         });
 
-        makePost_doc();
+       makePost_doc();
+
 
     }
 
@@ -721,6 +755,9 @@ public class Documenti extends AppCompatActivity
                                     singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getString("categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, expl.getString("categoria"), "", expl.getInt("id_sezione")));
                                 }
                                 finishdocu=true;
+
+                                lista.setAdapter(new DocuAdapter(getApplicationContext(), documenti, singolo));
+
                                 snipper();
                                 caricato();
                             } catch (JSONException e) {
@@ -785,10 +822,7 @@ public class Documenti extends AppCompatActivity
                                         tempSingolo.add(singolo.get(i));
                                     }
                                 }else {
-                                    Spinner spinner1=(Spinner) findViewById(R.id.spinner1);
-                                    spinner1.setVisibility(GONE);
                                     TextView t=(TextView) findViewById(R.id.textView11);
-                                    t.setVisibility(View.VISIBLE);
                                     for(int h=0;h<corsi.size();h++){
                                         if(corsi.get(h).getId()==id_corso){t.setText(corsi.get(h).getNome());}
                                     }

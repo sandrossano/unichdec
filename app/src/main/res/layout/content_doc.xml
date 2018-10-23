@@ -70,7 +70,7 @@
                 android:layout_marginLeft="35dp"
                 android:layout_marginRight="25dp"
                 android:layout_toEndOf="@+id/textView8"
-                android:text="TextView"
+                android:paddingTop="5dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
