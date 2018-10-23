@@ -45,6 +45,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,6 +57,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.example.sandro.dec_dipartimentoeconomia.Documenti.documenti;
+import static com.example.sandro.dec_dipartimentoeconomia.Documenti.singolo;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
@@ -63,9 +67,11 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.drawerMai
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivityMultiDipartimento.pswJson;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
 
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.finishdocu;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.pagine;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.r_corsi;
@@ -78,6 +84,7 @@ import static com.example.sandro.dec_dipartimentoeconomia.Visualizza.drawerVisua
  */
 
 public class Corso extends AppCompatActivity {
+    ArrayList<String> ParentString= new ArrayList<String>();
     static String position;
     static int id_corso;
     private ExpandableListView expandableListView;
@@ -88,8 +95,9 @@ public class Corso extends AppCompatActivity {
     TextView text;
     int id_cont=0;
     String contenuto="";
-
+    static String titolo_sottocorso="";
     SwipeRefreshLayout mSwipeRefreshLayout;
+    public static ArrayList<Doc> documenti_home = new ArrayList<>();
 
     private void refreshContent() {
         mSwipeRefreshLayout.setRefreshing(true);
@@ -180,14 +188,29 @@ public class Corso extends AppCompatActivity {
 
 
 
+        if(!position.equals("")) {
+            for (int i = 0; i < corsi.size(); i++) {
+                if (position.equals(corsi.get(i).getNome())) {
+                    id_corso = corsi.get(i).getId();
+                    id_cont = corsi.get(i).getId_contenuto();
+                    setTitle(corsi.get(i).getNome());
+                }
 
-        for(int i=0;i<corsi.size();i++) {
-            if(position.equals(corsi.get(i).getNome())){
-            id_corso = corsi.get(i).getId();
-            id_cont=corsi.get(i).getId_contenuto();
-            setTitle(corsi.get(i).getNome());}
+            }
+        }else {
+            for (int i = 0; i < tutti_gruppi.size(); i++) {
+                      if (id_corso==tutti_gruppi.get(i).getId()){
+                        id_cont= tutti_gruppi.get(i).getId_contenuto();
+                        titolo_sottocorso=tutti_gruppi.get(i).getNome();
+                        setTitle(tutti_gruppi.get(i).getNome());
+                        Log.d("cont",id_cont+"");
+                          parent.add(new SplashActivity.Corso(tutti_gruppi.get(i).getId(), tutti_gruppi.get(i).getNome(), 1, corsi_dipartimento, "CS",id_cont));
+                          ParentString.add(tutti_gruppi.get(i).getNome());
+                    }
+            }
 
         }
+
 
         ArrayList<SplashActivity.Corso> listacorsiDipartimento=new ArrayList<>();
         for(int i=0;i<corsi.size();i++) {
@@ -282,11 +305,26 @@ public class Corso extends AppCompatActivity {
                     getSupportActionBar().setBackgroundDrawable(colorDrawable);
                     navigationView1.setBackground(colorDrawable);
                 }
+                if(corsi.get(i).getColor()==12) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#855700"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==13) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#855700"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
             }
         }
 
         makePost_contenuto();
         makePost_avvisi();
+        makePost_doc_home();
     }
 
     public void caricaDopoRequest(){
@@ -341,6 +379,7 @@ public class Corso extends AppCompatActivity {
         String nome2="";
         String nome3="";
         String nome4="";
+        String nome5="";
         if(temp.size()>=1) {
 
             TextView data1 = (TextView) findViewById(R.id.data1);
@@ -367,6 +406,7 @@ public class Corso extends AppCompatActivity {
                     break;
                 }
             }
+            findViewById(R.id.avviso1).setVisibility(View.VISIBLE);
             testo_ambito.setText(nome);
         }
         if(temp.size()>=2) {
@@ -394,6 +434,7 @@ public class Corso extends AppCompatActivity {
                     break;
                 }
             }
+            findViewById(R.id.avviso2).setVisibility(View.VISIBLE);
             testo_ambito2.setText(nome2);
         }
         if(temp.size()>=3) {
@@ -421,6 +462,7 @@ public class Corso extends AppCompatActivity {
                     break;
                 }
             }
+            findViewById(R.id.avviso3).setVisibility(View.VISIBLE);
             testo_ambito3.setText(nome3);
         }
         if(temp.size()>=4) {
@@ -449,8 +491,36 @@ public class Corso extends AppCompatActivity {
                 }
             }
             testo_ambito4.setText(nome4);
+            findViewById(R.id.avviso4).setVisibility(View.VISIBLE);
         }
+        if(temp.size()>=5) {
+            TextView data5 = (TextView) findViewById(R.id.data5);
+            try {
+                date = format1.parse(temp.get(4).getData_inizio());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            data5.setText(format2.format(date));
+            TextView testo5 = (TextView) findViewById(R.id.testoavviso5);
+            testo5.setText(temp.get(4).getTitolo());
 
+            TextView testo_ambito5 = (TextView) findViewById(R.id.testo_ambito_5);
+            nome5 = "";
+            for (int i = 0; i < tutti_gruppi.size(); i++) {
+                if (temp.get(4).getId_gruppo() == tutti_gruppi.get(i).getId()) {
+                    nome5 = tutti_gruppi.get(i).getNome();
+                    break;
+                }
+            }
+            for (int i = 0; i < dipartimenti.size(); i++) {
+                if (temp.get(4).getId_gruppo() == dipartimenti.get(i).getId()) {
+                    nome5 = dipartimenti.get(i).getNome();
+                    break;
+                }
+            }
+            testo_ambito5.setText(nome5);
+            findViewById(R.id.avviso5).setVisibility(View.VISIBLE);
+        }
         if(temp.size()>=1) {
             RelativeLayout avviso1 = (RelativeLayout) findViewById(R.id.avviso1);
             final String finalNome = nome;
@@ -515,12 +585,90 @@ public class Corso extends AppCompatActivity {
                 }
             });
         }
+        if(temp.size()>=5) {
+            RelativeLayout avviso5 = (RelativeLayout) findViewById(R.id.avviso5);
+            final String finalNome4 = nome5;
+            avviso5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i5 = new Intent(getApplicationContext(), PaginaAvviso.class);
+                    i5.putExtra("id", temp.get(4).getId());
+                    i5.putExtra("titolo", temp.get(4).getTitolo());
+                    i5.putExtra("data", temp.get(4).getData_inizio());
+                    //i5.putExtra("id_cont", temp.get(4).getId_contenuto());
+                    i5.putExtra("ambito", finalNome4);
+                    startActivity(i5);
+                }
+            });
+        }
+        if(temp.size()==0){
+            TextView data1 = (TextView) findViewById(R.id.data1);
+            data1.setText("");
+            TextView testo1 = (TextView) findViewById(R.id.testoavviso);
+            testo1.setText("");
+
+            TextView testo_ambito = (TextView) findViewById(R.id.testo_ambito_1);
+            testo_ambito.setText("");
+
+            TextView data2 = (TextView) findViewById(R.id.data2);
+            data2.setText("");
+            TextView testo2 = (TextView) findViewById(R.id.testoavviso2);
+            testo2.setText("");
+
+            TextView testo_ambito2 = (TextView) findViewById(R.id.testo_ambito_2);
+            testo_ambito2.setText("");
+
+            TextView data3 = (TextView) findViewById(R.id.data3);
+            data3.setText("");
+            TextView testo3 = (TextView) findViewById(R.id.testoavviso3);
+            testo3.setText("");
+
+            TextView testo_ambito3 = (TextView) findViewById(R.id.testo_ambito_3);
+            testo_ambito3.setText("");
+
+            TextView data4 = (TextView) findViewById(R.id.data4);
+            data4.setText("");
+            TextView testo4 = (TextView) findViewById(R.id.testoavviso4);
+            testo4.setText("");
+
+            TextView testo_ambito4 = (TextView) findViewById(R.id.testo_ambito_4);
+            testo_ambito4.setText("");
+
+            RelativeLayout avviso1 = (RelativeLayout) findViewById(R.id.avviso1);
+            avviso1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    return;
+                }
+            });
+            RelativeLayout avviso2 = (RelativeLayout) findViewById(R.id.avviso2);
+            avviso2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    return;
+                }
+            });
+            RelativeLayout avviso3 = (RelativeLayout) findViewById(R.id.avviso3);
+            avviso3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    return;
+                }
+            });
+            RelativeLayout avviso4 = (RelativeLayout) findViewById(R.id.avviso4);
+            avviso4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    return;
+                }
+            });
+        }
     }
 
     public void makePost_avvisi(){
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         String url="";
-        url="https://economia.unich.it/pag_appuntamenti.php?JSON=on&gruppo="+id_corso;
+        url="https://economia.unich.it/visualizza.php?type=gruppo&id="+id_corso+"&JSON="+pswJson;
 
         StringRequest jsonObjRequest = new StringRequest(com.android.volley.Request.Method.GET,
                 url,
@@ -530,14 +678,27 @@ public class Corso extends AppCompatActivity {
                         JSONObject c = null;
                         try {
                             c = new JSONObject(response);
+                            JSONObject prova;
+                            try{
+                                prova = c.getJSONObject("records");
+                            }catch (JSONException e){
+                                findViewById(R.id.avviso1).setVisibility(View.GONE);
+                                findViewById(R.id.avviso2).setVisibility(View.GONE);
+                                findViewById(R.id.avviso3).setVisibility(View.GONE);
+                                findViewById(R.id.avviso4).setVisibility(View.GONE);
+                                findViewById(R.id.avviso5).setVisibility(View.GONE);
+                                if(appuntamenti!=null)appuntamenti.clear();
+                                return;
+                            }
 
-                            JSONArray prova = c.getJSONArray("records");
+
+                            JSONArray avvisi = prova.getJSONArray("avvisi");
 
                             if(appuntamenti!=null)appuntamenti.clear();
 
-                            for (int i = 0; i < prova.length(); i++) {
-                                JSONObject expl = prova.getJSONObject(i);
-                                appuntamenti.add(new SplashActivity.Appuntamento(expl.getInt("id"), expl.getString("titolo"), expl.getString("data_inizio"), expl.getString("data_fine"), expl.getString("descrizione"), expl.getInt("id_sezione")));
+                            for (int i = 0; i < avvisi.length(); i++) {
+                                JSONObject expl = avvisi.getJSONObject(i);
+                                appuntamenti.add(new SplashActivity.Appuntamento(expl.getInt("id"), expl.getString("titolo"), expl.getString("data"), expl.getString("data"), expl.getString("descrizione"), expl.getInt("id_gruppo")));
                             }
                             setAppuntamenti();
                             mSwipeRefreshLayout.setRefreshing(false);
@@ -579,7 +740,6 @@ public class Corso extends AppCompatActivity {
         List<LinkedHashMap<String, String[]>> data = new ArrayList<>();
 
 
-        ArrayList<String> ParentString= new ArrayList<String>();
         ArrayList<String> a = new ArrayList<String>();
         ArrayList<Integer> ordinidia = new ArrayList<Integer>() {};
 
@@ -789,6 +949,13 @@ public class Corso extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void apriDocumenti(View v)
+    {
+        Intent i=new Intent(getApplicationContext(), Documenti.class);
+        i.putExtra("from_corso",1);
+        startActivity(i);
+    }
+
     private void makePost_contenuto(){
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         jsonObjRequest = new StringRequest(com.android.volley.Request.Method.POST,
@@ -835,5 +1002,457 @@ public class Corso extends AppCompatActivity {
         requestQueue.add(jsonObjRequest);
     }
 
+    public void makePost_doc(){
+        RequestQueue requestQueue;
+        StringRequest jsonObjRequest;
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String url="";
+        url="https://economia.unich.it/pag_documenti.php?JSON="+pswJson+"&gruppo="+id_corso;
+        jsonObjRequest = new StringRequest(com.android.volley.Request.Method.GET,
+                url,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject expl = null;
+                        try {
+                            if(documenti!=null)documenti.clear();
+                            if(singolo!=null)singolo.clear();
+
+                            JSONObject c = new JSONObject(response);
+                            MainActivity.listaDocumenti = c.getJSONArray("records");
+                            for (int i = 0; i < MainActivity.listaDocumenti.length(); i++) {
+                                expl = MainActivity.listaDocumenti.getJSONObject(i);
+                                String data = expl.getString("data").substring(0, 10);
+                                String link = expl.getString("nome_file");
+                                String estensione = link.substring(link.length() - 3, link.length());
+                                documenti.add(expl.getString("titolo"));
+                                singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getString("categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, expl.getString("categoria"), "", expl.getInt("id_sezione")));
+                            }
+                            finishdocu=true;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> getParam = new HashMap<String, String>();
+
+                return getParam;
+            }
+
+        };
+
+        requestQueue.add(jsonObjRequest);
+
+    }
+    public void makePost_doc_home(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String url="";
+        url="https://economia.unich.it/visualizza.php?type=gruppo&id="+id_corso+"&JSON="+pswJson;
+
+        StringRequest jsonObjRequest = new StringRequest(com.android.volley.Request.Method.GET,
+                url,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject c = null;
+                        try {
+                            c = new JSONObject(response);
+                            JSONObject prova;
+                            JSONArray documenti;
+                            try{
+                                prova = c.getJSONObject("records");
+                                documenti = prova.getJSONArray("documenti");
+                            }catch (JSONException e){
+                                findViewById(R.id.card_view_doc).setVisibility(View.GONE);
+                                findViewById(R.id.documento1).setVisibility(View.GONE);
+                                findViewById(R.id.documento2).setVisibility(View.GONE);
+                                findViewById(R.id.documento3).setVisibility(View.GONE);
+                                findViewById(R.id.documento4).setVisibility(View.GONE);
+                                findViewById(R.id.documento5).setVisibility(View.GONE);
+                                if(documenti_home!=null)documenti_home.clear();
+                                Log.e("documenti",e.toString());
+                                return;
+                            }
+
+                            if(documenti_home!=null)documenti_home.clear();
+
+
+
+                            for (int i = 0; i < documenti.length(); i++) {
+                                JSONObject expl = documenti.getJSONObject(i);
+                                String data = expl.getString("data").substring(0, 10);
+                                String link = expl.getString("descrizione");
+                                String estensione="";
+                                if(link.length()>4){
+                                    estensione = link.substring(link.length() - 3, link.length());
+                                }else{
+                                    estensione="doc";
+                                }
+                                documenti_home.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getString("gruppo"), expl.getString("descrizione"), data, 0, estensione, link, expl.getString("gruppo"), expl.getString("gruppo"), expl.getInt("id_gruppo")));
+                            }
+
+                            Log.e("documenti",documenti_home.size()+"");
+                            setDocumenti();
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> getParam = new HashMap<String, String>();
+
+                return getParam;
+            }
+
+        };
+
+        requestQueue.add(jsonObjRequest);
+
+    }
+
+    private void setDocumenti(){
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy", Locale.ITALY);
+        Date date = null;
+
+        final ArrayList<Doc> temp=documenti_home;
+
+        String nome="";
+        String nome2="";
+        String nome3="";
+        String nome4="";
+        String nome5="";
+        if(temp.size()>=1) {
+            TextView data1 = (TextView) findViewById(R.id.data_doc1);
+            try {
+                date = format1.parse(temp.get(0).getData());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            data1.setText(format2.format(date));
+            TextView testo1 = (TextView) findViewById(R.id.testodocumento);
+            testo1.setText(temp.get(0).getTitolo());
+
+            TextView testo_ambito = (TextView) findViewById(R.id.testo_ambito_doc1);
+            nome = "";
+            for (int i = 0; i < tutti_gruppi.size(); i++) {
+                if (temp.get(0).getId_gruppo() == tutti_gruppi.get(i).getId()) {
+                    nome = tutti_gruppi.get(i).getNome();
+                    break;
+                }
+            }
+            for (int i = 0; i < dipartimenti.size(); i++) {
+                if (temp.get(0).getId_gruppo() == dipartimenti.get(i).getId()) {
+                    nome = dipartimenti.get(i).getNome();
+                    break;
+                }
+            }
+            testo_ambito.setText(nome);
+            findViewById(R.id.documento1).setVisibility(View.VISIBLE);
+        }
+        if(temp.size()>=2) {
+            TextView data2 = (TextView) findViewById(R.id.data_doc2);
+            try {
+                date = format1.parse(temp.get(1).getData());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            data2.setText(format2.format(date));
+            TextView testo2 = (TextView) findViewById(R.id.testodocumento2);
+            testo2.setText(temp.get(1).getTitolo());
+
+            TextView testo_ambito2 = (TextView) findViewById(R.id.testo_ambito_doc2);
+            nome2 = "";
+            for (int i = 0; i < tutti_gruppi.size(); i++) {
+                if (temp.get(1).getId_gruppo() == tutti_gruppi.get(i).getId()) {
+                    nome2 = tutti_gruppi.get(i).getNome();
+                    break;
+                }
+            }
+            for (int i = 0; i < dipartimenti.size(); i++) {
+                if (temp.get(1).getId_gruppo() == dipartimenti.get(i).getId()) {
+                    nome2 = dipartimenti.get(i).getNome();
+                    break;
+                }
+            }
+            testo_ambito2.setText(nome2);
+            findViewById(R.id.documento2).setVisibility(View.VISIBLE);
+        }
+
+        if(temp.size()>=3) {
+            TextView data3 = (TextView) findViewById(R.id.data_doc3);
+            try {
+                date = format1.parse(temp.get(2).getData());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            data3.setText(format2.format(date));
+            TextView testo3 = (TextView) findViewById(R.id.testodocumento3);
+            testo3.setText(temp.get(2).getTitolo());
+
+            TextView testo_ambito3 = (TextView) findViewById(R.id.testo_ambito_doc3);
+            nome3 = "";
+            for (int i = 0; i < tutti_gruppi.size(); i++) {
+                if (temp.get(2).getId_gruppo() == tutti_gruppi.get(i).getId()) {
+                    nome3 = tutti_gruppi.get(i).getNome();
+                    break;
+                }
+            }
+            for (int i = 0; i < dipartimenti.size(); i++) {
+                if (temp.get(2).getId_gruppo() == dipartimenti.get(i).getId()) {
+                    nome3 = dipartimenti.get(i).getNome();
+                    break;
+                }
+            }
+            testo_ambito3.setText(nome3);
+            findViewById(R.id.documento3).setVisibility(View.VISIBLE);
+        }
+
+        if(temp.size()>=4) {
+            TextView data4 = (TextView) findViewById(R.id.data_doc4);
+            try {
+                date = format1.parse(temp.get(3).getData());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            data4.setText(format2.format(date));
+            TextView testo4 = (TextView) findViewById(R.id.testodocumento4);
+            testo4.setText(temp.get(3).getTitolo());
+
+            TextView testo_ambito4 = (TextView) findViewById(R.id.testo_ambito_doc4);
+            nome4 = "";
+            for (int i = 0; i < tutti_gruppi.size(); i++) {
+                if (temp.get(3).getId_gruppo() == tutti_gruppi.get(i).getId()) {
+                    nome4 = tutti_gruppi.get(i).getNome();
+                    break;
+                }
+            }
+            for (int i = 0; i < dipartimenti.size(); i++) {
+                if (temp.get(3).getId_gruppo() == dipartimenti.get(i).getId()) {
+                    nome4 = dipartimenti.get(i).getNome();
+                    break;
+                }
+            }
+            testo_ambito4.setText(nome4);
+            findViewById(R.id.documento4).setVisibility(View.VISIBLE);
+        }
+        if(temp.size()>=5) {
+            TextView data5 = (TextView) findViewById(R.id.data5);
+            try {
+                date = format1.parse(temp.get(4).getData());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            data5.setText(format2.format(date));
+            TextView testo5 = (TextView) findViewById(R.id.testodocumento5);
+            testo5.setText(temp.get(4).getTitolo());
+
+            TextView testo_ambito5 = (TextView) findViewById(R.id.testo_ambito_doc5);
+            nome5 = "";
+            for (int i = 0; i < tutti_gruppi.size(); i++) {
+                if (temp.get(4).getId_gruppo() == tutti_gruppi.get(i).getId()) {
+                    nome5 = tutti_gruppi.get(i).getNome();
+                    break;
+                }
+            }
+            for (int i = 0; i < dipartimenti.size(); i++) {
+                if (temp.get(4).getId_gruppo() == dipartimenti.get(i).getId()) {
+                    nome5 = dipartimenti.get(i).getNome();
+                    break;
+                }
+            }
+            testo_ambito5.setText(nome5);
+            findViewById(R.id.documento5).setVisibility(View.VISIBLE);
+        }
+
+        if(temp.size()>=1) {
+            RelativeLayout avviso1 = (RelativeLayout) findViewById(R.id.documento1);
+            final String finalNome = nome;
+            avviso1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(), PaginaDocumento.class);
+                    i.putExtra("iddoc", temp.get(0).getId());
+                    i.putExtra("titolo", temp.get(0).getTitolo());
+                    i.putExtra("dimensione", temp.get(0).getDimensione());
+                    i.putExtra("data", temp.get(0).getData());
+                    i.putExtra("ambito", finalNome);
+                    try {
+                        i.putExtra("link", URLEncoder.encode(temp.get(0).getTitolo(), "utf-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        i.putExtra("link", " "+temp.get(0).getId()+" ");
+                    }
+                    startActivity(i);
+                }
+            });
+        }
+        if(temp.size()>=2) {
+            RelativeLayout avviso2 = (RelativeLayout) findViewById(R.id.documento2);
+            final String finalNome1 = nome2;
+            avviso2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(), PaginaDocumento.class);
+                    i.putExtra("iddoc", temp.get(1).getId());
+                    i.putExtra("titolo", temp.get(1).getTitolo());
+                    i.putExtra("dimensione", temp.get(1).getDimensione());
+                    i.putExtra("data", temp.get(1).getData());
+                    i.putExtra("ambito", finalNome1);
+                    try {
+                        i.putExtra("link", URLEncoder.encode(temp.get(1).getTitolo(), "utf-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        i.putExtra("link", " "+temp.get(1).getId()+" ");
+                    }
+                    startActivity(i);
+                }
+            });
+        }
+        if(temp.size()>=3) {
+            RelativeLayout avviso3 = (RelativeLayout) findViewById(R.id.documento3);
+            final String finalNome2 = nome3;
+            avviso3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(), PaginaDocumento.class);
+                    i.putExtra("iddoc", temp.get(2).getId());
+                    i.putExtra("titolo", temp.get(2).getTitolo());
+                    i.putExtra("dimensione", temp.get(2).getDimensione());
+                    i.putExtra("data", temp.get(2).getData());
+                    i.putExtra("ambito", finalNome2);
+                    try {
+                        i.putExtra("link", URLEncoder.encode(temp.get(2).getTitolo(), "utf-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        i.putExtra("link", " "+temp.get(2).getId()+" ");
+                    }
+                    startActivity(i);
+                }
+            });
+        }
+        if(temp.size()>=4) {
+            RelativeLayout avviso4 = (RelativeLayout) findViewById(R.id.documento4);
+            final String finalNome3 = nome4;
+            avviso4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(), PaginaDocumento.class);
+                    i.putExtra("iddoc", temp.get(3).getId());
+                    i.putExtra("titolo", temp.get(3).getTitolo());
+                    i.putExtra("dimensione", temp.get(3).getDimensione());
+                    i.putExtra("data", temp.get(3).getData());
+                    i.putExtra("ambito", finalNome3);
+                    try {
+                        i.putExtra("link", URLEncoder.encode(temp.get(3).getTitolo(), "utf-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        i.putExtra("link", " "+temp.get(3).getId()+" ");
+                    }
+                    startActivity(i);
+                }
+            });
+        }
+        if(temp.size()>=5) {
+            RelativeLayout avviso5 = (RelativeLayout) findViewById(R.id.documento5);
+            final String finalNome4 = nome5;
+            avviso5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(), PaginaDocumento.class);
+                    i.putExtra("iddoc", temp.get(4).getId());
+                    i.putExtra("titolo", temp.get(4).getTitolo());
+                    i.putExtra("dimensione", temp.get(4).getDimensione());
+                    i.putExtra("data", temp.get(4).getData());
+                    try {
+                        i.putExtra("link", URLEncoder.encode(temp.get(4).getTitolo(), "utf-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        i.putExtra("link", " "+temp.get(4).getId()+" ");
+                    }
+                    i.putExtra("ambito", finalNome4);
+                    startActivity(i);
+                }
+            });
+        }
+        if(temp.size()==0){
+            TextView data1 = (TextView) findViewById(R.id.data_doc1);
+            data1.setText("");
+            TextView testo1 = (TextView) findViewById(R.id.testodocumento);
+            testo1.setText("");
+
+            TextView testo_ambito = (TextView) findViewById(R.id.testo_ambito_doc1);
+            testo_ambito.setText("");
+
+            TextView data2 = (TextView) findViewById(R.id.data_doc2);
+            data2.setText("");
+            TextView testo2 = (TextView) findViewById(R.id.testodocumento2);
+            testo2.setText("");
+
+            TextView testo_ambito2 = (TextView) findViewById(R.id.testo_ambito_doc2);
+            testo_ambito2.setText("");
+
+            TextView data3 = (TextView) findViewById(R.id.data_doc3);
+            data3.setText("");
+            TextView testo3 = (TextView) findViewById(R.id.testodocumento3);
+            testo3.setText("");
+
+            TextView testo_ambito3 = (TextView) findViewById(R.id.testo_ambito_doc3);
+            testo_ambito3.setText("");
+
+            TextView data4 = (TextView) findViewById(R.id.data_doc4);
+            data4.setText("");
+            TextView testo4 = (TextView) findViewById(R.id.testodocumento4);
+            testo4.setText("");
+
+            TextView testo_ambito4 = (TextView) findViewById(R.id.testo_ambito_doc4);
+            testo_ambito4.setText("");
+
+            RelativeLayout avviso1 = (RelativeLayout) findViewById(R.id.documento1);
+            avviso1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    return;
+                }
+            });
+            RelativeLayout avviso2 = (RelativeLayout) findViewById(R.id.documento2);
+            avviso2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    return;
+                }
+            });
+            RelativeLayout avviso3 = (RelativeLayout) findViewById(R.id.documento3);
+            avviso3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    return;
+                }
+            });
+            RelativeLayout avviso4 = (RelativeLayout) findViewById(R.id.documento4);
+            avviso4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    return;
+                }
+            });
+        }
+    }
 
 }

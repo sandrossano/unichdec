@@ -37,26 +37,40 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaDocumenti;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaPersone;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivityMultiDipartimento.pswJson;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.finishdocu;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.scuola;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.singolo_splash;
 
 
 public class Persona extends AppCompatActivity
@@ -83,6 +97,94 @@ public class Persona extends AppCompatActivity
         }
     }
 
+    public void makePost_persona(){
+
+        //Persone
+        // Instantiate the RequestQueue.
+        RequestQueue queue5 = Volley.newRequestQueue(this);
+        String url5="";
+        if(from_dipartimento==1){url5="https://economia.unich.it/pag_persone.php?JSON="+pswJson+"&gruppo="+id_dipartimento;}
+        else{url5="https://economia.unich.it/pag_persone.php?JSON="+pswJson+"&gruppo="+id_corso;}
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest5 = new StringRequest(Request.Method.GET, url5,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        try {
+
+                            JSONObject c = new JSONObject(response);
+                            listaPersone = c.getJSONArray("records");
+
+                            singolo_splash.clear();
+                            singolo.clear();
+
+                            for (int i = 0; i < listaPersone.length(); i++) {
+                                JSONObject expl = null;
+                                try {
+                                    expl = listaPersone.getJSONObject(i);
+                                    String telefono = "";
+                                    String email = "";
+                                    String indirizzo = "";
+                                    String sede = "";
+
+                                    /*
+                                    if (!expl.getString("indirizzo").equals(null)) {
+                                        indirizzo = expl.getString("indirizzo");
+                                    }
+                                    if (!expl.getString("sede").equals(null)) {
+                                        sede = expl.getString("sede");
+                                    }
+                                    if (!expl.getString("piano").equals(null) && !expl.getString("piano").equals("")) {
+                                        sede += ", Piano: " + expl.getString("piano");
+                                    }
+                                    if (!expl.getString("scala").equals(null) && !expl.getString("scala").equals("")) {
+                                        sede += ", Scala: " + expl.getString("scala");
+                                    }*/
+
+                                    if (!expl.getString("email").equals(null)) {
+                                        email = expl.getString("email");
+                                    }
+                                    if (!expl.getString("telefono").equals(null)) {
+                                        telefono = expl.getString("telefono");
+                                    }
+
+
+                                    singolo_splash.add(new Singolo(expl.getInt("id"), expl.getString("nome") + " " + expl.getString("cognome"), expl.getString("foto"), email, telefono, sede, indirizzo));
+                                    singolo.add(new Singolo(expl.getInt("id"), expl.getString("nome") + " " + expl.getString("cognome"), expl.getString("foto"), email, telefono, sede, indirizzo));
+                                    persone.add(expl.getString("nome") + " " + expl.getString("cognome"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            afterPost();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+// Add the request to the RequestQueue.
+        stringRequest5.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue5.add(stringRequest5);
+        queue5.getCache().clear();
+
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +214,7 @@ public class Persona extends AppCompatActivity
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                makePost_persona();
                 refreshContent();
             }
         });
@@ -121,119 +224,7 @@ public class Persona extends AppCompatActivity
         if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
         if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
 
-        final TextView mTextView = (TextView) findViewById(R.id.text);
-        final LinearLayout layout=(LinearLayout) findViewById(R.id.layout_persone);
-
-
-                            lista = (ListView) findViewById(R.id.listview);
-                            lista.setOnScrollListener(new AbsListView.OnScrollListener() {
-                                @Override
-                                public void onScrollStateChanged(AbsListView absListView, int i) {
-
-                                }
-
-                                @Override
-                                public void onScroll(AbsListView absListView, int i, int i1, int i2) {
-                                    if(absListView.canScrollList(-1)==true)mSwipeRefreshLayout.setEnabled(false);
-                                    else{mSwipeRefreshLayout.setEnabled(true);}
-                                }
-                            });
-
-                            for(int i=0;i<listaPersone.length();i++){
-                                JSONObject expl= null;
-                                try {
-                                    expl = listaPersone.getJSONObject(i);
-                                    persone.add(expl.getString("nome")+" "+expl.getString("cognome"));
-                                    String indirizzo="";
-                                    String sede="";
-                                    String email="";
-                                    String telefono="";
-
-                                    if(!expl.getString("indirizzo").equals(null)){indirizzo=expl.getString("indirizzo");}
-                                    if(!expl.getString("sede").equals(null)){sede=expl.getString("sede");}
-                                    if(!expl.getString("piano").equals(null)&&!expl.getString("piano").equals("")){sede+=", Piano: "+expl.getString("piano");}
-                                    if(!expl.getString("scala").equals(null)&&!expl.getString("scala").equals("")){sede+=", Scala: "+expl.getString("scala");}
-                                    if(!expl.getString("email").equals(null)){email=expl.getString("email");}
-                                    if(!expl.getString("telefono_fisso").equals(null)){telefono=expl.getString("telefono_fisso");}
-
-
-                                    singolo.add(new Singolo(expl.getInt("id"),expl.getString("nome")+" "+expl.getString("cognome"),expl.getString("foto"),email,telefono,sede,indirizzo));
-
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            adapter= new PersonAdapter(getApplicationContext(),persone,singolo);
-
-                            lista.setAdapter(adapter);
-                            mSwipeRefreshLayout.setEnabled(true);
-
-                            lista.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                            {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
-                                {
-                                    PersonAdapter t= (PersonAdapter) lista.getAdapter();
-                                    int idscelto= t.singoli.get(position).getId();
-                                    String nomescelto= t.singoli.get(position).getNome();
-                                    String fotoscelto= t.singoli.get(position).getFoto();
-                                    Intent i=new Intent (getApplicationContext(),PersonaSingola.class);
-                                    i.putExtra("idsing",idscelto);
-                                    i.putExtra("nomesing",nomescelto);
-                                    i.putExtra("fotosing",fotoscelto);
-                                    i.putExtra("email",t.singoli.get(position).getEmail());
-                                    i.putExtra("telefono_fisso",t.singoli.get(position).getTelefono_fisso());
-                                    i.putExtra("sede",t.singoli.get(position).getSede());
-                                    i.putExtra("indirizzo",t.singoli.get(position).getIndirizzo());
-
-                                    startActivity(i);
-
-                                }
-                            });
-/*
-        cerca= (SearchView) findViewById(R.id.cerca);
-        cerca.setIconified(true);
-        cerca.setQueryHint("Cerca... ");
-        cerca.setFocusable(true);
-        cerca.clearFocus();
-
-                            cerca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                                @Override
-                                public boolean onQueryTextSubmit(String s) {
-                                    return false;
-                                }
-
-                                @Override
-                                public boolean onQueryTextChange(String s) {
-
-                                            ArrayList<String> temp = new ArrayList<String>();
-                                            ArrayList<Singolo> tempSingolo=new ArrayList<Singolo>();
-                                            int textlength = cerca.getQuery().length();
-                                            temp.clear();
-                                            for (int i = 0; i < persone.size(); i++)
-                                            {
-                                                if (textlength <= persone.get(i).length())
-                                                {
-                                                    if(persone.get(i).toString().toUpperCase().trim().contains(cerca.getQuery().toString().trim().toUpperCase()))
-                                                    {
-                                                        temp.add(persone.get(i));
-                                                        tempSingolo.add(singolo.get(i));
-                                                    }
-                                                }
-                                            }
-                                            lista.setAdapter(new PersonAdapter(getApplicationContext(), temp, tempSingolo));
-
-
-                                    return false;
-                                }
-                            });
-                            lista.setAdapter(adapter);
-        */
-
-
-
+        makePost_persona();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -257,6 +248,48 @@ public class Persona extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    public void afterPost(){
+        lista = (ListView) findViewById(R.id.listview);
+        lista.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                if(absListView.canScrollList(-1)==true)mSwipeRefreshLayout.setEnabled(false);
+                else{mSwipeRefreshLayout.setEnabled(true);}
+            }
+        });
+
+
+        adapter= new PersonAdapter(getApplicationContext(),persone,singolo);
+
+        lista.setAdapter(adapter);
+        mSwipeRefreshLayout.setEnabled(true);
+
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
+            {
+                PersonAdapter t= (PersonAdapter) lista.getAdapter();
+                int idscelto= t.singoli.get(position).getId();
+                String nomescelto= t.singoli.get(position).getNome();
+                String fotoscelto= t.singoli.get(position).getFoto();
+                Intent i=new Intent (getApplicationContext(),PersonaSingola.class);
+                i.putExtra("idsing",idscelto);
+                i.putExtra("nomesing",nomescelto);
+                i.putExtra("fotosing",fotoscelto);
+                i.putExtra("email",t.singoli.get(position).getEmail());
+                i.putExtra("telefono_fisso",t.singoli.get(position).getTelefono_fisso());
+
+                startActivity(i);
+
+            }
+        });
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -325,6 +358,7 @@ public class Persona extends AppCompatActivity
                 ArrayList<Singolo> tempSingolo=new ArrayList<Singolo>();
                 int textlength = searchView.getQuery().length();
                 temp.clear();
+                tempSingolo.clear();
                 for (int i = 0; i < persone.size(); i++)
                 {
                     if (textlength <= persone.get(i).length())
@@ -354,19 +388,10 @@ public class Persona extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.organig) {
-            Intent i=new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
-        }else if (id == R.id.main_doc) {
+         if (id == R.id.main_doc) {
             Intent i=new Intent(getApplicationContext(), Documenti.class);
             if(from_dipartimento==1)i.putExtra("from_dipartimento",1);
             if(from_corso==1)i.putExtra("from_corso",1);
-            startActivity(i);
-        }else if (id == R.id.atti) {
-            Intent i=new Intent(getApplicationContext(), DocumentiAtti.class);
-            startActivity(i);
-        }else if (id == R.id.verbali) {
-            Intent i=new Intent(getApplicationContext(), DocumentiVerbali.class);
             startActivity(i);
         }
 
@@ -384,9 +409,6 @@ public class Persona extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.person) {
 
-        }else if (id == R.id.organig) {
-            Intent i=new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
         } else if (id == R.id.nav_dip) {
             Intent i=new Intent(getApplicationContext(), Dipartimento.class);
             startActivity(i);

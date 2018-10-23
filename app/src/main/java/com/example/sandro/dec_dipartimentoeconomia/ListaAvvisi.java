@@ -70,6 +70,7 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dip
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaDocumenti;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivityMultiDipartimento.pswJson;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
@@ -707,15 +708,6 @@ public class ListaAvvisi extends AppCompatActivity
             if(from_dipartimento==1)i.putExtra("from_dipartimento",1);
             if(from_corso==1)i.putExtra("from_corso",1);
             startActivity(i);
-        }else if (id == R.id.organig) {
-            Intent i=new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
-        }else if (id == R.id.atti) {
-            Intent i=new Intent(getApplicationContext(), DocumentiAtti.class);
-            startActivity(i);
-        }else if (id == R.id.verbali) {
-            Intent i=new Intent(getApplicationContext(), DocumentiVerbali.class);
-            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
@@ -732,10 +724,7 @@ public class ListaAvvisi extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.person) {
 
-        }else if (id == R.id.organig) {
-            Intent i=new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
-        } else if (id == R.id.nav_dip) {
+        }else if (id == R.id.nav_dip) {
             Intent i=new Intent(getApplicationContext(), Dipartimento.class);
             startActivity(i);
         } else if (id == R.id.nav_dida) {
@@ -769,8 +758,8 @@ public class ListaAvvisi extends AppCompatActivity
     public void makePost_avvisi(){
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         String url="";
-        if(from_dipartimento==1){url="https://economia.unich.it/pag_appuntamenti.php?JSON=on&gruppo="+id_dipartimento;}
-        else{url="https://economia.unich.it/pag_appuntamenti.php?JSON=on&gruppo="+id_corso;}
+        if(from_dipartimento==1){url="https://economia.unich.it/pag_appuntamenti.php?JSON="+pswJson+"&gruppo="+id_dipartimento;}
+        else{url="https://economia.unich.it/pag_appuntamenti.php?JSON="+pswJson+"&gruppo="+id_corso;}
         jsonObjRequest = new StringRequest(com.android.volley.Request.Method.GET,
                 url,
                 new com.android.volley.Response.Listener<String>() {

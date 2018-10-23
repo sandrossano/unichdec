@@ -227,6 +227,38 @@ public class Visualizza extends AppCompatActivity {
                 return;
             }
         }
+        if (link.contains("pag_persone.php")) {
+
+            if (corso != -1) { //from corso
+                Intent i = new Intent(getApplicationContext(), Persona.class);
+                i.putExtra("from_corso", 1);
+                startActivity(i);
+                finish();
+                return;
+            } else {
+                Intent i = new Intent(getApplicationContext(), Persona.class);
+                i.putExtra("from_dipartimento", 1);
+                startActivity(i);
+                finish();
+                return;
+            }
+        }
+        if (link.contains("pag_documenti.php")) {
+
+            if (corso != -1) { //from corso
+                Intent i = new Intent(getApplicationContext(), Documenti.class);
+                i.putExtra("from_corso", 1);
+                startActivity(i);
+                finish();
+                return;
+            } else {
+                Intent i = new Intent(getApplicationContext(), Documenti.class);
+                i.putExtra("from_dipartimento", 1);
+                startActivity(i);
+                finish();
+                return;
+            }
+        }
 
         for(int i=0;i<pagine.size();i++){
             if(pagine.get(i).getId()==terzolvpag){pos_pagina=i;break;}
@@ -259,7 +291,7 @@ public class Visualizza extends AppCompatActivity {
 
                 //data=data.replace("width=\"","width=\"100%\" height=\"100%\" alt=\"");
                 if (terzolv.equals("Esami")) {
-                    data = data.replace("</body>", "vai alla app Uda + intent</body>");
+                    data = data.replace("</body>", "App Uda</body>");
                 }
             } else {
                 int count = 0;
@@ -272,6 +304,7 @@ public class Visualizza extends AppCompatActivity {
                 completa = contenuto;
                 int start = 0;
 
+                //Log.d("contenuto",contenuto);
                 for (int i = 0; i < count; i++) {
                     int primo = contenuto.indexOf("[[[", start) + 3;
                     int ultimo = contenuto.indexOf("]]]", start) - 1;
@@ -280,9 +313,9 @@ public class Visualizza extends AppCompatActivity {
                     String[] array = pulita.split(";");
                     int gruppo = -250;
                     int ruolo = -250;
+                    int cat=-250;
                     String tipo_gr = "ciao";
                     String modulo = "";
-                    int categoria = 0;
                     for (int j = 0; j < array.length; j++) {
                         if (array[j].startsWith("modulo=")) {
                             String[] subarray = array[j].split("=");
@@ -302,8 +335,9 @@ public class Visualizza extends AppCompatActivity {
                         }
                         if (array[j].startsWith("cat=")) {
                             String[] subarray = array[j].split("=");
-                            categoria = Integer.parseInt(subarray[1]);
+                            cat = Integer.parseInt(subarray[1]);
                         }
+
                     }
                     //a="gruppo: "+gruppo+" - ruolo: "+ruolo+";";
                     if (ruolo != -250) {               //paginatore persona
@@ -357,11 +391,67 @@ public class Visualizza extends AppCompatActivity {
                             }
                         }
                         for (int l = 0; l < tutti_gruppi.size(); l++) {
-                            if (tutti_gruppi.get(l).getTipo_gruppo().equals(tipo_gr) && tutti_gruppi.get(l).getId_gruppo() == numero) {
-                                a += "<div>\n";
+                            if (booleanoscuola){
+                                if (tutti_gruppi.get(l).getTipo_gruppo().equals(tipo_gr)) {
+                                    if(tipo_gr.equals("CS")){
+                                        a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/sezioni/id_corso=" + tutti_gruppi.get(l).getSigla() + "\">" +
+
+                                                "<div align=\"center\">\n" +
+                                                "  <div style=\"width:100%;\">\n" +
+                                                "    <img src=\"https://economia.unich.it/html/images/categorie/"+tutti_gruppi.get(l).getSigla().replace("/","").toLowerCase()+".jpg\" alt=\"Norway\" style=\"width:50%\">\n" +
+                                                "    <div style=\"margin:-15px 0px 20px 0px;\">\n" +
+                                                "      "+tutti_gruppi.get(l).getNome()+"\n" +
+                                                "    </div>\n" +
+                                                "  </div>\n" +
+                                                "</div></a>";}
+                                    else {
+                                        a += "<!--<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/sezioni/id_gruppo=" + tutti_gruppi.get(l).getId() + "\"> -->" +
+
+                                                "<div align=\"center\">\n" +
+                                                "  <div style=\"width:100%;\">\n" +
+                                                "    <div style=\"margin:-15px 0px 20px 0px;color:red;font-size:15px\">\n" +
+                                                "      "+tutti_gruppi.get(l).getNome()+"\n" +
+                                                "    </div>\n" +
+                                                "  </div>\n" +
+                                                "</div>" +
+                                                "<!-- </a> -->";
+                                   /*a += "<div>\n";
                                 a += "<a style=\"text-decoration: none;color:black;\" href=\"visualizza.php?type=gruppo&id=" + tutti_gruppi.get(l).getId() + "\">";
                                 a += "  <p style=\"color:red;\">" + tutti_gruppi.get(l).getNome() + "</p> \n";
-                                a += "</a></div><br>";
+                                a += "</a></div><br>";*/
+                                    }
+                                }
+                            }
+                        else {
+                                if (tutti_gruppi.get(l).getTipo_gruppo().equals(tipo_gr) && tutti_gruppi.get(l).getId_gruppo() == numero) {
+                                    if (tipo_gr.equals("CS")) {
+                                        a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/sezioni/id_corso=" + tutti_gruppi.get(l).getSigla() + "\">" +
+
+                                                "<div align=\"center\">\n" +
+                                                "  <div style=\"width:100%;\">\n" +
+                                                "    <img src=\"https://economia.unich.it/html/images/categorie/" + tutti_gruppi.get(l).getSigla().replace("/", "").toLowerCase() + ".jpg\" alt=\"Norway\" style=\"width:50%\">\n" +
+                                                "    <div style=\"margin:-15px 0px 20px 0px;\">\n" +
+                                                "      " + tutti_gruppi.get(l).getNome() + "\n" +
+                                                "    </div>\n" +
+                                                "  </div>\n" +
+                                                "</div></a>";
+                                    } else {
+                                        a += "<!--<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/sezioni/id_gruppo=" + tutti_gruppi.get(l).getId() + "\"> -->" +
+
+                                                "<div align=\"center\">\n" +
+                                                "  <div style=\"width:100%;\">\n" +
+                                                "    <div style=\"margin:-15px 0px 20px 0px;color:red;font-size:15px\">\n" +
+                                                "      " + tutti_gruppi.get(l).getNome() + "\n" +
+                                                "    </div>\n" +
+                                                "  </div>\n" +
+                                                "</div>" +
+                                                "<!-- </a> -->";
+                                   /*a += "<div>\n";
+                                a += "<a style=\"text-decoration: none;color:black;\" href=\"visualizza.php?type=gruppo&id=" + tutti_gruppi.get(l).getId() + "\">";
+                                a += "  <p style=\"color:red;\">" + tutti_gruppi.get(l).getNome() + "</p> \n";
+                                a += "</a></div><br>";*/
+                                    }
+                                }
                             }
                         }
 
@@ -370,13 +460,25 @@ public class Visualizza extends AppCompatActivity {
                     }
                     if (modulo.equals("pag_documenti")) {
                         for (int d = 0; d < singolo.size(); d++) {
-                            if (singolo.get(d).getId_gruppo() == gruppo && singolo.get(d).getId_categoria() == categoria) {
-                                a += "<div>\n";
-                                a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_doc=" + singolo.get(d).getId() + "&" + singolo.get(d).getTitolo() + "&" + singolo.get(d).getId_categoria() + "\">" +
-                                        "<div class=\"card container\">\n" +
-                                        "  <p>" + singolo.get(d).getTitolo() + "</p> \n" +
-                                        "</div>" +
-                                        "</a></div><br>";
+                            if (singolo.get(d).getId_gruppo() == gruppo ) {
+
+
+                                Log.e("cat",cat+" ; "+singolo.get(d).getNome_cat());
+                                if(singolo.get(d).getId_categoria().toLowerCase().contains("modulistica") && terzolv.toUpperCase().contains("MODULISTICA")){
+                                    a += "<div>";
+                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_doc=" + singolo.get(d).getId() + "\">" +
+                                        "<div class=\"card container\">\n";
+                                    a+= "  <p>" + singolo.get(d).getTitolo() + "</p> \n";
+                                    a+=        "</div>" + "</a></div><br>";
+                                    }
+                                if(!terzolv.toUpperCase().contains("MODULISTICA")){
+                                    a += "<div>";
+                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_doc=" + singolo.get(d).getId() + "\">" +
+                                                "<div class=\"card container\">\n";
+                                    a+= "  <p>" + singolo.get(d).getTitolo() + "</p> \n";
+                                    a+=        "</div>" + "</a></div><br>";
+                                }
+
                             }
                         }
 
@@ -397,73 +499,13 @@ public class Visualizza extends AppCompatActivity {
                             finish();
                             return;
                         }
-                        /*
-                        for (int d = 0; d < appuntamenti.size(); d++) {
-                            if (corso != -1) { //from_corsi
-                                if (appuntamenti.get(d).getId_gruppo() == corso) {
-                                    a += "<div>\n";
-                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
-                                            "<div class=\"card container\">\n" +
-                                            "  <p>" + appuntamenti.get(d).getData_inizio() + " " + appuntamenti.get(d).getTitolo() + "</p> \n" +
-                                            "</div>" +
-                                            "</a></div><br>";
-                                    continue;
-                                }
-                                for (int j = 0; j < tutti_gruppi.size(); j++) {
-                                    if (tutti_gruppi.get(j).getId() == appuntamenti.get(d).getId_gruppo() && tutti_gruppi.get(j).getId_gruppo() == corso) {
-                                        a += "<div>\n";
-                                        a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
-                                                "<div class=\"card container\">\n" +
-                                                "  <p>" + appuntamenti.get(d).getData_inizio() + " " + appuntamenti.get(d).getTitolo() + "</p> \n" +
-                                                "</div>" +
-                                                "</a></div><br>";
-                                    }
-                                }
-                                if (appuntamenti.get(d).getId_gruppo() == 1270) {
-                                    a += "<div>\n";
-                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
-                                            "<div class=\"card container\">\n" +
-                                            "  <p>" + appuntamenti.get(d).getData_inizio() + " " + appuntamenti.get(d).getTitolo() + "</p> \n" +
-                                            "</div>" +
-                                            "</a></div><br>";
-                                }
-                            } else {
-                                if (appuntamenti.get(d).getId_gruppo() == gruppo && appuntamenti.get(d).getId_gruppo() == id_dipartimento) {
-                                    a += "<div>\n";
-                                    a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + appuntamenti.get(d).getTitolo() + "\">" +
-                                            "<div class=\"card container\">\n" +
-                                            "  <p>" + appuntamenti.get(d).getData_inizio() + " " + appuntamenti.get(d).getTitolo() + "</p> \n" +
-                                            "</div>" +
-                                            "</a></div><br>";
-                                    continue;
-                                }
-                                for (int j = 0; j < corsi.size(); j++) {
-                                    for (int w=0;w<r_corsi.size();w++) {
-                                        if (appuntamenti.get(d).getId_gruppo() == corsi.get(j).getId() && corsi.get(j).getTipo_gruppo().equals("CS")&&corsi.get(j).getId_gruppo()==r_corsi.get(w).getId() && r_corsi.get(w).getId_gruppo()==id_dipartimento) {
-                                            a += "<div>\n";
-                                            try {
-                                                a += "<a style=\"text-decoration: none;color:black;\" href=\"https://economia.unich.it/decapp/documenti/id_app=" + appuntamenti.get(d).getId() + "&" + URLEncoder.encode(appuntamenti.get(d).getTitolo(), "UTF-8") + "\">" +
-                                                        "<div class=\"card container\">\n" +
-                                                        "  <p>" + appuntamenti.get(d).getData_inizio() + " " + appuntamenti.get(d).getTitolo() + "</p> \n" +
-                                                        "</div>" +
-                                                        "</a></div><br>";
-                                            } catch (UnsupportedEncodingException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
 
-                        }
-
-                        completa = completa.replace("[[[" + pulita + "]]]", a);
-                        a = "";*/
                     }
                 }
 
 
-                data = "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+                data = "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" +
+                        "<link rel=\"stylesheet\" href=\"https://www.w3schools.com/w3css/4/w3.css\">\n" +
                         "<style>\n" +
                         ".card {\n" +
                         "    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);\n" +
@@ -517,6 +559,7 @@ public class Visualizza extends AppCompatActivity {
 
                 data = data.replace("href=\"", "href=\"https://economia.unich.it/");
 
+
                 //TextView textView = (TextView) findViewById(R.id.html);
                 //textView.setText(Html.fromHtml(Html.fromHtml(data).toString()));
             }
@@ -535,6 +578,9 @@ public class Visualizza extends AppCompatActivity {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     String[] a = url.split("id_persona=");
                     String[] b = url.split("id_doc=");
+                    String[] c = url.split("id_corso=");
+                    String[] d = url.split("id_gruppo=");
+
                     if (a.length != 1) {
                         Log.d("id_persona", a[1]);
                         Intent intent = new Intent(Visualizza.this, PersonaSingola.class);
@@ -555,7 +601,21 @@ public class Visualizza extends AppCompatActivity {
                         mContext.startActivity(intent);
                         return true;
                     }
+                    if (c.length != 1) {
 
+                        Intent intent = new Intent(Visualizza.this, Corso.class);
+                        intent.putExtra("position", c[1]);
+                        mContext.startActivity(intent);
+                        return true;
+                    }
+                    if (d.length != 1) {
+
+                        Intent intent = new Intent(Visualizza.this, Corso.class);
+                        intent.putExtra("position", "");
+                        id_corso=Integer.parseInt(d[1]);
+                        mContext.startActivity(intent);
+                        return true;
+                    }
                     if (!url.startsWith("http")) {
                         url = "https://economia.unich.it/" + url;
                     }

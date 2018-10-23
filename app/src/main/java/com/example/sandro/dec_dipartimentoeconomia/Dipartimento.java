@@ -129,17 +129,8 @@ public class Dipartimento extends AppCompatActivity
         if (id == R.id.person) {
             Intent i = new Intent(getApplicationContext(), Persona.class);
             startActivity(i);
-        }else if (id == R.id.organig) {
-            Intent i=new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
         }else if (id == R.id.main_doc) {
             Intent i=new Intent(getApplicationContext(), Documenti.class);
-            startActivity(i);
-        }else if (id == R.id.atti) {
-            Intent i=new Intent(getApplicationContext(), DocumentiAtti.class);
-            startActivity(i);
-        }else if (id == R.id.verbali) {
-            Intent i=new Intent(getApplicationContext(), DocumentiVerbali.class);
             startActivity(i);
         }
 
@@ -158,10 +149,7 @@ public class Dipartimento extends AppCompatActivity
         } else if (id == R.id.person) {
             Intent i=new Intent(getApplicationContext(), Persona.class);
             startActivity(i);
-        } else if (id == R.id.organig) {
-            Intent i=new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
-        }else if (id == R.id.nav_dip) {
+        } else if (id == R.id.nav_dip) {
 
         } else if (id == R.id.nav_dida) {
 

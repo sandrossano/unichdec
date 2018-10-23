@@ -23,19 +23,118 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaPersone;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivityMultiDipartimento.pswJson;
 import static com.example.sandro.dec_dipartimentoeconomia.Persona.singolo;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.singolo_splash;
 
 public class PersonaSingola extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     SwipeRefreshLayout mSwipeRefreshLayout;
+    int idsing=0;
     String telefono_fisso="";
+    String nomesing="";
+    String fotosing="";
     String email="";
+    String sede="";
+    String indirizzo="";
 
+    public void makePost_persona_singola(int id){
+
+        //Persone
+        // Instantiate the RequestQueue.
+        RequestQueue queue5 = Volley.newRequestQueue(this);
+        String url5="https://economia.unich.it/visualizza.php?type=persona&id="+id+"&JSON="+pswJson;
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest5 = new StringRequest(Request.Method.GET, url5,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        try {
+
+                            JSONObject c = new JSONObject(response);
+                            JSONObject BHO = c.getJSONObject("records");
+                            JSONObject jsonArray = BHO.getJSONObject("dati_base");
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject expl = null;
+                                try {
+                                    expl = jsonArray;
+                                    if (!expl.getString("nome").equals(null)) {
+                                        nomesing = expl.getString("nome")+" "+expl.getString("cognome");
+                                    }else{nomesing = "";}
+                                    if (!expl.getString("foto").equals(null)) {
+                                        fotosing = expl.getString("foto");
+                                    }else{fotosing = "";}
+                                    if (!expl.getString("telefono_fisso").equals(null)) {
+                                        telefono_fisso = expl.getString("telefono_fisso");
+                                    }else{telefono_fisso = "";}
+                                    if (!expl.getString("email").equals(null)) {
+                                        email = expl.getString("email");
+                                    }else{email = "";}
+                                    if (!expl.getString("indirizzo").equals(null)) {
+                                        indirizzo = expl.getString("indirizzo");
+                                    }else{indirizzo = "";}
+                                    if (!expl.getString("sede").equals(null)) {
+                                        sede = expl.getString("sede");
+                                    }else{sede = "";}
+                                    if (!expl.getString("piano").equals(null) && !expl.getString("piano").equals("")) {
+                                        sede += ", Piano: " + expl.getString("piano");
+                                    }else{sede += "";}
+                                    if (!expl.getString("stanza").equals(null) && !expl.getString("stanza").equals("")) {
+                                        sede += ", Stanza: " + expl.getString("stanza");
+                                    }else{sede += "";}
+
+                                    } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            afterPost();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+// Add the request to the RequestQueue.
+        stringRequest5.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue5.add(stringRequest5);
+        queue5.getCache().clear();
+
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,25 +163,40 @@ public class PersonaSingola extends AppCompatActivity
         ComponentName componentInfo = taskInfo.get(0).topActivity;
         MainActivity.activity=componentInfo.getShortClassName();
 
-        ImageView imm=(ImageView) findViewById(R.id.immagineSingolo);
-        int idsing = getIntent().getIntExtra("idsing",0);
-        String nomesing="";
-        String fotosing="";
+        idsing = getIntent().getIntExtra("idsing",0);
+        nomesing=getIntent().getStringExtra("nomesing");
+        fotosing=getIntent().getStringExtra("fotosing");
+        telefono_fisso=getIntent().getStringExtra("telefono_fisso");
+        email=getIntent().getStringExtra("email");
+
+        makePost_persona_singola(idsing);
 
 
-        String sede ="";
-        String indirizzo="";
-        for (int i=0;i<singolo_splash.size();i++){
-            if(singolo_splash.get(i).getId()==idsing){
-                 nomesing = singolo_splash.get(i).getNome();
-                 fotosing = singolo_splash.get(i).getFoto();
-                email = singolo_splash.get(i).getEmail();
-                telefono_fisso = singolo_splash.get(i).getTelefono_fisso();
-                 sede = singolo_splash.get(i).getSede();
-                 indirizzo = singolo_splash.get(i).getIndirizzo();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
+        });
+
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         }
 
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void afterPost(){
+        ImageView imm=(ImageView) findViewById(R.id.immagineSingolo);
 
         if(fotosing.endsWith("jpg"))
             Picasso.with(getApplicationContext()).load("https://economia.unich.it/fototessera/"+fotosing).into(imm);
@@ -107,35 +221,6 @@ public class PersonaSingola extends AppCompatActivity
         if(sede.equals("")){findViewById(R.id.indirizzo).setVisibility(View.GONE);}
         if(indirizzo.equals("")){findViewById(R.id.sito).setVisibility(View.GONE);}
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        if(getSupportActionBar()!=null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        }
-
-/*
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-*/
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -178,10 +263,7 @@ public class PersonaSingola extends AppCompatActivity
         } else if (id == R.id.person) {
             Intent i=new Intent(getApplicationContext(), Persona.class);
             startActivity(i);
-        } else if (id == R.id.organig) {
-            Intent i=new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
-        }else if (id == R.id.nav_dip) {
+        } else if (id == R.id.nav_dip) {
             Intent i=new Intent(getApplicationContext(), Dipartimento.class);
             startActivity(i);
         } else if (id == R.id.nav_dida) {

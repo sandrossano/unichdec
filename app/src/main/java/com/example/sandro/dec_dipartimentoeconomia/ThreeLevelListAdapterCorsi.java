@@ -2,6 +2,7 @@ package com.example.sandro.dec_dipartimentoeconomia;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -226,6 +227,19 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                     }
 
                     if(terzo.size()==0) {
+                        if (second.get(i).getId_pagina()!=-1){
+                            Intent visualizza = new Intent(mContext, Visualizza.class);
+                            visualizza.putExtra("id_dip", id_dipartimento);
+                            visualizza.putExtra("secondolv", second.get(i).getTitolo());
+                            visualizza.putExtra("terzolv", second.get(i).getTitolo());
+                            visualizza.putExtra("terzolvpag", second.get(i).getId_pagina());
+                            visualizza.putExtra("link", second.get(i).getLink());
+                            visualizza.putExtra("position", parentHeaders.get(groupPosition));
+                            visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            mContext.startActivity(visualizza);
+                        }
+
                         if(second.get(i).getTitolo().equals("Home")&&MainActivity.activity.equals(".Corso")){
                             drawer.closeDrawers();
                         }
@@ -248,7 +262,7 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                                 visualizza.putExtra("link", second.get(i).getLink());
                                 visualizza.putExtra("position", parentHeaders.get(groupPosition));
                                 visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                //mContext.startActivity(visualizza);
+                                mContext.startActivity(visualizza);
                             }
                         }
 
@@ -302,6 +316,35 @@ public class ThreeLevelListAdapterCorsi extends BaseExpandableListAdapter{
                         visualizza.putExtra("position", parentHeaders.get(groupPosition));
                         visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(visualizza);
+                    }
+
+                    if (terzo.get(i1).getId_pagina()==-1){
+                        String url = terzo.get(i1).getLink();
+                        if (url.startsWith("http")){
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            mContext.startActivity(intent);
+                        }
+                    }
+
+                    if (terzo.get(i1).getId_pagina()==0){
+                        String url = terzo.get(i1).getLink();
+                        if (url.startsWith("visualizza.php?type=pagina&id=")){
+                            String split=url.substring(30);
+                            int pagina=Integer.parseInt(split);
+
+                            Intent visualizza = new Intent(mContext, Visualizza.class);
+                            visualizza.putExtra("id_dip", id_dipartimento);
+                            visualizza.putExtra("secondolv", second.get(i).getTitolo());
+                            visualizza.putExtra("terzolv", terzo.get(i1).getTitolo());
+                            visualizza.putExtra("terzolvpag", pagina);
+                            visualizza.putExtra("link", terzo.get(i1).getLink());
+                            visualizza.putExtra("position", parentHeaders.get(groupPosition));
+                            visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            mContext.startActivity(visualizza);
+
+                        }
                     }
 
                     if(titolo[titolo.length-1].toUpperCase().equals("HOME")&&MainActivity.activity.equals(".Corso")){

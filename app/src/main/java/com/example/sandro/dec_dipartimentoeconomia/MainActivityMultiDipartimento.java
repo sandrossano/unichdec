@@ -53,6 +53,7 @@ public class MainActivityMultiDipartimento extends AppCompatActivity {
     public static ArrayList<SplashActivity.Corso> corsi = SplashActivity.corsi;
     public static ArrayList<SplashActivity.Corso> parent=new ArrayList<>();
     public static Context mContext;
+    public static String pswJson="Android3972!..JSONpwd";
 
     private ListView listView;
     SwipeRefreshLayout mSwipeRefreshLayout;

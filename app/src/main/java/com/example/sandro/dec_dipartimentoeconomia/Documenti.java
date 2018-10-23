@@ -6,9 +6,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -38,6 +40,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -46,17 +49,21 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.view.View.GONE;
 import static com.example.sandro.dec_dipartimentoeconomia.Corso.id_corso;
+import static com.example.sandro.dec_dipartimentoeconomia.Corso.titolo_sottocorso;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.booleanoscuola;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.categorie;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi;
@@ -64,6 +71,8 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.corsi_dip
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.id_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.listaDocumenti;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.parent;
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivityMultiDipartimento.pswJson;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.finishdocu;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
@@ -98,7 +107,9 @@ public class Documenti extends AppCompatActivity
 
     public void aggiorna_doc(){
         RequestQueue queue2 = Volley.newRequestQueue(getApplicationContext());
-        String url2 = localhost2 + "documenti/";
+        String url2="";
+        if(from_dipartimento==1){url2="https://economia.unich.it/pag_documenti.php?JSON="+pswJson+"&gruppo="+id_dipartimento;}
+        else{url2="https://economia.unich.it/pag_documenti.php?JSON="+pswJson+"&gruppo="+id_corso;}
 
 // Request a string response from the provided URL.
         StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
@@ -112,22 +123,24 @@ public class Documenti extends AppCompatActivity
 
                             documenti.clear();
                             singolo.clear();
-                            singolo2.clear();
+                            if(singolo2!=null)singolo2.clear();
 
                             JSONObject c = new JSONObject(response);
                             listaDocumenti = c.getJSONArray("records");
                             for (int i = 0; i < listaDocumenti.length(); i++) {
                                 expl = listaDocumenti.getJSONObject(i);
-                                String data = expl.getString("data_creazione").substring(0, 10);
-                                String link = expl.getString("link");
+                                String data = expl.getString("data").substring(0, 10);
+                                String link = expl.getString("nome_file");
                                 String estensione = link.substring(link.length() - 3, link.length());
                                 documenti.add(expl.getString("titolo"));
-                                singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getInt("id_categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, expl.getString("nome"), "", expl.getInt("id_gruppo"), expl.getInt("id_gruppo_padre")));
+                                singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getString("categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, expl.getString("categoria"), "", expl.getInt("id_sezione")));
                             }
 
                             lista = (ListView) findViewById(R.id.listview_docu);
 
                             cerca = (SearchView) findViewById(R.id.cerca_docu);
+                            cerca.setQuery("", false);
+                            cerca.setQueryHint("Cerca... ");
 
                             singolo2=singolo;
 
@@ -160,14 +173,17 @@ public class Documenti extends AppCompatActivity
 
     private void refreshContent() {
         if(mSwipeRefreshLayout.isEnabled() && finito) {
+            from_corso=0;
+            from_dipartimento=1;
+            Spinner dropdown = findViewById(R.id.spinner1);
+            dropdown.setSelection(0);
             aggiorna_doc();
-
-            cerca.setQuery("", false);
-            cerca.setQueryHint("Cerca... ");
         }
         if(!finito)mSwipeRefreshLayout.setRefreshing(false);
     }
     ArrayList<Doc> singolo2;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,9 +210,116 @@ public class Documenti extends AppCompatActivity
         findViewById(R.id.include_doc_atti).setVisibility(GONE);
         findViewById(R.id.include_avv).setVisibility(GONE);
 
-        if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_dipartimento=1; setUpAdapter();}
-        if(getIntent().getIntExtra("from_corso",0)==1) {from_corso=1; setUpAdapterCorso();}
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if(getIntent().getIntExtra("from_dipartimento",0)==1) {from_corso=0;from_dipartimento=1; setUpAdapter();}
+        if(getIntent().getIntExtra("from_corso",0)==1) {from_dipartimento=0;from_corso=1;
+            if(getActionBar()!=null)getActionBar().setDisplayHomeAsUpEnabled(true);
+            if(getSupportActionBar()!=null)getSupportActionBar().setDisplayHomeAsUpEnabled(true);}
         id_corso=getIntent().getIntExtra("id_corso",0);
+        if(id_corso==0){id_corso=Corso.id_corso;((TextView)findViewById(R.id.textView11)).setText(titolo_sottocorso);}
+        NavigationView navigationView1 = (NavigationView) findViewById(R.id.nav_view);
+
+        if(from_corso!=1) {
+            navigationView1.setNavigationItemSelectedListener(this);
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+        }
+
+        for (int i =0;i<corsi.size();i++) {
+            if (corsi.get(i).getId()==id_corso) {
+                Log.e("color",""+corsi.get(i).getColor());
+                if(corsi.get(i).getColor()==0) {
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#0e185a"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==1) {
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#b30000"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==2) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#e6b800"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==3) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#00cc7a"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==4) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#00663d"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==5) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#b30077"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==6) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#804000"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==7) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#808080"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==8) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#600080"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==9) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#b38f00"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==10) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#ff704d"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+                if(corsi.get(i).getColor()==11) {
+
+                    ColorDrawable colorDrawable = new ColorDrawable(
+                            Color.parseColor("#33bbff"));
+                    getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                    navigationView1.setBackground(colorDrawable);
+                }
+            }
+        }
+
+
         Corsi.clear();
         ListaCorsi.clear();
         Insegnamenti.clear();
@@ -235,9 +358,6 @@ public class Documenti extends AppCompatActivity
         cerca.clearFocus();
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,21 +367,7 @@ public class Documenti extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        CaricaLista();
-        caricato();
-        snipper();
-
-
-
+        makePost_doc();
 
     }
 
@@ -414,20 +520,17 @@ public class Documenti extends AppCompatActivity
 
 
     }
+
+    /*
     private void setUpAdapterCorso() {
 
         LinkedHashMap<String, String[]> thirdLevelq1;
-        /**
-         * Second level array list
-         */
+
         List<String[]> secondLevel = new ArrayList<>();
-        /**
-         * Inner level data
-         */
+
         List<LinkedHashMap<String, String[]>> data = new ArrayList<>();
 
 
-        ArrayList<String> ParentString= new ArrayList<String>();
         ArrayList<String> a = new ArrayList<String>();
         ArrayList<Integer> ordinidia = new ArrayList<Integer>() {};
 
@@ -437,7 +540,7 @@ public class Documenti extends AppCompatActivity
                     for (int m = 0; m < scuola.size(); m++) {
                         if (scuola.get(m).getId_gruppo_scuola() == id_dipartimento) {
                             if (scuola.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS",0));
+                                parent.add(new SplashActivity.Corso(scuola.get(m).getId(), scuola.get(m).getSigla(), 0, id_dipartimento, "CS",id_cont));
                                 ParentString.add(scuola.get(m).getSigla());
                             }
                         }
@@ -447,7 +550,7 @@ public class Documenti extends AppCompatActivity
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",id_cont));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -459,7 +562,7 @@ public class Documenti extends AppCompatActivity
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",id_cont));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -469,7 +572,7 @@ public class Documenti extends AppCompatActivity
                     for (int m = 0; m < corsi.size(); m++) {
                         if (corsi.get(m).getId_gruppo() == corsi_dipartimento) {
                             if (corsi.get(m).getId() == id_corso) {
-                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS",0));
+                                parent.add(new SplashActivity.Corso(corsi.get(m).getId(), corsi.get(m).getNome(), corsi.get(m).getColor(), corsi_dipartimento, "CS",id_cont));
                                 ParentString.add(corsi.get(m).getNome());
                             }
                         }
@@ -479,7 +582,7 @@ public class Documenti extends AppCompatActivity
                     for (int c = 0; c < dipartimenti.size(); c++) {
                         if (dipartimenti.get(c).getId() == id_dipartimento) {
                             a.add(dipartimenti.get(c).getNome());
-                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",0));
+                            parent.add(new SplashActivity.Corso(dipartimenti.get(c).getId(), dipartimenti.get(c).getSigla(), -1, corsi_dipartimento, "DIP",id_cont));
                             ParentString.add("Torna a "+dipartimenti.get(c).getSigla());
                         }
                     }
@@ -491,7 +594,7 @@ public class Documenti extends AppCompatActivity
                     if (scuola.get(i - 1).getId_gruppo_scuola() == id_dipartimento) {
                         if (scuola.get(i - 1).getId() != id_corso) {
                             a.add(scuola.get(i - 1).getSigla());
-                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",0));
+                            parent.add(new SplashActivity.Corso(scuola.get(i - 1).getId(), scuola.get(i - 1).getSigla(), -1, id_dipartimento, "CS",id_cont));
                             //ParentString.add(scuola.get(i - 1).getSigla());
                         }
                     }
@@ -506,7 +609,7 @@ public class Documenti extends AppCompatActivity
                         ordinidia.add(new Integer(livello2dec.get(j).getI()));
                     }
                 }
-                /*else{                     //Se ci sono altri espandibili oltre il dipartimento
+                else{                     //Se ci sono altri espandibili oltre il dipartimento
 
                     for(int l=0;l<corsi.size();l++) {
 
@@ -514,7 +617,7 @@ public class Documenti extends AppCompatActivity
                             a.add(corsi.get(l).getNome());
                         }
                     }
-                }*/
+                }
             }
 
             if(i==0) {
@@ -526,7 +629,7 @@ public class Documenti extends AppCompatActivity
                     for (int k = 0; k < livello2dec.size(); k++) {
                         SplashActivity.SottoLivelli livello2=new SplashActivity.SottoLivelli(livello2dec.get(k).getI(),livello2dec.get(k).getTitolo(),livello2dec.get(k).getId_gruppo(),livello2dec.get(k).getId_pagina(),livello2dec.get(k).getLivello(),livello2dec.get(k).getLink());
                         if (j == 0 && a.size() == 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2  && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
@@ -544,7 +647,7 @@ public class Documenti extends AppCompatActivity
                             }
                         }
                         if (j == a.size() - 1) {
-                            if (livello2dec.get(k).getLivello() >= 2 && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
+                            if (livello2dec.get(k).getLivello() >= 2  && livello2dec.get(k).getId_gruppo() == id_corso && livello2dec.get(k).getI() >= ordinidia.get(j).intValue()) {
                                 if(livello2dec.get(k).getLivello() > 2){lista.add("-> "+livello2dec.get(k).getTitolo());}
                                 else{lista.add(livello2.getTitolo());}
                             }
@@ -585,25 +688,224 @@ public class Documenti extends AppCompatActivity
 
 
     }
+*/
 
 
 
+    public void makePost_doc(){
+        RequestQueue requestQueue;
+        StringRequest jsonObjRequest;
 
-    public void CaricaLista(){
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            String url="";
+            if(from_dipartimento==1){url="https://economia.unich.it/pag_documenti.php?JSON="+pswJson+"&gruppo="+id_dipartimento;}
+            else{url="https://economia.unich.it/pag_documenti.php?JSON="+pswJson+"&gruppo="+id_corso;}
+            jsonObjRequest = new StringRequest(com.android.volley.Request.Method.GET,
+                    url,
+                    new com.android.volley.Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            JSONObject expl = null;
+                            try {
+                                if(documenti!=null)documenti.clear();
+                                if(singolo!=null)singolo.clear();
+
+                                JSONObject c = new JSONObject(response);
+                                listaDocumenti = c.getJSONArray("records");
+                                for (int i = 0; i < listaDocumenti.length(); i++) {
+                                    expl = listaDocumenti.getJSONObject(i);
+                                    String data = expl.getString("data").substring(0, 10);
+                                    String link = expl.getString("nome_file");
+                                    String estensione = link.substring(link.length() - 3, link.length());
+                                    documenti.add(expl.getString("titolo"));
+                                    singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getString("categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, expl.getString("categoria"), "", expl.getInt("id_sezione")));
+                                }
+                                finishdocu=true;
+                                snipper();
+                                caricato();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new com.android.volley.Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            }) {
 
 
-                        lista = (ListView) findViewById(R.id.listview_docu);
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
 
-                        cerca = (SearchView) findViewById(R.id.cerca_docu);
+                    Map<String, String> getParam = new HashMap<String, String>();
 
-                        singolo2=singolo;
+                    return getParam;
+                }
 
-            adapter = new DocuAdapter(getApplicationContext(), documenti, singolo);
+            };
 
-                        lista.setAdapter(adapter);
-                        lista.setAdapter(adapter);
+            requestQueue.add(jsonObjRequest);
 
+            }
+
+    public void makePost_doc_spinner(){
+        RequestQueue requestQueue;
+        StringRequest jsonObjRequest;
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String url="";
+        if(from_dipartimento==1){url="https://economia.unich.it/pag_documenti.php?JSON="+pswJson+"&gruppo="+id_dipartimento;}
+        else{url="https://economia.unich.it/pag_documenti.php?JSON="+pswJson+"&gruppo="+id_corso;}
+        jsonObjRequest = new StringRequest(com.android.volley.Request.Method.GET,
+                url,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject expl = null;
+                        try {
+                            if(documenti!=null)documenti.clear();
+                            if(singolo!=null)singolo.clear();
+
+                            JSONObject c = new JSONObject(response);
+                            listaDocumenti = c.getJSONArray("records");
+                            for (int i = 0; i < listaDocumenti.length(); i++) {
+                                expl = listaDocumenti.getJSONObject(i);
+                                String data = expl.getString("data").substring(0, 10);
+                                String link = expl.getString("nome_file");
+                                String estensione = link.substring(link.length() - 3, link.length());
+                                documenti.add(expl.getString("titolo"));
+                                singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getString("categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, expl.getString("categoria"), "", expl.getInt("id_sezione")));
+                            }
+
+                            for (int i = 0; i < singolo.size(); i++) {
+                                if(id_corso==0){
+                                    if (singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+                                        temp.add(singolo.get(i).getTitolo());
+                                        tempSingolo.add(singolo.get(i));
+                                    }
+                                }else {
+                                    Spinner spinner1=(Spinner) findViewById(R.id.spinner1);
+                                    spinner1.setVisibility(GONE);
+                                    TextView t=(TextView) findViewById(R.id.textView11);
+                                    t.setVisibility(View.VISIBLE);
+                                    for(int h=0;h<corsi.size();h++){
+                                        if(corsi.get(h).getId()==id_corso){t.setText(corsi.get(h).getNome());}
+                                    }
+                                    if (
+                                            singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+
+                                        temp.add(singolo.get(i).getTitolo());
+                                        tempSingolo.add(singolo.get(i));
+
+
+                                    }
+                                }
+                            }
+                            ListaIns.clear();
+                            Insegnamenti.clear();
+
+                            lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
+
+                            finishdocu=true;
+                            caricato();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
+                }, new com.android.volley.Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> getParam = new HashMap<String, String>();
+
+                return getParam;
+            }
+
+        };
+
+        requestQueue.add(jsonObjRequest);
+
+    }
+
+    public void makePost_doc_spinner(int id_corso){
+        RequestQueue requestQueue;
+        StringRequest jsonObjRequest;
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String url="https://economia.unich.it/pag_documenti.php?JSON="+pswJson+"&gruppo="+id_corso;
+        jsonObjRequest = new StringRequest(com.android.volley.Request.Method.GET,
+                url,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject expl = null;
+                        try {
+                            if(documenti!=null)documenti.clear();
+                            if(singolo!=null)singolo.clear();
+
+                            JSONObject c = new JSONObject(response);
+                            listaDocumenti = c.getJSONArray("records");
+                            for (int i = 0; i < listaDocumenti.length(); i++) {
+                                expl = listaDocumenti.getJSONObject(i);
+                                String data = expl.getString("data").substring(0, 10);
+                                String link = expl.getString("nome_file");
+                                String estensione = link.substring(link.length() - 3, link.length());
+                                documenti.add(expl.getString("titolo"));
+                                singolo.add(new Doc(expl.getInt("id"), expl.getString("titolo"), expl.getString("categoria"), expl.getString("descrizione"), data, expl.getInt("dimensione"), estensione, link, expl.getString("categoria"), "", expl.getInt("id_sezione")));
+                            }
+
+                            for (int i = 0; i < singolo.size(); i++) {
+                                if (
+                                        singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+
+                                    temp.add(singolo.get(i).getTitolo());
+                                    tempSingolo.add(singolo.get(i));
+
+
+                                }
+                            }
+                            ListaIns.clear();
+                            Insegnamenti.clear();
+                            snipper2();
+
+                            lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
+
+                            finishdocu=true;
+                            caricato();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> getParam = new HashMap<String, String>();
+
+                return getParam;
+            }
+
+        };
+
+        requestQueue.add(jsonObjRequest);
+
+    }
+
 
     public void snipper(){
         final ListView lista = (ListView) findViewById(R.id.listview_docu);
@@ -646,56 +948,19 @@ public class Documenti extends AppCompatActivity
                         Log.d("query",searchView.getQuery()+","+position);
                         if (searchView != null) {
                         if (position != 0) {
+                            Log.e("corso",Corsi.get(position).getId()+"");
+                            makePost_doc_spinner(Corsi.get(position).getId());
 
-                            for (int i = 0; i < singolo.size(); i++) {
-                                    if ((singolo.get(i).getId_gruppo() == Corsi.get(position).getId() ||
-                                            singolo.get(i).getId_gruppo_padre() == Corsi.get(position).getId()) &&
-                                            singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
-
-                                        temp.add(singolo.get(i).getTitolo());
-                                        tempSingolo.add(singolo.get(i));
-
-
-                                    }
-                                }
-                            ListaIns.clear();
-                            Insegnamenti.clear();
-                            snipper2();
                             } else{
                             Spinner dropdown = findViewById(R.id.spinner2);
                             dropdown.setEnabled(false);
-                                for (int i = 0; i < singolo.size(); i++) {
-                                    if(id_corso==0){
-                                        if (singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
-                                            temp.add(singolo.get(i).getTitolo());
-                                            tempSingolo.add(singolo.get(i));
-                                        }
-                                    }else {
-                                        Spinner spinner1=(Spinner) findViewById(R.id.spinner1);
-                                        spinner1.setVisibility(GONE);
-                                        TextView t=(TextView) findViewById(R.id.textView11);
-                                        t.setVisibility(View.VISIBLE);
-                                        for(int h=0;h<corsi.size();h++){
-                                            if(corsi.get(h).getId()==id_corso){t.setText(corsi.get(h).getNome());}
-                                        }
-                                        if ((singolo.get(i).getId_gruppo() == id_corso ||
-                                                singolo.get(i).getId_gruppo_padre() == id_corso) &&
-                                                singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())) {
+                            makePost_doc_spinner();
 
-                                            temp.add(singolo.get(i).getTitolo());
-                                            tempSingolo.add(singolo.get(i));
-
-
-                                        }
-                                    }
-                                }
-                            ListaIns.clear();
-                            Insegnamenti.clear();
                         }
                             searchView.clearFocus();
                         }
 
-                lista.setAdapter(new DocuAdapter(getApplicationContext(), temp, tempSingolo));
+
 
             }
 
@@ -856,7 +1121,7 @@ public class Documenti extends AppCompatActivity
                 String titolo = t.singoli.get(position).getTitolo();
                 String descrizione = t.singoli.get(position).getDescrizione();
                 String data = t.singoli.get(position).getData();
-                int idcat = t.singoli.get(position).getId_categoria();
+                String idcat = t.singoli.get(position).getId_categoria();
                 int dimensione = t.singoli.get(position).getDimensione();
                 String estensione = t.singoli.get(position).getEstensione();
                 String link = t.singoli.get(position).getLink();
@@ -912,9 +1177,8 @@ public class Documenti extends AppCompatActivity
                         tempSingolo.clear();
                         for (int i = 0; i < singolo.size(); i++) {
                             if (textlength <= singolo.size()) {
-                                if (singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())&&
-                                        (singolo.get(i).getId_gruppo() == Corsi.get(pos_spinner).getId() ||
-                                        singolo.get(i).getId_gruppo_padre() == Corsi.get(pos_spinner).getId())) {
+                                if (singolo.get(i).getTitolo().toUpperCase().trim().contains(searchView.getQuery().toString().trim().toUpperCase())
+                                        ) {
                                     temp.add(singolo.get(i).getTitolo());
                                     tempSingolo.add(singolo.get(i));
                                 }
@@ -932,6 +1196,7 @@ public class Documenti extends AppCompatActivity
         return true;
     }
 
+    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -948,19 +1213,10 @@ public class Documenti extends AppCompatActivity
             if(from_dipartimento==1)i.putExtra("from_dipartimento",1);
             if(from_corso==1)i.putExtra("from_corso",1);
             startActivity(i);
-        }else if (id == R.id.organig) {
-            Intent i=new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
-        }else if (id == R.id.atti) {
-            Intent i=new Intent(getApplicationContext(), DocumentiAtti.class);
-            startActivity(i);
-        }else if (id == R.id.verbali) {
-            Intent i=new Intent(getApplicationContext(), DocumentiVerbali.class);
-            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -973,10 +1229,7 @@ public class Documenti extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.person) {
 
-        }else if (id == R.id.organig) {
-            Intent i=new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
-        } else if (id == R.id.nav_dip) {
+        }else if (id == R.id.nav_dip) {
             Intent i=new Intent(getApplicationContext(), Dipartimento.class);
             startActivity(i);
         } else if (id == R.id.nav_dida) {
@@ -1056,13 +1309,13 @@ class Doc{
     private String data;
     private String estensione;
     private String link;
-    private int id_categoria;
+    private String id_categoria;
     private int dimensione;
     private String nome_cat;
     private String nome_gruppo;
     private int id_gruppo;
-    private int id_gruppo_padre;
-    public Doc(int id, String titolo, int id_categoria,String descrizione,String data,int dimensione,String estensione,String link,String nome_cat,String nome_gruppo, int id_gruppo,int id_gruppo_padre) {
+
+    public Doc(int id, String titolo, String id_categoria,String descrizione,String data,int dimensione,String estensione,String link,String nome_cat,String nome_gruppo, int id_gruppo) {
         this.id = id;
         this.titolo = titolo;
         this.id_categoria = id_categoria;
@@ -1074,7 +1327,7 @@ class Doc{
         this.nome_cat=nome_cat;
         this.nome_gruppo=nome_gruppo;
         this.id_gruppo=id_gruppo;
-        this.id_gruppo_padre=id_gruppo_padre;
+
 
     }
     public int getId(){return id;}
@@ -1082,15 +1335,13 @@ class Doc{
     public String getEstensione(){return estensione;}
     public String getData(){return data;}
     public String getLink(){return link;}
-    public int getId_categoria(){return id_categoria;}
+    public String getId_categoria(){return id_categoria;}
     public String getNome_cat(){return nome_cat;}
     public int getId_gruppo(){return id_gruppo;}
     public String getNome_gruppo(){return nome_gruppo;}
     public int getDimensione(){return dimensione;}
     public String getDescrizione(){return descrizione;}
-    public int getId_gruppo_padre() {
-        return id_gruppo_padre;
-    }
+
 }
 class Categoria{
     private int id;

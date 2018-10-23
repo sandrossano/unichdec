@@ -81,6 +81,7 @@ public class PaginaDocumento extends AppCompatActivity
         iddoc = getIntent().getIntExtra("iddoc", 0);
         String titolo = getIntent().getStringExtra("titolo");
         int dimensione = getIntent().getIntExtra("dimensione",0);
+        findViewById(R.id.doc3).setVisibility(View.VISIBLE);
         String ambito = getIntent().getStringExtra("ambito");
         String data = getIntent().getStringExtra("data");
         int idcat = getIntent().getIntExtra("idcat", 0);
@@ -92,8 +93,11 @@ public class PaginaDocumento extends AppCompatActivity
         TextView wow2 = (TextView) findViewById(R.id.testodocumento2);
         wow2.setText(titolo );
 
-        TextView wow3 = (TextView) findViewById(R.id.testodocumento3);
-        wow3.setText((dimensione/1024)+" Kb");
+        if(dimensione!=0) {
+            TextView wow3 = (TextView) findViewById(R.id.testodocumento3);
+            wow3.setText((dimensione / 1024) + " Kb");
+        }else
+            {findViewById(R.id.doc3).setVisibility(View.GONE);}
 
         TextView wow4 = (TextView) findViewById(R.id.testodocumento4);
         wow4.setText(data );
@@ -254,10 +258,7 @@ public class PaginaDocumento extends AppCompatActivity
         } else if (id == R.id.person) {
             Intent i = new Intent(getApplicationContext(), Persona.class);
             startActivity(i);
-        } else if (id == R.id.organig) {
-            Intent i = new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
-        } else if (id == R.id.nav_dip) {
+        }  else if (id == R.id.nav_dip) {
             Intent i = new Intent(getApplicationContext(), Dipartimento.class);
             startActivity(i);
         } else if (id == R.id.nav_dida) {
@@ -309,10 +310,10 @@ public class PaginaDocumento extends AppCompatActivity
             Uri uri = Uri.parse("https://economia.unich.it/dec/download.php?id=" + iddoc);
             DownloadManager.Request request = new DownloadManager.Request(uri);
             request.allowScanningByMediaScanner();
-            request.setMimeType("application/" + getIntent().getStringExtra("estensione"));
-            request.setDestinationInExternalPublicDir("/Download", getIntent().getStringExtra("link"));
-            Log.d("estensione",getIntent().getStringExtra("estensione"));
-            Log.d("link",getIntent().getStringExtra("link"));
+            //request.setMimeType("application/" + getIntent().getStringExtra("estensione"));
+            //request.setDestinationInExternalPublicDir("/Download", getIntent().getStringExtra("link"));
+            //Log.d("estensione",getIntent().getStringExtra("estensione"));
+            //Log.d("link",getIntent().getStringExtra("link"));
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             Long reference = downloadManager.enqueue(request);
         }

@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.sandro.dec_dipartimentoeconomia.MainActivityMultiDipartimento.pswJson;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.appuntamenti;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.pagine;
 
@@ -229,9 +230,6 @@ public class PaginaAvviso extends AppCompatActivity
         } else if (id == R.id.person) {
             Intent i = new Intent(getApplicationContext(), Persona.class);
             startActivity(i);
-        } else if (id == R.id.organig) {
-            Intent i = new Intent(getApplicationContext(), Organigramma.class);
-            startActivity(i);
         } else if (id == R.id.nav_dip) {
             Intent i = new Intent(getApplicationContext(), Dipartimento.class);
             startActivity(i);
@@ -263,7 +261,7 @@ public class PaginaAvviso extends AppCompatActivity
     private void makePost(){
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         jsonObjRequest = new StringRequest(com.android.volley.Request.Method.POST,
-                "https://economia.unich.it/visualizza.php?type=appuntamento&id="+iddoc+"&JSON=on",
+                "https://economia.unich.it/visualizza.php?type=appuntamento&id="+iddoc+"&JSON="+pswJson,
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

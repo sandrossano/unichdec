@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -41,6 +43,7 @@ import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContext;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.mContextMain;
 import static com.example.sandro.dec_dipartimentoeconomia.MainActivity.nome_dipartimento;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.dipartimenti;
+import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.finish3;
 import static com.example.sandro.dec_dipartimentoeconomia.SplashActivity.livello2dec;
 
 public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
@@ -129,7 +132,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                     corso.putExtra("position", parentHeaders.get(groupPosition));
                     corso.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                    mContext.startActivity(corso);
+                    fine(corso);
 
                 }
             });
@@ -202,6 +205,19 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                         }
                     }
 
+                        if (second.get(i).getId_pagina() != -1 && second.get(i).getId_pagina() != 0) {
+                            Intent visualizza = new Intent(mContext, Visualizza.class);
+                            visualizza.putExtra("id_dip", id_dipartimento);
+                            visualizza.putExtra("secondolv", second.get(i).getTitolo());
+                            visualizza.putExtra("terzolv", second.get(i).getTitolo());
+                            visualizza.putExtra("terzolvpag", second.get(i).getId_pagina());
+                            visualizza.putExtra("link", second.get(i).getLink());
+                            visualizza.putExtra("position", parentHeaders.get(groupPosition));
+                            visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            fine(visualizza);
+
+                            }
 
                         if(second.get(i).getTitolo().toUpperCase().equals("HOME")&&MainActivity.activity.equals(".MainActivity")){
                             drawerMain.closeDrawers();
@@ -215,7 +231,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                                 intent.putExtra("nome_dipartimento",nome_dipartimento);
                                 drawerMain.closeDrawers();
                                 drawer.closeDrawers();
-                                mContext.startActivity(intent);
+                                fine(intent);
                             }
 
                         //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo(), Toast.LENGTH_SHORT).show();
@@ -269,7 +285,37 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                         visualizza.putExtra("position", parentHeaders.get(groupPosition));
                         visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                        mContext.startActivity(visualizza);
+                        fine(visualizza);
+                    }
+
+                    if (terzo.get(i1).getId_pagina()==-1){
+                        String url = terzo.get(i1).getLink();
+                        if (url.startsWith("http")){
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            fine(intent);
+                        }
+                    }
+
+
+                    if (terzo.get(i1).getId_pagina()==0){
+                        String url = terzo.get(i1).getLink();
+                        if (url.startsWith("visualizza.php?type=pagina&id=")){
+                            String split=url.substring(30);
+                            int pagina=Integer.parseInt(split);
+
+                            Intent visualizza = new Intent(mContext, Visualizza.class);
+                            visualizza.putExtra("id_dip", id_dipartimento);
+                            visualizza.putExtra("secondolv", second.get(i).getTitolo());
+                            visualizza.putExtra("terzolv", terzo.get(i1).getTitolo());
+                            visualizza.putExtra("terzolvpag", pagina);
+                            visualizza.putExtra("link", terzo.get(i1).getLink());
+                            visualizza.putExtra("position", parentHeaders.get(groupPosition));
+                            visualizza.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            fine(visualizza);
+
+                        }
                     }
 
                     if(titolo[titolo.length-1].toUpperCase().equals("HOME")&&MainActivity.activity.equals(".MainActivity")){
@@ -279,21 +325,21 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
                         Intent intent=new Intent(mContext, MainActivity.class);
                         intent.putExtra("id_dipartimento",dipartimenti.get(i).getId());
                         intent.putExtra("nome_dipartimento",dipartimenti.get(i).getSigla());
-                        mContext.startActivity(intent);
+                        fine(intent);
                     }
                     if(titolo[titolo.length-1].trim().toUpperCase().equals("DOCUMENTI")) {
                         Intent persona = new Intent(mContext, Documenti.class);
                         persona.putExtra("id_dip", id_dipartimento);
                         persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         persona.putExtra("from_dipartimento",1);
-                        mContext.startActivity(persona);}
+                       fine(persona);}
 
                     if(titolo[titolo.length-1].trim().toUpperCase().equals("PERSONE") ) {
                         Intent persona = new Intent(mContext, Persona.class);
                         persona.putExtra("id_dip", id_dipartimento);
                         persona.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         persona.putExtra("from_dipartimento",1);
-                        mContext.startActivity(persona);}
+                        fine(persona);}
                     //Toast.makeText(MainActivity.mContext, "Hai Premuto:\n\n" + "primolivello: " + prova + "\n\n secondolivello: " + second.get(i).getTitolo() + "\n\n terzolivello: " + terzo.get(i1).getTitolo(), Toast.LENGTH_SHORT).show();
                     return false;
                 }
@@ -337,4 +383,22 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter{
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+    public void fine(final Intent visualizza) {
+        if (finish3) {
+            mContext.startActivity(visualizza);
+
+        } else {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext,"Caricamento in corso...",
+                            Toast.LENGTH_SHORT).show();
+                    fine(visualizza);
+                }
+            }, 2050);
+        }
+    }
+
 }
